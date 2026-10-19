@@ -146,7 +146,7 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.20.0';
+const VERSION = '0.20.1';
 const DATA_V  = '22';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
@@ -494,6 +494,20 @@ SCREENS.reader = function (p) {
   R.after = function () { fillReader(p); };
   return h;
 };
+(function () {
+  let tm = 0;
+  document.addEventListener('DOMContentLoaded', function () {
+    const v = document.getElementById('view'); if (!v) return;
+    v.addEventListener('scroll', function () {
+      if (R.screen !== 'reader' || !S.last || S.last.kind !== 'siddur' || R.params.kind !== 'siddur') return;
+      clearTimeout(tm); tm = setTimeout(function () {
+        const pts = v.querySelectorAll('.pt'); let cur = '';
+        for (let i = 0; i < pts.length; i++) { if (pts[i].getBoundingClientRect().top <= 140) cur = pts[i].id; else break; }
+        if (cur !== (S.last.pos || '') && /^p\d{1,3}$/.test(cur || 'x')) { S.last.pos = cur; save(); }
+      }, 400);
+    }, { passive: true });
+  });
+})();
 function fillReader(p) {
   const box = $('#rdBody'); if (!box) return;
   const ph = function () { box.innerHTML = '<div class="ph">' + esc(p.ph || '') + '</div>'; };
@@ -502,7 +516,7 @@ function fillReader(p) {
   loadJson(p.path).then(function (j) {
     if (!$('#rdBody')) return;
     if (p.kind === 'tehillim') { fillTehillim(box, j, p); return; }
-    if (j.parts) { fillService(box, j); return; }
+    if (j.parts) { fillService(box, j); if (p.resume && /^p\d{1,3}$/.test(p.resume)) { const e = document.getElementById(p.resume); if (e) setTimeout(function () { e.scrollIntoView({ block: 'start' }); }, 50); } return; }
     const segs = (j.segments || []).map(function (s) { return '<p class="seg">' + esc(s.he) + '</p>' + (S.showEn && s.en ? '<p class="en" dir="ltr">' + esc(s.en) + '</p>' : '') + (s.note ? '<p class="en">' + esc(s.note) + '</p>' : ''); }).join('');
     const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
     box.innerHTML = (j.status && j.status !== 'verified' ? '<p><span class="tag warn">' + esc(j.status === 'demo' ? T('stDemo') : T('stPending')) + '</span></p>' : '') + segs + (vers ? '<p class="en" style="margin-top:20px">' + vers + '</p>' : '');
@@ -919,7 +933,7 @@ SCREENS.about = function () {
 };
 
 /* ───── פעולות (event delegation) ───── */
-function openReader(o, back) { R.rdBack = R.screen === 'assistant' ? 'assistant' : (back || R.screen); R.title = o.title; if (o.kind === 'siddur') { S.last = { kind: 'siddur', title: o.title, nu: o.nu, id: o.id }; save(); } go('reader', o); }
+function openReader(o, back) { R.rdBack = R.screen === 'assistant' ? 'assistant' : (back || R.screen); R.title = o.title; if (o.kind === 'siddur') { const same = S.last && S.last.nu === o.nu && S.last.id === o.id; S.last = { kind: 'siddur', title: o.title, nu: o.nu, id: o.id }; if (same && o.keepPos) S.last.pos = o.keepPos; save(); } go('reader', o); }
 /* ───── העוזר המקומי: חיפוש וניווט בלבד (בלי שרת, בלי מפתח, בלי בינה חיצונית; לא פוסק הלכה) ───── */
 const AI = { idx: {}, msgs: [], acts: [], base: null, df: null, busy: false };
 const AI_SYN = [
@@ -1265,7 +1279,7 @@ const ACT = {
   back: function () { go(R.screen === 'reader' ? (R.rdBack || 'home') : 'home'); },
   about: function () { go('about'); },
   theme: function () { S.mode = S.mode === 'dark' ? 'light' : 'dark'; save(); apply(); if (R.screen === 'settings') render(); },
-  cont: function () { const l = S.last; if (l) openSection(l.nu, l.id); },
+  cont: function () { const l = S.last; if (l) openSection(l.nu, l.id, l.pos); },
   nus: function (el) { S.nusach = el.dataset.id; save(); go('siddur', { nusach: el.dataset.id }); },
   sec: function (el) { openSection(el.dataset.nu, el.dataset.id); },
   demo: function () { openReader({ kind: 'siddur', nu: 'ashkenaz', id: 'demo', title: T('demoSection'), path: 'data/siddur/ashkenaz/demo.json' }, 'siddur'); },
@@ -1302,10 +1316,10 @@ const ACT = {
     else if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { toast(T('copied')); });
   }
 };
-function openSection(nu, id) {
+function openSection(nu, id, pos) {
   const n = (D.sid || []).find(function (x) { return x.id === nu; }); const s = n && n.sections.find(function (x) { return x.id === id; }); if (!s) return;
   const title = nuName(nu) + ' · ' + (S.lang === 'he' ? s.he : s.en);
-  openReader({ kind: 'siddur', nu: nu, id: id, title: title, path: s.ready ? 'data/siddur/' + nu + '/' + id + '.json' : null, ph: T('phSiddur', S.lang === 'he' ? s.he : s.en) }, 'siddur');
+  openReader({ kind: 'siddur', nu: nu, id: id, keepPos: pos, resume: pos, title: title, path: s.ready ? 'data/siddur/' + nu + '/' + id + '.json' : null, ph: T('phSiddur', S.lang === 'he' ? s.he : s.en) }, 'siddur');
 }
 function tehReader(from, to, part) {
   const h = function (n) { return S.lang === 'he' ? hnum(n) : n; };
@@ -1370,6 +1384,7 @@ function cleanState(raw) {
   if (isO(raw.tts)) { o.tts = {}; if (typeof raw.tts.rate === 'number' && raw.tts.rate >= 0.3 && raw.tts.rate <= 2.5) o.tts.rate = raw.tts.rate; ['noNik', 'skipRub'].forEach(function (k) { if (typeof raw.tts[k] === 'boolean') o.tts[k] = raw.tts[k]; }); }
   if (isO(raw.path)) { o.path = {}; Object.keys(raw.path).forEach(function (k) { if (/^d\d{1,2}$/.test(k) && typeof raw.path[k] === 'string') o.path[k] = raw.path[k].slice(0, 12); }); }
   if (isO(raw.last) && raw.last.kind === 'siddur' && typeof raw.last.nu === 'string' && typeof raw.last.id === 'string') o.last = { kind: 'siddur', title: String(raw.last.title || '').slice(0, 120), nu: raw.last.nu.slice(0, 20), id: raw.last.id.slice(0, 60) };
+  if (o.last && typeof raw.last.pos === 'string' && /^p\d{1,3}$/.test(raw.last.pos)) o.last.pos = raw.last.pos;
   return o;
 }
 function importBackup(inp) {
