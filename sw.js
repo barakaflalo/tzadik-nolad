@@ -26,7 +26,7 @@ CacheStorage.prototype.match=function(){return sm.apply(this,arguments).then(cle
    - רק שורש האפליקציה נשמר כ-"./" (לא כל דף כ-index.html).
    - קבצי נתונים עם ?v= ואותה כתובת בדיוק ברשימת CORE (בלי ignoreSearch).
    - מעלים VERSION ו-DATA_V יחד, ביחד עם index.html. */
-const VERSION = 'tznolad-v35';
+const VERSION = 'tznolad-v37';
 const DATA_V = '26';           // חייב להיות זהה ל-DATA_V ב-index.html
 const CORE = [
   './',

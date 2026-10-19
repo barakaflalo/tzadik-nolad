@@ -156,7 +156,7 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.30.0';
+const VERSION = '0.30.2';
 const DATA_V  = '26';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
@@ -266,7 +266,7 @@ const LANG = {
     guidesTitle: 'Guides', g_tefillin: 'Putting on tefillin', g_tzitzit: 'Tallit and tzitzit', g_shema: 'Reciting the Shema', g_bentsch: 'Grace after meals', g_brachot: 'Which blessing for what', g_mezuzah: 'Mezuzah', g_candles: 'Shabbat candles', g_pray: 'How to pray — step by step',
     settingsUser: 'Name (appears in backups and sharing)', settingsLang: 'Language', settingsTheme: 'Color theme', settingsMode: 'Display mode', dark: 'Night', light: 'Day',
     offTitle: 'Use without internet', offNote: 'Checks that all content is saved on this device and can open without a connection.', offCheck: 'Check now', offOk: 'Ready to use offline ({0} of {1} files saved)', offPart: 'Some files are not saved yet ({0} of {1}). Connect to the internet, reload and check again.', offNone: 'The app is not saved for offline use yet. Open it once while online, then check again.',
-    memCandle: 'Memorial candle', memDed: 'Dedicated to the memory of', memName: 'Dan Gehst, of blessed memory', memSon: 'son of Yoni Asher and Sara', memDate: 'Passed away on the 8th of Tevet 5785', memForever: 'You will always be in our hearts', memTnz: 'May his soul be bound up in the bond of life',
+    memCandle: 'Memorial candle', memDed: 'Dedicated to the memory of', memName: 'Dan Gajst, of blessed memory', memSon: 'son of Yoni Asher and Sarah', memDate: 'Passed away on the 8th of Tevet 5785', memForever: 'You will always be in our hearts', memTnz: 'May his soul be bound up in the bond of life',
     settingsNusach: 'Default nusach', settingsBackup: 'Backup & restore', export: 'Export backup', import: 'Restore from file', resetAll: 'Delete all data',
     guideFb: 'Other nusach', guideFbNote: 'There is no text in the {0} nusach for this part yet, so another nusach is shown. If your custom differs, ask a rabbi.',
     exported: 'Backup saved', importBad: 'This file does not look like an app backup', importAsk: 'Restoring replaces all current data. Continue?', imported: 'Data restored', importFail: 'Restore failed; nothing was changed and your previous data is intact',
@@ -527,8 +527,8 @@ const LANG = {
     offNone: "La aplicación aún no está guardada para uso sin conexión. Ábrela una vez con internet y vuelve a comprobar.",
     memCandle: "Vela en memoria",
     memDed: "Dedicado a la memoria de",
-    memName: "Dan Gehst, de bendita memoria",
-    memSon: "hijo de Yoni Asher y Sara",
+    memName: "Dan Gajst, de bendita memoria",
+    memSon: "hijo de Yoni Asher y Sarah",
     memDate: "Falleció el 8 de Tevet de 5785",
     memForever: "Siempre estarás en nuestros corazones",
     memTnz: "Que su alma esté ligada en el vínculo de la vida",
