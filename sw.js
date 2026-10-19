@@ -26,8 +26,8 @@ CacheStorage.prototype.match=function(){return sm.apply(this,arguments).then(cle
    - רק שורש האפליקציה נשמר כ-"./" (לא כל דף כ-index.html).
    - קבצי נתונים עם ?v= ואותה כתובת בדיוק ברשימת CORE (בלי ignoreSearch).
    - מעלים VERSION ו-DATA_V יחד, ביחד עם index.html. */
-const VERSION = 'tznolad-v19';
-const DATA_V = '19';           // חייב להיות זהה ל-DATA_V ב-index.html
+const VERSION = 'tznolad-v20';
+const DATA_V = '20';           // חייב להיות זהה ל-DATA_V ב-index.html
 const CORE = [
   './',
   'manifest.json',
@@ -109,11 +109,25 @@ const OFFLINE_HTML = '<!doctype html><html lang="he" dir="rtl"><meta charset="ut
 self.addEventListener('install', function (e) {
   e.waitUntil((async function () {
     const c = await caches.open(VERSION);
-    await Promise.allSettled(CORE.map(function (u) {
+    const rs = await Promise.allSettled(CORE.map(function (u) {
       return c.add(new Request(u, { cache: 'reload' }));
     }));
+    // אם חלק מהקבצים לא ירדו — ההתקנה נכשלת, הגרסה הקודמת (והמטמון שלה) נשארת, והדפדפן ינסה שוב מאוחר יותר
+    const failed = rs.filter(function (r) { return r.status === 'rejected'; }).length;
+    if (failed) { await caches.delete(VERSION); throw new Error('incomplete install: ' + failed); }
     await self.skipWaiting();
   })());
+});
+
+// דוח מצב אופליין לבקשת האפליקציה
+self.addEventListener('message', function (e) {
+  if (!e.data || e.data.type !== 'status' || !e.ports || !e.ports[0]) return;
+  (async function () {
+    const c = await caches.open(VERSION), keys = await c.keys(), have = {};
+    keys.forEach(function (k) { have[new URL(k.url).pathname + new URL(k.url).search] = 1; });
+    const missing = CORE.filter(function (u) { const a = new URL(u, self.registration.scope); return !have[a.pathname + a.search]; });
+    e.ports[0].postMessage({ version: VERSION, total: CORE.length, cached: CORE.length - missing.length, missing: missing.slice(0, 10) });
+  })().catch(function () { e.ports[0].postMessage({ error: 1 }); });
 });
 
 self.addEventListener('activate', function (e) {
