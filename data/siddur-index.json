@@ -32,12 +32,14 @@
     {
      "id": "shabbat",
      "he": "שבת",
-     "en": "Shabbat"
+     "en": "Shabbat",
+     "ready": true
     },
     {
      "id": "festivals",
      "he": "מועדים",
-     "en": "Festivals"
+     "en": "Festivals",
+     "ready": true
     },
     {
      "id": "berachot",
@@ -49,7 +51,9 @@
     {
      "id": "kaddish",
      "he": "קדיש",
-     "en": "Kaddish"
+     "en": "Kaddish",
+     "ready": true,
+     "core": true
     }
    ]
   },
