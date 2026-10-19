@@ -134,8 +134,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.6.0';
-const DATA_V  = '5';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.7.0';
+const DATA_V  = '6';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -189,11 +189,12 @@ const LANG = {
     disclaimer: 'האפליקציה נועדה ללמידה ולליווי, ואינה תחליף לפסיקת רב. בשאלות הלכה או מנהג — יש לפנות לרב.',
     aboutVer: 'גרסה', aboutDev: 'פותח', aboutPlat: 'פלטפורמה', aboutStore: 'אחסון', aboutLic: 'רישיון', storeVal: 'על המכשיר בלבד', free: 'חינם · בלי פרסומות · בלי מנוי',
     openStore: 'חנות AppNest', share: 'שתף את האפליקציה', feedback: 'שלח משוב', privacy: 'מדיניות פרטיות', copied: 'הקישור הועתק',
+    srcIntro: 'כל הטקסטים באפליקציה נטענו מתוך ספריא — מאגר טקסטים יהודיים פתוח:', srcChanges: 'שינויים שנעשו בטקסט: הוסרו תגיות עיצוב והערות שוליים, הטקסט חולק לקטעים, הוראות סומנו בנפרד, ובהקראה בלבד שם ה׳ נקרא "אדני". התוכן עצמו לא שונה.', srcHeb: 'עברית', srcEng: 'אנגלית', srcLic: 'האפליקציה חינמית לחלוטין, בלי פרסומות ובלי מטרת רווח. רישיונות: CC-BY ו-CC-BY-SA — מותר להשתמש בתנאי ציון מקור (ו-SA: שיתוף זהה); CC-BY-NC — לשימוש לא מסחרי בלבד; CC0 ונחלת הכלל — חופשי.',
     srcTitle: 'מקורות ורישיונות', srcNote: 'הטקסטים בכל גרסה מסומנים בשם הגרסה ובסוג הרישיון. כרגע האפליקציה היא שלד — עוד לא נטען בה נוסח אמיתי.',
     srcSefaria: 'ספריא — נוסחי התפילה (אשכנז, ספרד, עדות המזרח), תהילים, ספר החינוך. לכל גרסה רישיון משלה (CC0 / CC-BY / נחלת הכלל / CC-BY-NC…). האפליקציה חינמית ולא מסחרית.',
     srcHebcal: 'Hebcal — תאריך עברי וזמנים (מתוכנן; רישיון CC-BY 4.0 לתוצרי ה-API).',
     srcRambam: 'ספר המצוות לרמב״ם — מספור המצוות (עשה 1–248, לא תעשה 1–365). הטקסט המלא יגיע מספר החינוך.',
-    srcTeh: 'חלוקת תהילים ל-30 יום: מתיישבת עם ספריית Hebcal (בדיקה חלקית) — לאמת לפני הפצה.',
+    srcTeh: 'חלוקת התהילים ל-30 יום היא החלוקה המקובלת לפי היום בחודש העברי. בשאלות מנהג — לשאול רב.',
     open: 'פתוח', whatsNext: 'מה בא אחר כך', tabHome: 'בית'
   },
   en: {
@@ -234,11 +235,12 @@ const LANG = {
     disclaimer: 'This app is for learning and accompaniment, not a substitute for a rabbi’s ruling. For halachic or custom questions, ask a rabbi.',
     aboutVer: 'Version', aboutDev: 'Developer', aboutPlat: 'Platform', aboutStore: 'Storage', aboutLic: 'License', storeVal: 'On this device only', free: 'Free · no ads · no subscription',
     openStore: 'AppNest store', share: 'Share the app', feedback: 'Send feedback', privacy: 'Privacy policy', copied: 'Link copied',
+    srcIntro: 'All texts in this app were loaded from Sefaria — an open library of Jewish texts:', srcChanges: 'Changes made to the texts: formatting tags and footnotes removed, text split into segments, instructions marked separately, and (audio only) the Divine Name is read as “Adonai”. The content itself is unchanged.', srcHeb: 'Hebrew', srcEng: 'English', srcLic: 'This app is completely free, ad-free and non-profit. Licenses: CC-BY and CC-BY-SA — free to use with attribution (SA: share alike); CC-BY-NC — non-commercial use only; CC0 and Public Domain — free.',
     srcTitle: 'Sources & licenses', srcNote: 'Each text is labeled with its version name and license type. Right now this is a skeleton — no real liturgical text is loaded yet.',
     srcSefaria: 'Sefaria — prayer texts (Ashkenaz, Sefard, Edot HaMizrach), Psalms, Sefer HaChinukh. Each version has its own license (CC0 / CC-BY / Public Domain / CC-BY-NC…). This app is free and non-commercial.',
     srcHebcal: 'Hebcal — Hebrew date and times (planned; CC-BY 4.0 for API output).',
     srcRambam: 'Rambam’s Sefer HaMitzvot — numbering (positive 1–248, negative 1–365). Full text will come from Sefer HaChinukh.',
-    srcTeh: 'Psalms 30-day split: consistent with Hebcal’s library (partial check) — verify before release.',
+    srcTeh: 'The 30-day Psalms division is the customary one, by day of the Hebrew month. For questions of custom, ask a rabbi.',
     open: 'Open', whatsNext: "What's next", tabHome: 'Home'
   }
 };
@@ -734,10 +736,27 @@ SCREENS.settings = function () {
     '<button class="btn danger" data-act="reset">' + esc(T('resetAll')) + '</button></div></div>';
 };
 
+const SOURCES = [
+  { h: 'סידור — נוסח אשכנז (שחרית, מנחה, ערבית, ברכת המזון)', e: 'Siddur — Ashkenaz (Shacharit, Mincha, Maariv, Birkat HaMazon)', items: [
+    ['The Metsudah siddur, 1981', 'he', 'CC-BY'], ['Translation based on the Metsudah linear siddur, by Avrohom Davis, 1981', 'en', 'CC-BY']] },
+  { h: 'ברכות נוספות (על האוכל, ברכות המצוות, תפילת הדרך) — מסומנות "לא נבדק לעומק"', e: 'More blessings (food, mitzvot, traveler’s prayer) — marked “not fully reviewed”', items: [
+    ['Daat Siddur Ashkenaz', 'he', 'Public Domain'], ['Sefaria Community Translation', 'en', 'CC0']] },
+  { h: 'תהילים', e: 'Psalms', items: [
+    ['Miqra according to the Masorah', 'he', 'CC-BY-SA'], ['THE JPS TANAKH: Gender-Sensitive Edition', 'en', 'CC-BY-NC']] },
+  { h: 'תרי״ג מצוות (רשימת הרמב״ם, פתיחת משנה תורה)', e: '613 mitzvot (Rambam’s list, start of Mishneh Torah)', items: [
+    ['Wikisource Mishneh Torah', 'he', 'CC-BY-SA'], ['Mishneh Torah, trans. by Eliyahu Touger. Jerusalem, Moznaim Pub. c1986-c2007', 'en', 'CC-BY-NC']] }
+];
 SCREENS.sources = function () {
   setTitle(T('sources'));
-  return '<div class="card"><p class="mu">' + esc(T('srcNote')) + '</p></div>' +
-    ['srcSefaria', 'srcHebcal', 'srcRambam', 'srcTeh'].map(function (k) { return '<div class="card"><p>' + esc(T(k)) + '</p></div>'; }).join('');
+  const he = S.lang === 'he';
+  let h = '<div class="card"><p>' + esc(T('srcIntro')) + ' <a href="https://www.sefaria.org" target="_blank" rel="noopener" style="color:var(--ac)">Sefaria.org</a></p><p class="mu sm">' + esc(T('srcChanges')) + '</p></div>';
+  SOURCES.forEach(function (g) {
+    h += '<div class="card"><h2>' + esc(he ? g.h : g.e) + '</h2>' + g.items.map(function (i) {
+      return '<p class="sm" style="margin:6px 0"><b dir="ltr" style="unicode-bidi:plaintext">' + esc(i[0]) + '</b><br><span class="mu">' + esc(i[1] === 'he' ? T('srcHeb') : T('srcEng')) + ' · </span><span class="tag">' + esc(i[2]) + '</span></p>';
+    }).join('') + '</div>';
+  });
+  h += '<div class="card"><p class="sm">' + esc(T('srcTeh')) + '</p><p class="sm mu">' + esc(T('srcLic')) + '</p></div>';
+  return h;
 };
 
 SCREENS.about = function () {

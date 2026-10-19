@@ -63,13 +63,15 @@
      "id": "upon-arising",
      "he": "בקימה",
      "en": "Upon Arising",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "shacharit",
      "he": "שחרית לחול",
      "en": "Weekday Shacharit",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "additional",
@@ -80,13 +82,15 @@
      "id": "mincha",
      "he": "מנחה לחול",
      "en": "Weekday Mincha",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "maariv",
      "he": "ערבית לחול",
      "en": "Weekday Maariv",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "lag-baomer",
@@ -94,21 +98,11 @@
      "en": "Lag BaOmer Songs"
     },
     {
-     "id": "various-blessings",
-     "he": "ברכות שונות",
-     "en": "Various Blessings"
-    },
-    {
-     "id": "birkat-hamazon",
-     "he": "ברכת המזון",
-     "en": "Birchat HaMazon",
-     "core": true
-    },
-    {
-     "id": "blessings",
+     "id": "berachot",
      "he": "ברכות",
      "en": "Blessings",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "mincha-erev-shabbat",
