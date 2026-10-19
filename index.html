@@ -138,8 +138,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.18.0';
-const DATA_V  = '20';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.18.1';
+const DATA_V  = '21';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -188,6 +188,7 @@ const LANG = {
     guidesTitle: 'מדריכים', g_tefillin: 'הנחת תפילין', g_tzitzit: 'טלית וציצית', g_shema: 'קריאת שמע', g_bentsch: 'ברכת המזון', g_brachot: 'איזו ברכה על מה', g_mezuzah: 'מזוזה', g_candles: 'הדלקת נרות שבת', g_pray: 'איך מתפללים — צעד אחרי צעד',
     settingsUser: 'שם (יופיע בגיבוי ובשיתוף)', settingsLang: 'שפה', settingsTheme: 'ערכת צבע', settingsMode: 'מצב תצוגה', dark: 'לילה', light: 'יום',
     offTitle: 'שימוש בלי אינטרנט', offNote: 'בדיקה שכל התוכן שמור במכשיר ואפשר לפתוח אותו בלי חיבור.', offCheck: 'בדוק עכשיו', offOk: 'מוכן לשימוש בלי אינטרנט ({0} מתוך {1} קבצים שמורים)', offPart: 'חלק מהקבצים עוד לא נשמרו ({0} מתוך {1}). התחבר לאינטרנט, רענן את הדף ובדוק שוב.', offNone: 'האפליקציה עוד לא נשמרה לשימוש בלי אינטרנט. פתח אותה פעם אחת עם חיבור, ובדוק שוב.',
+    memCandle: 'נר נשמה', memDed: 'מוקדש לעילוי נשמת', memName: 'דן גהסט ז״ל', memSon: 'בן יוני אשר ושרה', memDate: 'נלב״ע ביום ח׳ בטבת התשפ״ה', memForever: 'לעולם תהיה בליבנו', memTnz: 'ת.נ.צ.ב.ה',
     settingsNusach: 'נוסח ברירת מחדל', settingsBackup: 'גיבוי ושחזור', export: 'ייצוא גיבוי', import: 'שחזור מקובץ', resetAll: 'מחיקת כל הנתונים',
     guideFb: 'נוסח אחר', guideFbNote: 'עבור נוסח {0} אין עדיין נוסח מתאים בקטע הזה, ולכן מוצג נוסח אחר. מי שנוהג אחרת — ישאל רב.',
     exported: 'הגיבוי נשמר', importBad: 'הקובץ לא נראה כמו גיבוי של האפליקציה', importAsk: 'השחזור יחליף את כל הנתונים הנוכחיים. להמשיך?', imported: 'הנתונים שוחזרו', importFail: 'השחזור נכשל ולא שונה דבר. הנתונים הקודמים נשארו',
@@ -239,6 +240,7 @@ const LANG = {
     guidesTitle: 'Guides', g_tefillin: 'Putting on tefillin', g_tzitzit: 'Tallit and tzitzit', g_shema: 'Reciting the Shema', g_bentsch: 'Grace after meals', g_brachot: 'Which blessing for what', g_mezuzah: 'Mezuzah', g_candles: 'Shabbat candles', g_pray: 'How to pray — step by step',
     settingsUser: 'Name (appears in backups and sharing)', settingsLang: 'Language', settingsTheme: 'Color theme', settingsMode: 'Display mode', dark: 'Night', light: 'Day',
     offTitle: 'Use without internet', offNote: 'Checks that all content is saved on this device and can open without a connection.', offCheck: 'Check now', offOk: 'Ready to use offline ({0} of {1} files saved)', offPart: 'Some files are not saved yet ({0} of {1}). Connect to the internet, reload and check again.', offNone: 'The app is not saved for offline use yet. Open it once while online, then check again.',
+    memCandle: 'Memorial candle', memDed: 'Dedicated to the memory of', memName: 'Dan Gehst, of blessed memory', memSon: 'son of Yoni Asher and Sara', memDate: 'Passed away on the 8th of Tevet 5785', memForever: 'You will always be in our hearts', memTnz: 'May his soul be bound up in the bond of life',
     settingsNusach: 'Default nusach', settingsBackup: 'Backup & restore', export: 'Export backup', import: 'Restore from file', resetAll: 'Delete all data',
     guideFb: 'Other nusach', guideFbNote: 'There is no text in the {0} nusach for this part yet, so another nusach is shown. If your custom differs, ask a rabbi.',
     exported: 'Backup saved', importBad: 'This file does not look like an app backup', importAsk: 'Restoring replaces all current data. Continue?', imported: 'Data restored', importFail: 'Restore failed; nothing was changed and your previous data is intact',
@@ -897,7 +899,9 @@ SCREENS.sources = function () {
 SCREENS.about = function () {
   setTitle(T('about'));
   const rw = function (a, b) { return '<p style="display:flex;justify-content:space-between;gap:12px;margin:8px 0"><span class="mu">' + esc(a) + '</span><b style="text-align:end">' + esc(b) + '</b></p>'; };
-  return '<div class="card" style="text-align:center"><img src="icon-192.png" alt="" width="84" height="84" style="border-radius:20px"><h2 style="margin-top:10px">' + esc(T('appName')) + '</h2><p class="mu">' + esc(T('free')) + '</p></div>' +
+  const candle = '<svg viewBox="0 0 40 64" width="34" height="54" role="img" aria-label="' + esc(T('memCandle')) + '" style="display:block;margin:0 auto 10px"><path d="M20 3c5 7 7 11 7 15a7 7 0 0 1-14 0c0-4 2-8 7-15z" fill="#f2b84b"/><path d="M20 12c2.5 3.5 3.5 5.5 3.5 7.5a3.5 3.5 0 0 1-7 0c0-2 1-4 3.5-7.5z" fill="#fff3c4"/><rect x="9" y="28" width="22" height="30" rx="3" fill="#e9dfc2"/><rect x="5" y="56" width="30" height="6" rx="3" fill="#b99a4a"/><path d="M20 24v4" stroke="#6b5a2a" stroke-width="2"/></svg>';
+  const mem = '<div class="card" style="text-align:center;border:1px solid var(--gold,#d4af37)">' + candle + '<p class="mu">' + esc(T('memDed')) + '</p><h2 style="margin:6px 0">' + esc(T('memName')) + '</h2><p class="mu">' + esc(T('memSon')) + '</p><p>' + esc(T('memDate')) + '</p><p><b>' + esc(T('memForever')) + '</b></p><p class="mu">' + esc(T('memTnz')) + '</p></div>';
+  return mem + '<div class="card" style="text-align:center"><img src="icon-192.png" alt="" width="84" height="84" style="border-radius:20px"><h2 style="margin-top:10px">' + esc(T('appName')) + '</h2><p class="mu">' + esc(T('free')) + '</p></div>' +
     '<div class="card">' + rw(T('aboutVer'), VERSION) + rw(T('aboutDev'), 'Barak Aflalo') + rw(T('aboutPlat'), 'PWA · HTML5') + rw(T('aboutStore'), T('storeVal')) + rw(T('aboutLic'), '© AppNest 2026') + '</div>' +
     '<div class="mbtns"><a class="btn" href="https://appnest-store.pages.dev" target="_blank" rel="noopener">' + esc(T('openStore')) + '</a><button class="btn" data-act="share">' + esc(T('share')) + '</button>' +
     '<a class="btn" href="mailto:appnest55@gmail.com?subject=' + encodeURIComponent('צדיק נולד ' + VERSION) + '">' + esc(T('feedback')) + '</a><a class="btn" href="privacy_policy.html">🔒 ' + esc(T('privacy')) + '</a></div>' +
