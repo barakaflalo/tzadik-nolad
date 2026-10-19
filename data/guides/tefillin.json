@@ -1,0 +1,15 @@
+{
+ "id": "tefillin",
+ "title": {
+  "he": "הנחת תפילין",
+  "en": "Putting on tefillin"
+ },
+ "status": "verified",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-tefillin"
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "id": "food",
+ "title": {
+  "he": "איזו ברכה על מה (אוכל)",
+  "en": "Which blessing on what (food)"
+ },
+ "status": "review",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "berachot",
+   "part": "birkat-hanehenin-eating-barachot-rishonot"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "berachot",
+   "part": "birkat-hanehenin-eating-brachot-achronot-borei-nefashot"
+  }
+ ]
+}

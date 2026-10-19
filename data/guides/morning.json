@@ -1,0 +1,50 @@
+{
+ "id": "morning",
+ "title": {
+  "he": "סדר הבוקר למתחיל",
+  "en": "Morning routine for beginners"
+ },
+ "status": "verified",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-modeh-ani"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-netilat-yadayim"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-asher-yatzar"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-elokai-neshama"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-tzitzit"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-torah-blessings"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-tallit"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-tefillin"
+  }
+ ]
+}

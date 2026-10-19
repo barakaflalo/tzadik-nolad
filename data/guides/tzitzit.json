@@ -1,0 +1,20 @@
+{
+ "id": "tzitzit",
+ "title": {
+  "he": "טלית וציצית",
+  "en": "Tallit and tzitzit"
+ },
+ "status": "verified",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-tzitzit"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-preparatory-prayers-tallit"
+  }
+ ]
+}

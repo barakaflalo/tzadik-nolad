@@ -1,0 +1,15 @@
+{
+ "id": "derech",
+ "title": {
+  "he": "תפילת הדרך",
+  "en": "Traveler's prayer"
+ },
+ "status": "review",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "berachot",
+   "part": "tefillat-haderech"
+  }
+ ]
+}

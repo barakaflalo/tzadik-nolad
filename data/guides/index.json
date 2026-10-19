@@ -1,0 +1,81 @@
+{
+ "version": 1,
+ "guides": [
+  {
+   "id": "morning",
+   "he": "סדר הבוקר למתחיל",
+   "en": "Morning routine for beginners",
+   "status": "verified",
+   "ready": true,
+   "beginner": true
+  },
+  {
+   "id": "tefillin",
+   "he": "הנחת תפילין",
+   "en": "Putting on tefillin",
+   "status": "verified",
+   "ready": true,
+   "beginner": true
+  },
+  {
+   "id": "tzitzit",
+   "he": "טלית וציצית",
+   "en": "Tallit and tzitzit",
+   "status": "verified",
+   "ready": true,
+   "beginner": true
+  },
+  {
+   "id": "shema",
+   "he": "קריאת שמע",
+   "en": "Reciting the Shema",
+   "status": "verified",
+   "ready": true,
+   "beginner": true
+  },
+  {
+   "id": "food",
+   "he": "איזו ברכה על מה (אוכל)",
+   "en": "Which blessing on what (food)",
+   "status": "review",
+   "ready": true,
+   "beginner": true
+  },
+  {
+   "id": "bentsch",
+   "he": "ברכת המזון",
+   "en": "Grace after meals",
+   "status": "verified",
+   "ready": true,
+   "beginner": true
+  },
+  {
+   "id": "mitzvot",
+   "he": "ברכות המצוות (מזוזה ועוד)",
+   "en": "Blessings on mitzvot (mezuzah and more)",
+   "status": "review",
+   "ready": true,
+   "beginner": true
+  },
+  {
+   "id": "derech",
+   "he": "תפילת הדרך",
+   "en": "Traveler's prayer",
+   "status": "review",
+   "ready": true,
+   "beginner": true
+  },
+  {
+   "id": "candles",
+   "he": "הדלקת נרות שבת",
+   "en": "Shabbat candles",
+   "ready": false
+  },
+  {
+   "id": "pray",
+   "he": "איך מתפללים — צעד אחרי צעד",
+   "en": "How to pray — step by step",
+   "ready": false
+  }
+ ]
+}

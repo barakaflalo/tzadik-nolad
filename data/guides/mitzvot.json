@@ -1,0 +1,15 @@
+{
+ "id": "mitzvot",
+ "title": {
+  "he": "ברכות המצוות (מזוזה ועוד)",
+  "en": "Blessings on mitzvot (mezuzah and more)"
+ },
+ "status": "review",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "berachot",
+   "part": "birkhot-hamitzvot"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "id": "bentsch",
+ "title": {
+  "he": "ברכת המזון",
+  "en": "Grace after meals"
+ },
+ "status": "verified",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "berachot",
+   "part": "birkat-hamazon"
+  }
+ ]
+}

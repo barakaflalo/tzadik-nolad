@@ -1,0 +1,15 @@
+{
+ "id": "shema",
+ "title": {
+  "he": "קריאת שמע",
+  "en": "Reciting the Shema"
+ },
+ "status": "verified",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "shacharit",
+   "part": "shacharit-blessings-of-the-shema-shema"
+  }
+ ]
+}

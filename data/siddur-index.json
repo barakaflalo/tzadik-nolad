@@ -42,7 +42,9 @@
     {
      "id": "berachot",
      "he": "ברכות",
-     "en": "Blessings"
+     "en": "Blessings",
+     "ready": true,
+     "core": true
     },
     {
      "id": "kaddish",

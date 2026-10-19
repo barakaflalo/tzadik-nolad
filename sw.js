@@ -26,8 +26,8 @@ CacheStorage.prototype.match=function(){return sm.apply(this,arguments).then(cle
    - רק שורש האפליקציה נשמר כ-"./" (לא כל דף כ-index.html).
    - קבצי נתונים עם ?v= ואותה כתובת בדיוק ברשימת CORE (בלי ignoreSearch).
    - מעלים VERSION ו-DATA_V יחד, ביחד עם index.html. */
-const VERSION = 'tznolad-v3';
-const DATA_V = '3';           // חייב להיות זהה ל-DATA_V ב-index.html
+const VERSION = 'tznolad-v4';
+const DATA_V = '4';           // חייב להיות זהה ל-DATA_V ב-index.html
 const CORE = [
   './',
   'manifest.json',
@@ -39,7 +39,17 @@ const CORE = [
   'data/tehillim/tehillim.json?v=' + DATA_V,
   'data/siddur/ashkenaz/shacharit.json?v=' + DATA_V,
   'data/siddur/ashkenaz/minchah.json?v=' + DATA_V,
-  'data/siddur/ashkenaz/maariv.json?v=' + DATA_V
+  'data/siddur/ashkenaz/maariv.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/berachot.json?v=' + DATA_V,
+  'data/guides/index.json?v=' + DATA_V,
+  'data/guides/morning.json?v=' + DATA_V,
+  'data/guides/tefillin.json?v=' + DATA_V,
+  'data/guides/tzitzit.json?v=' + DATA_V,
+  'data/guides/shema.json?v=' + DATA_V,
+  'data/guides/food.json?v=' + DATA_V,
+  'data/guides/bentsch.json?v=' + DATA_V,
+  'data/guides/mitzvot.json?v=' + DATA_V,
+  'data/guides/derech.json?v=' + DATA_V
 ];
 
 const OFFLINE_HTML = '<!doctype html><html lang="he" dir="rtl"><meta charset="utf-8">' +

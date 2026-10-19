@@ -134,8 +134,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.4.0';
-const DATA_V  = '3';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.5.0';
+const DATA_V  = '4';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -168,6 +168,7 @@ const LANG = {
     phGuide: 'המדריך הזה בהכנה. הוא ייכתב ממקור הלכתי מאומת, עם סימון מקור וסטטוס אימות — ולא מהזיכרון של בינה.',
     ttsOpen: 'הקראה', ttsPlay: 'הפעל', ttsPause: 'השהה', ttsStop: 'עצור', ttsSpeed: 'מהירות', ttsFrom: 'מהחלק', ttsTo: 'עד החלק', ttsSkipRub: 'דלג על הוראות', ttsNoNik: 'הקרא בלי ניקוד',
     ttsHint: 'אפשר גם להקיש על פסקה כדי להתחיל להקריא משם.', ttsNoVoice: 'לא נמצא קול עברי במכשיר. אפשר להתקין בהגדרות הטלפון: ניהול כללי ← שפה ← טקסט לדיבור (או Google TTS) ← התקנת נתוני קול עברית.', ttsErr: 'ההקראה נעצרה בגלל תקלה בקול של המכשיר.', ttsDone: 'ההקראה הסתיימה', ttsUnsupported: 'המכשיר הזה לא תומך בהקראה',
+    guideNote: 'ההוראות המעשיות (מה עושים ומתי מברכים) מופיעות בנטוי בתוך הנוסח, כפי שהן בסידור. המדריכים מורכבים מהסידור עצמו — לא נכתבו מהזיכרון. בשאלות — לשאול רב.', stReview: 'לא נבדק לעומק', partReview: 'הנוסח כאן ממקור שטרם נבדק לעומק (עלולות להיות אי-דיוקים). מומלץ לוודא מול סידור או רב.',
     jumpTo: 'קפוץ לחלק בתפילה…', partMissing: 'החלק הזה עוד לא נטען — אין לו עדיין גרסה ברישיון ברור. לא נכתב מהזיכרון.',
     todayLabel: 'פרקי היום (חלוקה ל-30 יום)', readToday: 'קראתי היום', readTodayDone: 'נרשם ✓', allPsalms: 'כל 150 הפרקים',
     tehNote: 'החלוקה לפי יום בחודש העברי. אחרי השקיעה היום העברי מתחלף — האפליקציה מחשבת לפי חצות.',
@@ -211,6 +212,7 @@ const LANG = {
     phGuide: 'This guide is in preparation. It will be written from a verified halachic source, with a source and verification status — not from an AI’s memory.',
     ttsOpen: 'Read aloud', ttsPlay: 'Play', ttsPause: 'Pause', ttsStop: 'Stop', ttsSpeed: 'Speed', ttsFrom: 'From part', ttsTo: 'To part', ttsSkipRub: 'Skip instructions', ttsNoNik: 'Read without vowel marks',
     ttsHint: 'You can also tap a paragraph to start reading from there.', ttsNoVoice: 'No Hebrew voice found on this device. Install one in phone settings: General management → Language → Text-to-speech (or Google TTS) → install Hebrew voice data.', ttsErr: 'Reading stopped because of a problem with the device voice.', ttsDone: 'Finished reading', ttsUnsupported: 'This device does not support read-aloud',
+    guideNote: 'Practical instructions (what to do, when to bless) appear in italics inside the text, as in the siddur. Guides are assembled from the siddur itself — not written from memory. For questions, ask a rabbi.', stReview: 'Not fully reviewed', partReview: 'This text comes from a source not yet fully reviewed (may contain inaccuracies). Please verify against a siddur or a rabbi.',
     jumpTo: 'Jump to a part…', partMissing: 'This part is not loaded yet — no clearly licensed version exists. It is not written from memory.',
     todayLabel: "Today's chapters (30-day cycle)", readToday: 'I read today', readTodayDone: 'Recorded ✓', allPsalms: 'All 150 chapters',
     tehNote: 'By day of the Hebrew month. After sunset the Hebrew day changes — the app calculates by midnight.',
@@ -292,13 +294,14 @@ function hebDate(d) {
 function hebDay(d) { try { return parseInt(new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric' }).format(d), 10); } catch (e) { return d.getDate(); } }
 
 /* ───── נתונים ───── */
-const D = { mitz: null, sid: null };
+const D = { mitz: null, sid: null, guides: [] };
 function dataUrl(p) { return p + '?v=' + DATA_V; }
 function loadJson(p) { return fetch(dataUrl(p)).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
 function loadCore() {
   return Promise.all([
     loadJson('data/mitzvot.json').then(function (j) { const m = {}; (j.items || []).forEach(function (x) { m[x.id] = x; }); D.mitz = { counts: j.counts || { a: 248, l: 365 }, map: m }; }).catch(function () { D.mitz = { counts: { a: 248, l: 365 }, map: {} }; }),
-    loadJson('data/siddur-index.json').then(function (j) { D.sid = j.nusachim || []; }).catch(function () { D.sid = []; })
+    loadJson('data/siddur-index.json').then(function (j) { D.sid = j.nusachim || []; }).catch(function () { D.sid = []; }),
+    loadJson('data/guides/index.json').then(function (j) { D.guides = j.guides || []; }).catch(function () { D.guides = []; })
   ]);
 }
 
@@ -439,7 +442,7 @@ SCREENS.siddur = function () {
 
 SCREENS.reader = function (p) {
   /* p: {kind, title, path?, ph?} — path = קובץ נתונים; ללא קובץ → הודעת "בהכנה" כנה */
-  const canTts = !!p.path && ttsSupported();
+  const canTts = !!(p.path || p.guide) && ttsSupported();
   let h = '<div class="row" style="margin-bottom:12px"><button class="btn" data-act="fs" data-d="-2" aria-label="A-">A−</button><button class="btn" data-act="fs" data-d="2" aria-label="A+">A+</button><button class="btn" data-act="toggleEn" aria-pressed="' + (S.showEn ? 'true' : 'false') + '">' + esc(T('showEn')) + '</button>' +
     (canTts ? '<button class="btn" data-act="ttsToggle" aria-pressed="false" id="ttsOpenBtn">' + ic('speaker').replace('<svg', '<svg width="20" height="20"') + esc(T('ttsOpen')) + '</button>' : '') + '</div>';
   if (canTts) {
@@ -457,6 +460,7 @@ SCREENS.reader = function (p) {
 function fillReader(p) {
   const box = $('#rdBody'); if (!box) return;
   const ph = function () { box.innerHTML = '<div class="ph">' + esc(p.ph || '') + '</div>'; };
+  if (p.guide) { loadGuide(p.guide).then(function (d) { if ($('#rdBody')) fillService(box, d); }).catch(ph); return; }
   if (!p.path) { ph(); return; }
   loadJson(p.path).then(function (j) {
     if (!$('#rdBody')) return;
@@ -473,10 +477,11 @@ let TU = [];                                   /* יחידות הקראה: {text
 const TTS = { open: false, playing: false, u: -1, c: 0, tok: 0, hi: -1, lock: null };
 function tuAdd(text, rub, p) { TU.push({ text: text, rub: rub, p: p }); return TU.length - 1; }
 function ttsSupported() { return typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined'; }
-function ttsCfg() { return Object.assign({ rate: 1, noNik: false, skipRub: true }, S.tts || {}); }
+function ttsCfg() { return Object.assign({ rate: 1, noNik: true, skipRub: true }, S.tts || {}); }
 function ttsSet(k, v) { S.tts = Object.assign(ttsCfg(), S.tts || {}); S.tts[k] = v; save(); }
 function ttsClean(t, noNik) {
   t = t.replace(/⟦[^⟧]*⟧/g, ' ');                                           /* הוראות פנימיות לא מוקראות */
+  t = t.replace(/(^|[^א-ת])י[\u0591-\u05C7]*[\u2010\u2011\-]י[\u0591-\u05C7]*(?![א-ת])/g, '$1אֲדֹנָי').replace(/(^|[^א-ת])יי(?![א-ת])/g, '$1אֲדֹנָי').replace(/(^|[^א-ת\u0591-\u05C7])[הד]'(?![א-ת])/g, '$1אֲדֹנָי').replace(/([א-ת\u0591-\u05C7])[\u2010\u2011]([א-ת])/g, '$1$2');
   t = t.replace(/י[֑-ׇ]*ה[֑-ׇ]*ו[֑-ׇ]*ה[֑-ׇ]*/g, 'אֲדֹנָי'); /* שם ה׳ נאמר "אדני" — רק בשמע, התצוגה לא משתנה */
   t = t.replace(/[֑-ֽ֯׀׃-׆]/g, '').replace(/־/g, ' ');   /* טעמים, מתג, מקף */
   if (noNik) t = t.replace(/[ְ-ׇּׁׂ]/g, '');
@@ -575,14 +580,16 @@ function fillService(box, j) {
     TL.push({ p: i, label: (g ? g + ' · ' : '') + title });
     opts += '<option value="p' + i + '">' + esc((g ? g + ' · ' : '') + title) + '</option>';
     h += '<div class="pt" id="p' + i + '">' + esc(title) + '</div>';
-    if (pt.status === 'pending' || !pt.segments.length) { h += '<p class="mu" style="font-family:var(--ui);font-size:15px"><span class="tag warn">' + esc(T('inPrep')) + '</span> ' + esc(T('partMissing')) + '</p>'; return; }
+    if (pt.status === 'pending' || !pt.segments.length) { h += '<p class="mu" style="font-family:var(--ui);font-size:15px"><span class="tag warn">' + esc(T('inPrep')) + '</span> ' + esc(T('partMissing')) + (pt.note ? ' ' + esc(pt.note) : '') + '</p>'; return; }
+    if (pt.status === 'review') h += '<p class="mu" style="font-family:var(--ui);font-size:14px"><span class="tag warn">' + esc(T('stReview')) + '</span> ' + esc(T('partReview')) + '</p>';
     pt.segments.forEach(function (sg) {
       if (sg.rubric) { h += '<p class="seg rb rub" id="u' + tuAdd(sg.he, true, i) + '" data-u="' + (TU.length - 1) + '">' + esc(sg.he) + '</p>'; return; }
       h += '<p class="seg" id="u' + tuAdd(sg.he, false, i) + '" data-u="' + (TU.length - 1) + '">' + rubHtml(sg.he) + '</p>' + (S.showEn && sg.en ? '<p class="en" dir="ltr" style="white-space:pre-line">' + esc(sg.en) + '</p>' : '');
     });
+    if (pt.versions && pt.status === 'review') h += '<p class="en" style="margin:-4px 0 12px">' + pt.versions.map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ') + '</p>';
   });
   const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
-  box.innerHTML = '<select class="jump" id="jumpSel" aria-label="' + esc(T('jumpTo')) + '"><option value="">' + esc(T('jumpTo')) + '</option>' + opts + '</select>' + h + '<p class="en" style="margin-top:24px">' + vers + '</p>';
+  box.innerHTML = (j.parts.length < 2 ? '' : '<select class="jump" id="jumpSel" aria-label="' + esc(T('jumpTo')) + '"><option value="">' + esc(T('jumpTo')) + '</option>' + opts + '</select>') + h + '<p class="en" style="margin-top:24px">' + vers + '</p>';
   ttsInit(TL);
   const sel = $('#jumpSel'); if (sel) sel.addEventListener('change', function () { const e = sel.value && document.getElementById(sel.value); if (e) e.scrollIntoView({ block: 'start' }); sel.value = ''; });
 }
@@ -614,12 +621,31 @@ SCREENS.tehillim = function () {
   return h + '</div>';
 };
 
-const GUIDES = ['g_pray', 'g_tefillin', 'g_tzitzit', 'g_shema', 'g_brachot', 'g_bentsch', 'g_mezuzah', 'g_candles'];
 SCREENS.guides = function () {
   setTitle(T('guidesTitle'));
-  return '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p></div><div class="list">' +
-    GUIDES.map(function (g) { return '<button class="item" data-act="guide" data-id="' + g + '"><span class="t"><b>' + esc(T(g)) + '</b></span><span class="tag warn">' + esc(T('inPrep')) + '</span></button>'; }).join('') + '</div>';
+  const he = S.lang === 'he';
+  return '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><p class="mu sm">' + esc(T('guideNote')) + '</p></div><div class="list">' +
+    (D.guides || []).map(function (g) {
+      const tag = !g.ready ? '<span class="tag warn">' + esc(T('inPrep')) + '</span>' : (g.status === 'review' ? '<span class="tag warn">' + esc(T('stReview')) + '</span>' : '');
+      return '<button class="item" data-act="guide" data-id="' + esc(g.id) + '"><span class="t"><b>' + esc(he ? g.he : g.en) + '</b></span>' + tag + '</button>';
+    }).join('') + '</div>';
 };
+function loadGuide(id) {
+  return loadJson('data/guides/' + id + '.json').then(function (g) {
+    const files = {}; g.refs.forEach(function (r) { const k = r.nusach + '/' + r.file; if (!files[k]) files[k] = loadJson('data/siddur/' + k + '.json'); });
+    const keys = Object.keys(files);
+    return Promise.all(keys.map(function (k) { return files[k]; })).then(function (docs) {
+      const byKey = {}; keys.forEach(function (k, i) { byKey[k] = docs[i]; });
+      const parts = [], vers = {};
+      g.refs.forEach(function (r) {
+        const d = byKey[r.nusach + '/' + r.file]; const p = d.parts.find(function (x) { return x.id === r.part; }); if (!p) return;
+        const q = Object.assign({}, p); delete q.group; delete q.sub; if (!q.versions) q.versions = d.versions || [];
+        parts.push(q); (q.versions || []).forEach(function (v) { vers[v.title + v.license] = v; });
+      });
+      return { title: g.title, status: g.status, parts: parts, versions: Object.keys(vers).map(function (k) { return vers[k]; }), guide: true };
+    });
+  });
+}
 
 SCREENS.mitzvot = function () {
   setTitle(T('mitzvotTitle'));
@@ -727,7 +753,12 @@ const ACT = {
   tehOpen: function (el) { tehReader(+el.dataset.from, +el.dataset.to, el.dataset.part || ''); },
   tehCh: function (el) { tehReader(+el.dataset.n, +el.dataset.n); },
   tehRead: function () { const t = today(); if (S.tehDays[t]) delete S.tehDays[t]; else S.tehDays[t] = 1; save(); render(); },
-  guide: function (el) { openReader({ kind: 'guide', title: T(el.dataset.id), ph: T('phGuide') }, 'guides'); },
+  guide: function (el) {
+    const g = (D.guides || []).find(function (x) { return x.id === el.dataset.id; }); if (!g) return;
+    const t = S.lang === 'he' ? g.he : g.en;
+    if (!g.ready) openReader({ kind: 'guide', title: t, ph: T('phGuide') }, 'guides');
+    else openReader({ kind: 'guide', title: t, guide: g.id, ph: T('phGuide') }, 'guides');
+  },
   mf: function (el) { R.mf = el.dataset.f; const y = $('#view').scrollTop; render(); $('#view').scrollTop = y; },
   mz: function (el) { openMitzvah(el.dataset.id); },
   setTheme: function (el) { S.theme = el.dataset.t; save(); apply(); render(); },
