@@ -109,44 +109,18 @@
      "ready": true
     },
     {
-     "id": "mincha-erev-shabbat",
-     "he": "מנחה לערב שבת",
-     "en": "Shabbat Eve Mincha"
+     "id": "shabbat",
+     "he": "שבת",
+     "en": "Shabbat",
+     "core": true,
+     "ready": true
     },
     {
-     "id": "kabbalat-shabbat",
-     "he": "קבלת שבת",
-     "en": "Kabbalat Shabbat"
-    },
-    {
-     "id": "maariv-shabbat",
-     "he": "ערבית לשבת",
-     "en": "Shabbat Eve Maariv"
-    },
-    {
-     "id": "shabbat-evening-meal",
-     "he": "סעודת ליל שבת",
-     "en": "Shabbat Evening Meal"
-    },
-    {
-     "id": "shabbat-morning",
-     "he": "שחרית לשבת",
-     "en": "Shabbat Morning Services"
-    },
-    {
-     "id": "musaf",
-     "he": "מוסף",
-     "en": "Musaf"
-    },
-    {
-     "id": "shabbat-day-meal",
-     "he": "סעודת יום שבת",
-     "en": "Shabbat Day Meal"
-    },
-    {
-     "id": "shabbat-mincha",
-     "he": "מנחה לשבת",
-     "en": "Shabbat Mincha"
+     "id": "festivals",
+     "he": "מועדים",
+     "en": "Festivals",
+     "core": true,
+     "ready": true
     },
     {
      "id": "pirkei-avot",
@@ -154,54 +128,9 @@
      "en": "Pirkei Avot"
     },
     {
-     "id": "third-meal",
-     "he": "סעודה שלישית",
-     "en": "Third Meal"
-    },
-    {
-     "id": "motzaei-shabbat",
-     "he": "מוצאי שבת",
-     "en": "Motzaei Shabbat"
-    },
-    {
-     "id": "shaking-lulav",
-     "he": "נענוע לולב",
-     "en": "Shaking Lulav"
-    },
-    {
-     "id": "rosh-chodesh",
-     "he": "ראש חודש",
-     "en": "Rosh Chodesh"
-    },
-    {
-     "id": "holidays",
-     "he": "חגים",
-     "en": "Holidays"
-    },
-    {
-     "id": "nissan",
-     "he": "ניסן",
-     "en": "Nissan"
-    },
-    {
      "id": "haggadah",
      "he": "הגדה של פסח",
      "en": "Pesach Haggadah"
-    },
-    {
-     "id": "sukkot",
-     "he": "סוכות",
-     "en": "Sukkot"
-    },
-    {
-     "id": "simchat-torah",
-     "he": "שמחת תורה",
-     "en": "Simchat Torah"
-    },
-    {
-     "id": "shavuot",
-     "he": "שבועות",
-     "en": "Shavuot"
     },
     {
      "id": "yotzerot",
@@ -209,34 +138,9 @@
      "en": "Yotzerot"
     },
     {
-     "id": "chanukah",
-     "he": "חנוכה",
-     "en": "Chanukah"
-    },
-    {
-     "id": "purim",
-     "he": "פורים",
-     "en": "Purim"
-    },
-    {
-     "id": "fast-days",
-     "he": "תעניות",
-     "en": "Fast Days"
-    },
-    {
      "id": "torah-readings",
      "he": "קריאת התורה",
      "en": "Torah Readings"
-    },
-    {
-     "id": "priestly-blessing",
-     "he": "ברכת כהנים",
-     "en": "Priestly Blessing"
-    },
-    {
-     "id": "various-prayers",
-     "he": "תפילות וסגולות",
-     "en": "Various Prayers & Segulot"
     }
    ]
   },
@@ -285,69 +189,18 @@
      "ready": true
     },
     {
-     "id": "shabbat-arvit",
-     "he": "ערבית לשבת",
-     "en": "Shabbat Arvit"
+     "id": "shabbat",
+     "he": "שבת",
+     "en": "Shabbat",
+     "core": true,
+     "ready": true
     },
     {
-     "id": "shabbat-evening",
-     "he": "ליל שבת",
-     "en": "Shabbat Evening"
-    },
-    {
-     "id": "shabbat-shacharit",
-     "he": "שחרית לשבת",
-     "en": "Shabbat Shacharit"
-    },
-    {
-     "id": "shabbat-musaf",
-     "he": "מוסף לשבת",
-     "en": "Shabbat Mussaf"
-    },
-    {
-     "id": "daytime-meal",
-     "he": "סעודת יום",
-     "en": "Daytime Meal"
-    },
-    {
-     "id": "shabbat-mincha",
-     "he": "מנחה לשבת",
-     "en": "Shabbat Mincha"
-    },
-    {
-     "id": "third-meal",
-     "he": "סעודה שלישית",
-     "en": "Third Meal"
-    },
-    {
-     "id": "havdalah",
-     "he": "הבדלה",
-     "en": "Havdalah"
-    },
-    {
-     "id": "rosh-chodesh",
-     "he": "ראש חודש",
-     "en": "Rosh Hodesh"
-    },
-    {
-     "id": "three-festivals",
-     "he": "תפילות לשלוש רגלים",
-     "en": "Prayers for Three Festivals"
-    },
-    {
-     "id": "chanukah",
-     "he": "חנוכה",
-     "en": "Hanukkah"
-    },
-    {
-     "id": "purim",
-     "he": "פורים",
-     "en": "Purim"
-    },
-    {
-     "id": "nissan",
-     "he": "ניסן",
-     "en": "Nissan"
+     "id": "festivals",
+     "he": "מועדים",
+     "en": "Festivals",
+     "core": true,
+     "ready": true
     },
     {
      "id": "assorted",
@@ -355,11 +208,6 @@
      "en": "Blessings & Assorted",
      "core": true,
      "ready": true
-    },
-    {
-     "id": "fast-mourning",
-     "he": "תעניות ואבלות",
-     "en": "Fast Days and Mourning"
     },
     {
      "id": "mishna-shabbat",
