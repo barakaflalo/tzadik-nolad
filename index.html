@@ -156,8 +156,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.30.2';
-const DATA_V  = '26';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.32.0';
+const DATA_V  = '28';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -782,7 +782,7 @@ const nuName = function (id) { return { ashkenaz: T('nusachAshkenaz'), sefard: T
 /* ───── מסכים ───── */
 
 /* ───── התוכנית שלי: המשתמש בוחר בעצמו מה לעשות היום/השבוע; העיגול מראה כמה מזה הושלם ───── */
-const ES_P = {"Already in your plan": "Ya está en tu plan", "Plan is full (30 items)": "El plan está lleno (30 elementos)", "Added to your plan ✓": "Agregado a tu plan ✓", "My plan": "Mi plan", "this week": "esta semana", "today": "hoy", "Plan complete — well done!": "¡Completaste tu plan! ¡Bien hecho!", "completed": "completado", "Mark done": "Marcar como hecho", "Edit my plan": "Editar mi plan", "Today's Psalms": "Salmos de hoy", "Shacharit": "Shajarit", "You choose what to do — no pressure. You can also add from any mitzvah, guide or siddur section with \"Add to plan\".": "Tú eliges qué hacer, sin presión. También puedes agregar desde cualquier mitzvá, guía o parte del sidur con \"Agregar al plan\".", "Today": "Para hoy", "This week": "Para la semana", "In my plan": "En mi plan", "Remove": "Quitar", "Ideas to start": "Ideas para empezar", "added": "agregado", "Or pick your own": "O elige tú mismo", "Done": "Listo", "Build my own plan": "Crea tu propio plan", "Add to plan": "Agregar al plan", "Shacharit, Mincha, Maariv, Shabbat and festivals": "Shajarit, Minjá, Maariv, Shabat y fiestas", "Tefillin, tzitzit, blessings and more — step by step": "Tefilín, tzitzit, bendiciones y más, paso a paso", "Search the siddur": "Buscar en el sidur", "Find a prayer by a word": "Encuentra una oración por una palabra", "Type at least two letters. You can search a word in Hebrew, or in English in the translation.": "Escribe al menos dos letras. Puedes buscar una palabra en hebreo o, en la traducción, en inglés.", "No results. Try another word or fewer words.": "Sin resultados. Prueba otra palabra o menos palabras.", "Search all nusachim of the siddur (Ashkenaz, Sefard, Edot HaMizrach): one or more words, in Hebrew or English (translation).": "Busca en todos los nusajim del sidur (Ashkenaz, Sefarad, Edot HaMizraj): una o varias palabras, en hebreo o en inglés (traducción).", "What to look for in the siddur?": "¿Qué buscar en el sidur?", "Reminders": "Recordatorios", "Calendar reminders": "Recordatorios en el calendario", "Choose what to be reminded of and when. The app creates a file that opens in your phone's calendar, and the alert arrives even when the app is closed — no server, no tracking. You can delete or change it in the calendar any time.": "Elige qué recordar y cuándo. La aplicación crea un archivo que se abre en el calendario de tu teléfono, y la alerta llega incluso con la aplicación cerrada: sin servidor y sin rastreo. Puedes borrarlo o cambiarlo en el calendario cuando quieras.", "My plan for today": "Mi plan de hoy", "Mincha prayer": "Oración de Minjá", "Maariv prayer": "Oración de Maariv", "Shabbat preparations": "Preparativos de Shabat", "(Fridays)": "(viernes)", "Create calendar file": "Crear archivo de calendario", "Close": "Cerrar", "Pick at least one reminder": "Elige al menos un recordatorio", "File created — open it to add to your calendar": "Archivo creado: ábrelo para agregarlo a tu calendario", "Could not create a file on this device": "No se pudo crear un archivo en este dispositivo"};
+const ES_P = {"Already in your plan": "Ya está en tu plan", "Plan is full (30 items)": "El plan está lleno (30 elementos)", "Added to your plan ✓": "Agregado a tu plan ✓", "My plan": "Mi plan", "this week": "esta semana", "today": "hoy", "Plan complete — well done!": "¡Completaste tu plan! ¡Bien hecho!", "completed": "completado", "Mark done": "Marcar como hecho", "Edit my plan": "Editar mi plan", "Today's Psalms": "Salmos de hoy", "Shacharit": "Shajarit", "You choose what to do — no pressure. You can also add from any mitzvah, guide or siddur section with \"Add to plan\".": "Tú eliges qué hacer, sin presión. También puedes agregar desde cualquier mitzvá, guía o parte del sidur con \"Agregar al plan\".", "Today": "Para hoy", "This week": "Para la semana", "In my plan": "En mi plan", "Remove": "Quitar", "Ideas to start": "Ideas para empezar", "added": "agregado", "Or pick your own": "O elige tú mismo", "Done": "Listo", "Build my own plan": "Crea tu propio plan", "Add to plan": "Agregar al plan", "Shacharit, Mincha, Maariv, Shabbat and festivals": "Shajarit, Minjá, Maariv, Shabat y fiestas", "Tefillin, tzitzit, blessings and more — step by step": "Tefilín, tzitzit, bendiciones y más, paso a paso", "Search the siddur": "Buscar en el sidur", "Find a prayer, psalm or law by a word": "Encuentra una oración, un salmo o una ley por una palabra", "Type at least two letters. You can search a word in Hebrew, or in English in the translation.": "Escribe al menos dos letras. Puedes buscar una palabra en hebreo o, en la traducción, en inglés.", "No results. Try another word or fewer words.": "Sin resultados. Prueba otra palabra o menos palabras.", "Search all nusachim of the siddur (Ashkenaz, Sefard, Edot HaMizrach), Psalms and the Kitzur Shulchan Arukh: one or more words, in Hebrew or English (translation).": "Busca en todos los nusajim del sidur (Ashkenaz, Sefarad, Edot HaMizraj), en los Salmos y en el Kitzur Shulján Aruj: una o varias palabras, en hebreo o en inglés (traducción).", "What to look for in the siddur?": "¿Qué buscar en el sidur?", "Reminders": "Recordatorios", "Calendar reminders": "Recordatorios en el calendario", "Choose what to be reminded of and when. The app creates a file that opens in your phone's calendar, and the alert arrives even when the app is closed — no server, no tracking. You can delete or change it in the calendar any time.": "Elige qué recordar y cuándo. La aplicación crea un archivo que se abre en el calendario de tu teléfono, y la alerta llega incluso con la aplicación cerrada: sin servidor y sin rastreo. Puedes borrarlo o cambiarlo en el calendario cuando quieras.", "My plan for today": "Mi plan de hoy", "Mincha prayer": "Oración de Minjá", "Maariv prayer": "Oración de Maariv", "Shabbat preparations": "Preparativos de Shabat", "(Fridays)": "(viernes)", "Create calendar file": "Crear archivo de calendario", "Close": "Cerrar", "Pick at least one reminder": "Elige al menos un recordatorio", "File created — open it to add to your calendar": "Archivo creado: ábrelo para agregarlo a tu calendario", "Could not create a file on this device": "No se pudo crear un archivo en este dispositivo"};
 function P(he, en) { return S.lang === 'he' ? he : (S.lang === 'es' && ES_P[en]) || en; }
 function planKey(per) { const d = new Date(); if (per === 'week') d.setDate(d.getDate() - d.getDay()); return today(d); }
 function planFix() {
@@ -825,7 +825,7 @@ function planCard() {
 }
 function planManage() {
   const sug = function () {
-    const g = function (id) { const x = (D.guides || []).find(function (y) { return y.id === id && y.ready; }); return x ? { k: 'guide', id: id, t: S.lang === 'he' ? x.he : x.en } : null; };
+    const g = function (id) { const x = (D.guides || []).find(function (y) { return y.id === id && y.ready; }); return x ? { k: 'guide', id: id, t: S.lang === 'he' ? x.he : LN(x) } : null; };
     return [{ k: 'teh', id: 'today', t: P('תהילים היום', 'Today\'s Psalms') },
       { k: 'sec', nu: S.nusach, id: 'shacharit', t: P('שחרית', 'Shacharit') + ' · ' + nuName(S.nusach) }, g('morning'), g('shema'), g('bentsch')].filter(Boolean);
   };
@@ -862,8 +862,23 @@ function sxBuild() {
   if (SX.loading) return SX.loading;
   const jobs = [], idx = [];
   (D.sid || []).forEach(function (n) { n.sections.forEach(function (s) { if (s.ready) jobs.push({ nu: n.id, s: s }); }); });
-  SX.done = 0; SX.total = jobs.length;
-  SX.loading = Promise.all(jobs.map(function (jb) {
+  SX.done = 0; SX.total = jobs.length + 1 + (D.hal ? D.hal.chunks.length : 0);
+  const extra = [loadJson('data/tehillim/tehillim.json').then(function (j) {
+    (j.chapters || []).forEach(function (c) {
+      idx.push({ k: 'teh', nu: 'teh', id: String(c.n), p: c.n, t: 'תהילים ' + hnum(c.n), te: 'Psalm ' + c.n, st: 'תהילים', ste: 'Psalms', he: sxNorm((c.he || []).join(' ')), en: sxNorm((c.en || []).join(' ')) });
+    });
+  }).catch(function () { }).then(function () { SX.done++; sxProg(); })];
+  (D.hal ? D.hal.chunks : []).forEach(function (ch) {
+    extra.push(loadJson('data/halacha/' + ch.id + '.json').then(function (j) {
+      (j.parts || []).forEach(function (p, i) {
+        if (!p.segments || !p.segments.length) return;
+        idx.push({ k: 'hal', nu: 'hal', id: ch.id, p: ch.from + i, t: p.he || '', te: p.en || '', st: 'קיצור שולחן ערוך', ste: 'Kitzur Shulchan Arukh',
+          he: sxNorm((p.he || '') + ' ' + p.segments.map(function (g) { return g.he; }).join(' ')),
+          en: sxNorm((p.en || '') + ' ' + p.segments.map(function (g) { return g.en || ''; }).join(' ')) });
+      });
+    }).catch(function () { }).then(function () { SX.done++; sxProg(); }));
+  });
+  SX.loading = Promise.all(extra.concat(jobs.map(function (jb) {
     return loadJson('data/siddur/' + jb.nu + '/' + jb.s.id + '.json').then(function (j) {
       (j.parts || []).forEach(function (p, i) {
         if (!p.segments || !p.segments.length) return;
@@ -872,7 +887,7 @@ function sxBuild() {
           en: sxNorm((p.en || '') + ' ' + p.segments.map(function (g) { return g.en || ''; }).join(' ')) });
       });
     }).catch(function () { }).then(function () { SX.done++; sxProg(); });
-  })).then(function () { SX.idx = idx; return idx; });
+  }))).then(function () { SX.idx = idx; return idx; });
   return SX.loading;
 }
 function sxHi(text, w) {
@@ -896,7 +911,7 @@ function sxRun() {
   if (!res.length) { box.innerHTML = '<p class="mu">' + esc(P('לא נמצאו תוצאות. נסו מילה אחרת או פחות מילים.', 'No results. Try another word or fewer words.')) + '</p>'; return; }
   box.innerHTML = '<p class="mu sm">' + esc(P('נמצאו ' + res.length + ' חלקים' + (res.length > 50 ? ' (מוצגים 50 הראשונים)' : ''), res.length + ' parts found' + (res.length > 50 ? ' (showing the first 50)' : ''))) + '</p><div class="list">' + res.slice(0, 50).map(function (r) {
     const e = r.e, w = words[0], inHe = e.he.indexOf(w) >= 0, snip = sxHi(inHe ? e.he : e.en, w);
-    return '<button class="item" data-act="srOpen" data-nu="' + e.nu + '" data-id="' + esc(e.id) + '" data-p="' + e.p + '"><span class="t"><b>' + esc(he ? e.t : (e.te || e.t)) + '</b><span class="mu sm">' + esc(nuName(e.nu) + ' · ' + (he ? e.st : e.ste)) + '</span><span class="sm" style="line-height:1.6">' + snip + '</span></span></button>';
+    return '<button class="item" data-act="srOpen" data-k="' + (e.k || 'sid') + '" data-nu="' + e.nu + '" data-id="' + esc(e.id) + '" data-p="' + e.p + '"><span class="t"><b>' + esc(he ? e.t : (e.te || e.t)) + '</b><span class="mu sm">' + esc(e.k ? (he ? e.st : e.ste) : nuName(e.nu) + ' · ' + (he ? e.st : e.ste)) + '</span><span class="sm" style="line-height:1.6">' + snip + '</span></span></button>';
   }).join('') + '</div>';
 }
 SCREENS.search = function () {
@@ -907,7 +922,7 @@ SCREENS.search = function () {
     sxBuild().then(sxRun); sxRun();
     if (!SX.q) q.focus();
   };
-  return '<div class="card"><p class="mu sm" style="margin:0">' + esc(P('חיפוש בכל נוסחי הסידור (אשכנז, ספרד, עדות המזרח): מילה או כמה מילים, בעברית או באנגלית (בתרגום).', 'Search all nusachim of the siddur (Ashkenaz, Sefard, Edot HaMizrach): one or more words, in Hebrew or English (translation).')) + '</p></div>' +
+  return '<div class="card"><p class="mu sm" style="margin:0">' + esc(P('חיפוש בכל נוסחי הסידור (אשכנז, ספרד, עדות המזרח), בתהילים ובקיצור שולחן ערוך: מילה או כמה מילים, בעברית או באנגלית (בתרגום).', 'Search all nusachim of the siddur (Ashkenaz, Sefard, Edot HaMizrach), Psalms and the Kitzur Shulchan Arukh: one or more words, in Hebrew or English (translation).')) + '</p></div>' +
     '<input type="search" id="sxQ" value="' + esc(SX.q) + '" placeholder="' + esc(P('מה לחפש בסידור?', 'What to look for in the siddur?')) + '" autocomplete="off" style="margin-bottom:12px"><div id="sxRes"></div>';
 };
 
@@ -980,7 +995,7 @@ SCREENS.home = function () {
   top += rw('go', ic('tehillim'), T('tehillim'), T('todayTehillim') + ': ' + th.label + ' (' + T('chapters') + ')', ' data-to="tehillim"');
   top += rw('go', ic('mitzvot'), T('mitzvot'), st.learned + ' ' + T('learned') + ' · ' + T('of613'), ' data-to="mitzvot"');
   top += rw('go', ic('guides'), T('guides'), P('תפילין, ציצית, ברכות ועוד — צעד אחר צעד', 'Tefillin, tzitzit, blessings and more — step by step'), ' data-to="guides"');
-  top += rw('go', ic('search'), P('חיפוש בסידור', 'Search the siddur'), P('מצאו תפילה לפי מילה', 'Find a prayer by a word'), ' data-to="search"');
+  top += rw('go', ic('search'), P('חיפוש בסידור', 'Search the siddur'), P('מצאו תפילה, מזמור או הלכה לפי מילה', 'Find a prayer, psalm or law by a word'), ' data-to="search"');
   if (S.last && S.last.kind === 'siddur') top = rw('cont', ic('siddur'), T('contTitle'), S.last.title) + top;
   h = h.replace(/<button class="item" data-act="cal"/, function (m) { return top + m; });
   h += '<p class="mu sm" style="text-align:center">' + esc(T('disclaimer')) + '</p>';
@@ -992,7 +1007,7 @@ SCREENS.siddur = function () {
   let h = '<div class="chips">' + (D.sid || []).map(function (n) { return '<button class="chip ' + (nus && n.id === nus.id ? 'on' : '') + '" data-act="nus" data-id="' + n.id + '">' + esc(nuName(n.id)) + '</button>'; }).join('') + '</div>';
   h += '<p class="mu sm">' + esc(T('nusachNote')) + '</p>';
   if (!nus) return h + '<div class="ph">' + esc(T('loading')) + '</div>';
-  const row = function (s) { return '<button class="item ' + (s.core ? 'core' : '') + '" data-act="sec" data-nu="' + nus.id + '" data-id="' + s.id + '"><span class="t"><b>' + esc(S.lang === 'he' ? s.he : s.en) + '</b></span>' + (s.ready ? '' : '<span class="tag warn">' + esc(T('inPrep')) + '</span>') + '</button>'; };
+  const row = function (s) { return '<button class="item ' + (s.core ? 'core' : '') + '" data-act="sec" data-nu="' + nus.id + '" data-id="' + s.id + '"><span class="t"><b>' + esc(S.lang === 'he' ? s.he : LN(s)) + '</b></span>' + (s.ready ? '' : '<span class="tag warn">' + esc(T('inPrep')) + '</span>') + '</button>'; };
   const core = nus.sections.filter(function (s) { return s.core; }), rest = nus.sections.filter(function (s) { return !s.core; });
   if (core.length) h += '<div class="gh">' + esc(T('startHere')) + '</div><div class="list" style="margin-bottom:14px">' + core.map(row).join('') + '</div>';
   if (rest.length) h += '<div class="gh">' + esc(T('allSections')) + '</div><div class="list">' + rest.map(row).join('') + '</div>';
@@ -1242,13 +1257,13 @@ SCREENS.path = function () {
     h += '<div class="card"' + (d.d === next ? ' style="border-color:var(--ac)"' : '') + '><h2>' + esc(T('pathDay', d.d)) + ' · ' + esc(he ? d.he : d.en) + (done ? ' ✓' : '') + '</h2><p class="mu">' + esc(he ? d.introHe : d.introEn) + '</p>';
     h += '<div class="gh">' + esc(T('pathGuides')) + '</div><div class="list">' + d.guides.map(function (id) {
       const g = (D.guides || []).find(function (x) { return x.id === id; }); if (!g) return '';
-      return '<button class="item" data-act="guide" data-id="' + esc(id) + '">' + gimg(id) + '<span class="t"><b>' + esc(he ? g.he : g.en) + '</b></span></button>';
+      return '<button class="item" data-act="guide" data-id="' + esc(id) + '">' + gimg(id) + '<span class="t"><b>' + esc(he ? g.he : LN(g)) + '</b></span></button>';
     }).join('') + '</div>';
     if (d.mitzvot && d.mitzvot.length) {
       h += '<div class="gh">' + esc(T('pathMitz')) + '</div><div class="list">' + d.mitzvot.map(function (id) {
         const it = D.mitz && D.mitz.map[id]; if (!it) return '';
         const l = S.marks[id] && S.marks[id].l;
-        return '<button class="item" data-act="mz" data-id="' + esc(id) + '"><span class="t"><b>' + esc(he ? it.he : it.en) + '</b></span>' + (l ? '<span class="tag ok">✓</span>' : '') + '</button>';
+        return '<button class="item" data-act="mz" data-id="' + esc(id) + '"><span class="t"><b>' + esc(he ? it.he : LN(it)) + '</b></span>' + (l ? '<span class="tag ok">✓</span>' : '') + '</button>';
       }).join('') + '</div>';
     }
     h += '<button class="btn blk" data-act="pathDone" data-d="' + d.d + '" style="margin-top:10px">' + esc(done ? T('pathUndo') : T('pathDone')) + '</button></div>';
@@ -1290,9 +1305,10 @@ SCREENS.halacha = function () {
 function halRows(q) {
   const he = S.lang === 'he', hl = D.hal; if (!hl) return '';
   q = mNorm(q).trim();
-  const rows = hl.simanim.filter(function (x) { return !q || mNorm(x.he).indexOf(q) >= 0 || mNorm(x.en).indexOf(q) >= 0 || String(x.n) === q; });
-  return rows.map(function (x) { return '<button class="item" data-act="halSiman" data-n="' + x.n + '"><span class="t"><b>' + esc(he ? x.he : x.en) + '</b><span class="mu sm">' + esc(T('halSimanWord') + ' ' + (he ? hnumG(x.n) : x.n)) + '</span></span></button>'; }).join('') || '<p class="mu">' + esc(T('halSimanNone')) + '</p>';
+  const rows = hl.simanim.filter(function (x) { return !q || mNorm(x.he).indexOf(q) >= 0 || mNorm(x.en).indexOf(q) >= 0 || mNorm(x.es || '').indexOf(q) >= 0 || String(x.n) === q; });
+  return rows.map(function (x) { return '<button class="item" data-act="halSiman" data-n="' + x.n + '"><span class="t"><b>' + esc(he ? x.he : LN(x)) + '</b><span class="mu sm">' + esc(T('halSimanWord') + ' ' + (he ? hnumG(x.n) : x.n)) + '</span></span></button>'; }).join('') || '<p class="mu">' + esc(T('halSimanNone')) + '</p>';
 }
+function LN(o) { return (S.lang === 'es' && o.es) ? o.es : o.en; }
 function hnumG(n) { return hnum(n); }
 function halOpen(n) {
   const hl = D.hal; if (!hl) return; const x = hl.simanim.find(function (y) { return y.n === n; }); if (!x) return;
@@ -1305,7 +1321,7 @@ SCREENS.guides = function () {
   return '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="path">' + esc(T('pathBtn')) + '</button><p class="mu sm">' + esc(T('guideNote')) + '</p></div><div class="list">' +
     (D.guides || []).map(function (g) {
       const tag = !g.ready ? '<span class="tag warn">' + esc(T('inPrep')) + '</span>' : (g.status === 'review' ? '<span class="tag warn">' + esc(T('stReview')) + '</span>' : '');
-      return '<button class="item" data-act="guide" data-id="' + esc(g.id) + '">' + gimg(g.id) + '<span class="t"><b>' + esc(he ? g.he : g.en) + '</b></span>' + tag + '</button>';
+      return '<button class="item" data-act="guide" data-id="' + esc(g.id) + '">' + gimg(g.id) + '<span class="t"><b>' + esc(he ? g.he : LN(g)) + '</b></span>' + tag + '</button>';
     }).join('') + '</div>';
 };
 function loadGuide(id) {
@@ -1336,7 +1352,7 @@ SCREENS.mitzvot = function () {
   setTitle(T('mitzvotTitle'));
   const f = R.mf, st = stats(), cnt = (D.mitz && D.mitz.counts) || { a: 248, l: 365 };
   const F = [['all', 'fAll'], ['a', 'aseh'], ['l', 'lota'], ['learned', 'fLearned'], ['done', 'fDone'], ['todo', 'fTodo'], ['na', 'fNa']];
-  let h = '<div class="card"><p><b>' + st.learned + '</b> / 613 · ' + esc(T('done')) + ': <b>' + st.done + '</b></p><p class="mu sm">' + esc(T('mitzvotNote')) + '</p></div>';
+  let h = '<div class="card"><p><b>' + st.learned + '</b> / 613 · ' + esc(T('done')) + ': <b>' + st.done + '</b></p><p class="mu sm">' + esc(T('mitzvotNote')) + '</p>' + (S.lang === 'es' ? '<p class="mu sm">Los títulos de las mitzvot están traducidos del inglés y aún no fueron revisados por un hablante nativo; las fuentes permanecen en inglés y hebreo.</p>' : '') + '</div>';
   h += '<input type="text" id="mSearch" placeholder="' + esc(T('mSearchPh')) + '" autocomplete="off" style="margin-bottom:10px"><div id="mRes" class="list" hidden></div><div id="mMain">';
   h += '<div class="chips">' + F.map(function (x) { return '<button class="chip ' + (f === x[0] ? 'on' : '') + '" data-act="mf" data-f="' + x[0] + '">' + esc(T(x[1])) + '</button>'; }).join('') + '</div>';
   const show = function (id) {
@@ -1362,8 +1378,8 @@ function mSearchRun() {
   const he = S.lang === 'he', map = (D.mitz && D.mitz.map) || {}; let n = 0, h = '';
   Object.keys(map).forEach(function (id) {
     if (n >= 40) return; const it = map[id];
-    if (mNorm(it.he).indexOf(q) < 0 && mNorm(it.en).indexOf(q) < 0 && mNorm(it.srcHe).indexOf(q) < 0) return; n++;
-    h += '<button class="item" data-act="mz" data-id="' + esc(id) + '"><span class="t"><b>' + esc(he ? it.he : it.en) + '</b><span class="mu sm">' + esc((id[0] === 'a' ? T('aseh') : T('lota')) + ' ' + id.slice(1)) + '</span></span></button>';
+    if (mNorm(it.he).indexOf(q) < 0 && mNorm(it.en).indexOf(q) < 0 && mNorm(it.es || '').indexOf(q) < 0 && mNorm(it.srcHe).indexOf(q) < 0) return; n++;
+    h += '<button class="item" data-act="mz" data-id="' + esc(id) + '"><span class="t"><b>' + esc(he ? it.he : LN(it)) + '</b><span class="mu sm">' + esc((id[0] === 'a' ? T('aseh') : T('lota')) + ' ' + id.slice(1)) + '</span></span></button>';
   });
   res.innerHTML = h || '<p class="mu">' + esc(T('mNone')) + '</p>'; res.hidden = false; main.hidden = true;
 }
@@ -1371,8 +1387,8 @@ function openMitzvah(id) {
   const type = id[0] === 'a' ? T('aseh') : T('lota'), num = id.slice(1), it = (D.mitz && D.mitz.map[id]) || null;
   const he = S.lang === 'he';
   const status = it ? (it.status === 'verified' ? '<span class="tag ok">' + esc(T('stVerified')) + '</span>' : '<span class="tag warn">' + esc(it.status === 'demo' ? T('stDemo') : T('stPending')) + '</span>') : '<span class="tag warn">' + esc(T('stPending')) + '</span>';
-  const title = it ? (he ? it.he : it.en) : T('mGeneric', type, num);
-  const sub = it ? (he ? it.en : it.he) : '';
+  const title = it ? (he ? it.he : LN(it)) : T('mGeneric', type, num);
+  const sub = it ? (he ? LN(it) : it.he) : '';
   const src = it ? (he ? it.srcHe : it.srcEn) : '';
   const lk = he ? 'he' : 'en';
   const chBlock = function () {
@@ -1839,7 +1855,11 @@ const ACT = {
   go: function (el) { go(el.dataset.to); },
   planManage: function () { planManage(); },
   remOpen: function () { remOpen(); },
-  srOpen: function (el) { openSection(el.dataset.nu, el.dataset.id, 'p' + el.dataset.p); R.rdBack = 'search'; },
+  srOpen: function (el) {
+    const k = el.dataset.k, n = +el.dataset.p;
+    if (k === 'teh') tehReader(n, n); else if (k === 'hal') halOpen(n); else openSection(el.dataset.nu, el.dataset.id, 'p' + el.dataset.p);
+    R.rdBack = 'search';
+  },
   planTick: function (el) { const p = planFix(), it = p && p.items[+el.dataset.i]; if (!it) return; if (it.x === p.key) delete it.x; else it.x = p.key; save(); render(); },
   planOpen: function (el) { const p = S.plan, it = p && p.items[+el.dataset.i]; if (it) planOpenItem(it); },
   planAddRd: function () { const q = R.params || {}; if (q.kind === 'siddur') planAdd({ k: 'sec', nu: q.nu, id: q.id, t: q.title }); else if (q.kind === 'guide' && q.guide) planAdd({ k: 'guide', id: q.guide, t: q.title }); else if (q.kind === 'tehillim' && !q.part) planAdd({ k: 'tp', id: q.from + '-' + (q.to || q.from), t: q.title }); else if (q.kind === 'halacha' && q.n) planAdd({ k: 'hal', id: String(q.n), t: q.title }); },
@@ -1888,7 +1908,7 @@ const ACT = {
   tehRead: function () { const t = today(); if (S.tehDays[t]) delete S.tehDays[t]; else S.tehDays[t] = 1; save(); render(); },
   guide: function (el) {
     const g = (D.guides || []).find(function (x) { return x.id === el.dataset.id; }); if (!g) return;
-    const t = S.lang === 'he' ? g.he : g.en;
+    const t = S.lang === 'he' ? g.he : LN(g);
     const bk = R.screen === 'path' ? 'path' : 'guides';
     if (!g.ready) openReader({ kind: 'guide', title: t, ph: T('phGuide') }, bk);
     else openReader({ kind: 'guide', title: t, guide: g.id, ph: T('phGuide') }, bk);
@@ -1910,7 +1930,7 @@ const ACT = {
 };
 function openSection(nu, id, pos) {
   const n = (D.sid || []).find(function (x) { return x.id === nu; }); const s = n && n.sections.find(function (x) { return x.id === id; }); if (!s) return;
-  const title = nuName(nu) + ' · ' + (S.lang === 'he' ? s.he : s.en);
+  const title = nuName(nu) + ' · ' + (S.lang === 'he' ? s.he : LN(s));
   openReader({ kind: 'siddur', nu: nu, id: id, keepPos: pos, resume: pos, title: title, path: s.ready ? 'data/siddur/' + nu + '/' + id + '.json' : null, ph: T('phSiddur', S.lang === 'he' ? s.he : s.en) }, 'siddur');
 }
 function tehReader(from, to, part) {

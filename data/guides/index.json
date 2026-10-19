@@ -7,7 +7,8 @@
    "en": "Morning routine for beginners",
    "status": "verified",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Rutina matutina para principiantes"
   },
   {
    "id": "tefillin",
@@ -15,7 +16,8 @@
    "en": "Putting on tefillin",
    "status": "verified",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Cómo ponerse los tefilín"
   },
   {
    "id": "tzitzit",
@@ -23,7 +25,8 @@
    "en": "Tallit and tzitzit",
    "status": "verified",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Talit y tzitzit"
   },
   {
    "id": "shema",
@@ -31,7 +34,8 @@
    "en": "Reciting the Shema",
    "status": "verified",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Recitar el Shemá"
   },
   {
    "id": "food",
@@ -39,7 +43,8 @@
    "en": "Which blessing on what (food)",
    "status": "review",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Qué bendición decir sobre cada comida"
   },
   {
    "id": "bentsch",
@@ -47,7 +52,8 @@
    "en": "Grace after meals",
    "status": "verified",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Bendición después de las comidas"
   },
   {
    "id": "mitzvot",
@@ -55,7 +61,8 @@
    "en": "Blessings on mitzvot (mezuzah and more)",
    "status": "review",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Bendiciones sobre las mitzvot (mezuzá y más)"
   },
   {
    "id": "derech",
@@ -63,7 +70,8 @@
    "en": "Traveler's prayer",
    "status": "review",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Oración del viajero"
   },
   {
    "id": "candles",
@@ -71,7 +79,8 @@
    "en": "Shabbat candles",
    "ready": true,
    "status": "verified",
-   "beginner": true
+   "beginner": true,
+   "es": "Velas de Shabat"
   },
   {
    "id": "pray",
@@ -79,7 +88,8 @@
    "en": "How to pray — step by step (Mincha)",
    "ready": true,
    "status": "verified",
-   "beginner": true
+   "beginner": true,
+   "es": "Cómo rezar, paso a paso (Minjá)"
   },
   {
    "id": "kiddush",
@@ -87,7 +97,8 @@
    "en": "Kiddush and Havdalah",
    "status": "review",
    "ready": true,
-   "beginner": true
+   "beginner": true,
+   "es": "Kidush y Havdalá"
   }
  ]
 }

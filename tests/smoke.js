@@ -73,6 +73,14 @@ function ok(c, name) { if (c) pass++; else { fail++; failures.push(name); consol
   ok(await p.evaluate(function () { return document.querySelectorAll('#sxRes .item').length > 5; }), 'תוצאות בעברית');
   await p.fill('#sxQ', 'blessed are you'); await wait(500);
   ok(await p.evaluate(function () { return document.querySelectorAll('#sxRes .item').length > 0; }), 'תוצאות באנגלית');
+  await p.fill('#sxQ', 'שִׁוִּיתִי ה לנגדי'); await wait(500);
+  ok(await p.evaluate(function () { return !!document.querySelector('#sxRes [data-k=teh]'); }), 'חיפוש מוצא פרק תהילים');
+  await p.fill('#sxQ', 'השכמת הבקר'); await wait(500);
+  ok(await p.evaluate(function () { return !!document.querySelector('#sxRes [data-k=hal]'); }), 'חיפוש מוצא סימן בקיצור שולחן ערוך');
+  await p.click('#sxRes [data-k=hal]'); await wait(800);
+  ok(await p.evaluate(function () { return R.screen === 'reader'; }), 'פתיחת סימן מהחיפוש');
+  await p.evaluate(function () { go('search'); }); await wait(500);
+  await p.fill('#sxQ', 'blessed are you'); await wait(500);
   await p.click('#sxRes .item'); await wait(800);
   ok(await p.evaluate(function () { return R.screen === 'reader'; }), 'לחיצה על תוצאה פותחת את החלק');
 
@@ -96,6 +104,16 @@ function ok(c, name) { if (c) pass++; else { fail++; failures.push(name); consol
   }
   const keysOk = await p.evaluate(function () { const he = Object.keys(LANG.he), bad = []; ['en', 'es'].forEach(function (l) { he.forEach(function (k) { if (!(k in LANG[l])) bad.push(l + ':' + k); }); }); return bad; });
   ok(keysOk.length === 0, 'כל המחרוזות קיימות בכל השפות ' + keysOk.slice(0, 5).join(','));
+
+  console.log('ספרדית בנתונים');
+  await p.evaluate(function () { S.lang = 'es'; save(); apply(); go('mitzvot'); }); await wait(500);
+  await p.fill('#mSearch', 'saber que existe'); await wait(600);
+  ok(await p.evaluate(function () { return document.querySelector('#mRes').textContent.indexOf('Saber que existe un Dios') >= 0; }), 'כותרות מצוות בספרדית (חיפוש)');
+  await p.evaluate(function () { go('guides'); }); await wait(400);
+  ok(await p.evaluate(function () { return document.body.innerText.indexOf('Cómo ponerse los tefilín') >= 0; }), 'מדריכים בספרדית');
+  await p.evaluate(function () { go('halacha'); }); await wait(500);
+  ok(await p.evaluate(function () { return document.body.innerText.indexOf('Leyes al despertarse') >= 0; }), 'קיצור שולחן ערוך בספרדית');
+  await p.evaluate(function () { S.lang = 'he'; save(); apply(); }); await wait(200);
 
   console.log('מסכים נוספים');
   for (const scr of ['tehillim', 'guides', 'more', 'settings', 'sources', 'about', 'bookmarks', 'halacha', 'parsha', 'assistant', 'path']) {
