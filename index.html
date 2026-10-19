@@ -51,7 +51,13 @@ nav button.on{color:var(--ac)}
 .row>*{min-width:0}
 .big{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
 .big button{min-height:92px;border-radius:16px;border:1px solid var(--ac);background:var(--card);color:var(--tx);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:17px;font-weight:700;cursor:pointer}
-.big svg{width:30px;height:30px;color:var(--ac)}
+.big svg{width:40px;height:40px;color:var(--ac)}
+.big button{min-height:104px}
+.hero{display:flex;align-items:center;gap:14px}
+.hero img{flex:none;width:84px;height:84px;border-radius:18px;background:#fff8e6;padding:3px}
+.hero h2{margin:0 0 4px}
+.h2i{display:flex;align-items:center;gap:8px}
+.h2i svg{width:24px;height:24px;color:var(--ac);flex:none}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;mask-image:linear-gradient(to left,#000 92%,transparent)}
 .chip{flex:none;min-height:40px;padding:6px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;white-space:nowrap}
 .chip.on{border-color:var(--ac);color:var(--ac);font-weight:700}
@@ -140,7 +146,7 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.19.0';
+const VERSION = '0.20.0';
 const DATA_V  = '22';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
@@ -430,8 +436,8 @@ function apply() {
   h.dataset.theme = S.theme; h.dataset.mode = S.mode; h.lang = S.lang; h.dir = S.lang === 'he' ? 'rtl' : 'ltr';
   h.style.setProperty('--fs', S.fs + 'px');
   const meta = $('meta[name=theme-color]'); if (meta) meta.content = S.mode === 'dark' ? '#0b0b0b' : '#f6f1e3';
-  $('#hBack').innerHTML = ic('back'); $('#hAbout').innerHTML = ic('info');
-  $('#hMode').innerHTML = ic(S.mode === 'dark' ? 'sun' : 'moon');
+  $('#hBack').innerHTML = ic('back'); $('#hAbout').innerHTML = ic('about');
+  $('#hMode').innerHTML = ic(S.mode === 'dark' ? 'day' : 'night');
   $('#hBack').setAttribute('aria-label', T('back')); $('#hAbout').setAttribute('aria-label', T('about'));
   document.title = T('appName');
 }
@@ -440,17 +446,17 @@ const nuName = function (id) { return { ashkenaz: T('nusachAshkenaz'), sefard: T
 /* ───── מסכים ───── */
 SCREENS.home = function () {
   const st = stats(), pct = Math.min(1, st.learned / 613), C = 2 * Math.PI * 36, now = new Date(), th = tehToday(now);
-  let h = '<div class="card"><h2>' + esc(S.user ? T('helloNamed', S.user) : T('hello')) + '</h2><p>' + esc(hebDate(now)) + '</p></div>';
+  let h = '<div class="card hero"><img src="art/guide-welcome-01.svg" alt="" width="84" height="84" onerror="this.remove()"><div><h2>' + esc(S.user ? T('helloNamed', S.user) : T('hello')) + '</h2><p>' + esc(hebDate(now)) + '</p></div></div>';
   if (D.cal) { const lc = calLoc(), ci = calInfo(today(), lc); h = h.replace('</p></div>', '</p>' + (ci.parsha ? '<p class="mu sm">' + esc(T('calParsha')) + ': ' + esc(ci.parsha) + '</p>' : '') + (ci.ev.length ? '<p class="sm"><b>' + esc(ci.ev.map(function (e) { return ci.name(e); }).join(' · ')) + '</b></p>' : '') + (ci.candle ? '<p class="sm">' + esc(T('calCandle')) + ': <b>' + esc(calFmt(ci.candle, lc.tz, true)) + '</b></p>' : '') + (ci.candleLate ? '<p class="sm">' + esc(T('calCandleLate')) + ': <b>' + esc(calFmt(ci.candleLate, lc.tz)) + '</b></p>' : '') + (ci.havdalah ? '<p class="sm">' + esc(T('calHavdalah')) + ': <b>' + esc(calFmt(ci.havdalah, lc.tz)) + '</b></p>' : '') + '</div>'); }
-  h += '<button class="item" data-act="cal" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('list') + '</span><span class="t"><b>' + esc(T('calCardBtn')) + '</b><span class="mu sm">' + esc(T('calZmanim')) + ' · ' + esc(T('calUpcoming')) + '</span></span></button>';
-  if (D.cal && D.tor) { const pi = torFind(calInfo(today(), calLoc()).parshaHe); if (pi >= 0) h += '<button class="item" data-act="torOpen" data-i="' + pi + '" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('scroll') + '</span><span class="t"><b>' + esc(T('torTitle')) + ': ' + esc(S.lang === 'he' ? D.tor.parashot[pi].he : D.tor.parashot[pi].en) + '</b><span class="mu sm">' + esc(T('torOpen')) + '</span></span></button>'; }
+  h += '<button class="item" data-act="cal" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('calendar') + '</span><span class="t"><b>' + esc(T('calCardBtn')) + '</b><span class="mu sm">' + esc(T('calZmanim')) + ' · ' + esc(T('calUpcoming')) + '</span></span></button>';
+  if (D.cal && D.tor) { const pi = torFind(calInfo(today(), calLoc()).parshaHe); if (pi >= 0) h += '<button class="item" data-act="torOpen" data-i="' + pi + '" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('parsha') + '</span><span class="t"><b>' + esc(T('torTitle')) + ': ' + esc(S.lang === 'he' ? D.tor.parashot[pi].he : D.tor.parashot[pi].en) + '</b><span class="mu sm">' + esc(T('torOpen')) + '</span></span></button>'; }
   if (S.audience === 'new') h += '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="path">' + esc(T('pathBtn')) + '</button><button class="btn blk" data-act="go" data-to="guides" style="margin-top:8px">' + esc(T('beginnerBtn')) + '</button></div>';
-  h += '<button class="item" data-act="ai" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('info') + '</span><span class="t"><b>' + esc(T('aiCardBtn')) + '</b><span class="mu sm">' + esc(T('aiPh')) + '</span></span></button>';
+  h += '<button class="item" data-act="ai" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('assistant') + '</span><span class="t"><b>' + esc(T('aiCardBtn')) + '</b><span class="mu sm">' + esc(T('aiPh')) + '</span></span></button>';
   h += '<div class="big">' +
-    '<button data-act="go" data-to="siddur">' + ic('book') + esc(T('siddur')) + '</button>' +
-    '<button data-act="go" data-to="tehillim">' + ic('list') + esc(T('tehillim')) + '</button>' +
-    '<button data-act="go" data-to="mitzvot">' + ic('grid') + esc(T('mitzvot')) + '</button>' +
-    '<button data-act="go" data-to="guides">' + ic('scroll') + esc(T('guides')) + '</button></div>';
+    '<button data-act="go" data-to="siddur">' + ic('siddur') + esc(T('siddur')) + '</button>' +
+    '<button data-act="go" data-to="tehillim">' + ic('tehillim') + esc(T('tehillim')) + '</button>' +
+    '<button data-act="go" data-to="mitzvot">' + ic('mitzvot') + esc(T('mitzvot')) + '</button>' +
+    '<button data-act="go" data-to="guides">' + ic('guides') + esc(T('guides')) + '</button></div>';
   h += '<div class="card"><h2>' + esc(T('progress')) + '</h2><div class="ring"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="36" fill="none" stroke="var(--bd)" stroke-width="9"/><circle cx="46" cy="46" r="36" fill="none" stroke="var(--ac)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (pct * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 46 46)"/></svg>' +
     '<div><div class="num">' + st.learned + '</div><div class="mu sm">' + esc(T('learned')) + ' · ' + esc(T('of613')) + '</div><div class="sm" style="margin-top:6px">' + esc(T('done')) + ': <b>' + st.done + '</b> · ' + st.streak + ' ' + esc(T('streak')) + '</div></div></div></div>';
   h += '<div class="card"><h2>' + esc(T('todayTehillim')) + '</h2><p>' + esc(th.label) + ' <span class="mu sm">(' + esc(T('chapters')) + ')</span></p><button class="btn blk" data-act="go" data-to="tehillim">' + esc(T('openTehillim')) + '</button></div>';
@@ -855,10 +861,10 @@ SCREENS.settings = function () {
     '<label class="f">' + esc(T('settingsMode')) + '</label><div class="row"><button class="btn" data-act="setMode" data-m="dark" aria-pressed="' + (S.mode === 'dark') + '">' + esc(T('dark')) + '</button><button class="btn" data-act="setMode" data-m="light" aria-pressed="' + (S.mode === 'light') + '">' + esc(T('light')) + '</button></div>' +
     '<label class="f" for="fNus">' + esc(T('settingsNusach')) + '</label><select id="fNus">' + ['ashkenaz', 'sefard', 'edot'].map(function (n) { return opt(n, nuName(n), S.nusach); }).join('') + '</select>' +
     '<label class="f" for="fFs">' + esc(T('fontSize')) + ' (' + S.fs + ')</label><input type="range" id="fFs" min="14" max="36" step="2" value="' + S.fs + '"></div>' +
-    '<div class="card"><h2>' + esc(T('settingsBackup')) + '</h2><div class="mbtns" style="margin-top:0"><button class="btn" data-act="export">' + esc(T('export')) + '</button><button class="btn" data-act="import">' + esc(T('import')) + '</button>' +
+    '<div class="card"><h2 class="h2i">' + ic('backup') + esc(T('settingsBackup')) + '</h2><div class="mbtns" style="margin-top:0"><button class="btn" data-act="export">' + esc(T('export')) + '</button><button class="btn" data-act="import">' + esc(T('import')) + '</button>' +
     '<input type="file" id="fImp" accept="application/json,.json" hidden><p class="mu sm">' + esc(T('persist')) + ': <span id="persistTxt">…</span></p>' +
     '<button class="btn danger" data-act="reset">' + esc(T('resetAll')) + '</button></div></div>' +
-    '<div class="card"><h2>' + esc(T('offTitle')) + '</h2><p class="mu sm">' + esc(T('offNote')) + '</p><button class="btn" data-act="offCheck">' + esc(T('offCheck')) + '</button><p class="sm" id="offRes" role="status" aria-live="polite"></p></div>';
+    '<div class="card"><h2 class="h2i">' + ic('offline') + esc(T('offTitle')) + '</h2><p class="mu sm">' + esc(T('offNote')) + '</p><button class="btn" data-act="offCheck">' + esc(T('offCheck')) + '</button><p class="sm" id="offRes" role="status" aria-live="polite"></p></div>';
 };
 
 const SOURCES = [
