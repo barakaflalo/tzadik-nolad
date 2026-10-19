@@ -26,8 +26,8 @@ CacheStorage.prototype.match=function(){return sm.apply(this,arguments).then(cle
    - רק שורש האפליקציה נשמר כ-"./" (לא כל דף כ-index.html).
    - קבצי נתונים עם ?v= ואותה כתובת בדיוק ברשימת CORE (בלי ignoreSearch).
    - מעלים VERSION ו-DATA_V יחד, ביחד עם index.html. */
-const VERSION = 'tznolad-v15';
-const DATA_V = '15';           // חייב להיות זהה ל-DATA_V ב-index.html
+const VERSION = 'tznolad-v18';
+const DATA_V = '18';           // חייב להיות זהה ל-DATA_V ב-index.html
 const CORE = [
   './',
   'manifest.json',
@@ -60,6 +60,24 @@ const CORE = [
   'data/siddur/edot/festivals.json?v=' + DATA_V,
   'data/calendar.json?v=' + DATA_V,
   'data/path.json?v=' + DATA_V,
+  'data/torah/index.json?v=' + DATA_V,
+  'data/torah/bereshit.json?v=' + DATA_V,
+  'data/torah/shemot.json?v=' + DATA_V,
+  'data/torah/vayikra.json?v=' + DATA_V,
+  'data/torah/bamidbar.json?v=' + DATA_V,
+  'data/torah/devarim.json?v=' + DATA_V,
+  'data/halacha/index.json?v=' + DATA_V,
+  'data/halacha/k01.json?v=' + DATA_V,
+  'data/halacha/k02.json?v=' + DATA_V,
+  'data/halacha/k03.json?v=' + DATA_V,
+  'data/halacha/k04.json?v=' + DATA_V,
+  'data/halacha/k05.json?v=' + DATA_V,
+  'data/halacha/k06.json?v=' + DATA_V,
+  'data/halacha/k07.json?v=' + DATA_V,
+  'data/halacha/k08.json?v=' + DATA_V,
+  'data/halacha/k09.json?v=' + DATA_V,
+  'data/halacha/k10.json?v=' + DATA_V,
+  'data/halacha/k11.json?v=' + DATA_V,
   'data/siddur/ashkenaz/pirkei-avot.json?v=' + DATA_V,
   'data/siddur/ashkenaz/haggadah.json?v=' + DATA_V,
   'data/siddur/sefard/pirkei-avot.json?v=' + DATA_V,
