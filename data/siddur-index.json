@@ -246,7 +246,8 @@
      "id": "preparatory",
      "he": "תפילות הכנה",
      "en": "Preparatory Prayers",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "midnight",
@@ -257,7 +258,8 @@
      "id": "shacharit",
      "he": "שחרית לחול",
      "en": "Weekday Shacharit",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "shacharit-additions",
@@ -268,13 +270,15 @@
      "id": "mincha",
      "he": "מנחה לחול",
      "en": "Weekday Mincha",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "arvit",
      "he": "ערבית לחול",
      "en": "Weekday Arvit",
-     "core": true
+     "core": true,
+     "ready": true
     },
     {
      "id": "shabbat-arvit",
@@ -343,9 +347,10 @@
     },
     {
      "id": "assorted",
-     "he": "ברכות ותפילות שונות",
-     "en": "Assorted Blessings and Prayers",
-     "core": true
+     "he": "ברכות ושונות",
+     "en": "Blessings & Assorted",
+     "core": true,
+     "ready": true
     },
     {
      "id": "fast-mourning",
