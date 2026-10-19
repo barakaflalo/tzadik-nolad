@@ -138,8 +138,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.12.0';
-const DATA_V  = '12';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.13.0';
+const DATA_V  = '13';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -175,7 +175,7 @@ const LANG = {
     ttsOpen: 'הקראה', ttsPlay: 'הפעל', ttsPause: 'השהה', ttsStop: 'עצור', ttsSpeed: 'מהירות', ttsFrom: 'מהחלק', ttsTo: 'עד החלק', ttsSkipRub: 'דלג על הוראות', ttsNoNik: 'הקרא בלי ניקוד',
     ttsHint: 'אפשר גם להקיש על פסקה כדי להתחיל להקריא משם.', ttsNoVoice: 'לא נמצא קול עברי במכשיר. אפשר להתקין בהגדרות הטלפון: ניהול כללי ← שפה ← טקסט לדיבור (או Google TTS) ← התקנת נתוני קול עברית.', ttsErr: 'ההקראה נעצרה בגלל תקלה בקול של המכשיר.', ttsDone: 'ההקראה הסתיימה', ttsUnsupported: 'המכשיר הזה לא תומך בהקראה',
     guideNote: 'ההוראות המעשיות (מה עושים ומתי מברכים) מופיעות בנטוי בתוך הנוסח, כפי שהן בסידור. המדריכים מורכבים מהסידור עצמו — לא נכתבו מהזיכרון. בשאלות — לשאול רב.', stReview: 'לא נבדק לעומק', partReview: 'הנוסח כאן ממקור שטרם נבדק לעומק (עלולות להיות אי-דיוקים). מומלץ לוודא מול סידור או רב.',
-    mSearchPh: 'חיפוש מצווה (למשל: שבת, ריבית, תפילין)…', mNone: 'לא נמצאו מצוות', mSrc: 'מקור: רשימת הרמב״ם בפתיחת משנה תורה. הסבר מפורט לכל מצווה — בהמשך (ספר החינוך).',
+    mSearchPh: 'חיפוש מצווה (למשל: שבת, ריבית, תפילין)…', mNone: 'לא נמצאו מצוות', mSrc: 'רשימת המצוות: הרמב״ם, פתיחת משנה תורה.', chWhat: 'מה המצווה', chWhy: 'הטעם (משרשי המצווה)', chWhen: 'מתי ולמי נוהגת', chSrc: 'ההסבר מתוך ספר החינוך (סעיף {0}), בעברית מנוקדת — ספריא, CC0. זהו ביאור קדום ללימוד; להלכה למעשה שואלים רב.', chSrc2: 'ההסבר מתוך ספר החינוך (סעיפים {0}), בעברית מנוקדת — ספריא, CC0. זהו ביאור קדום ללימוד; להלכה למעשה שואלים רב.', chNone: 'להסבר על מצווה זו אין סעיף מתאים בספר החינוך בספריא. הוא יתווסף בהמשך.', chLoading: 'טוען הסבר…', chA: 'בכל מקום ובכל זמן', chT: 'בזמן שבית המקדש קיים', chL: 'בארץ ישראל', chGA: 'זכרים ונקבות', chGM: 'זכרים', chGK: 'כהנים', chTodayNo: 'לפי הספר — אינה נוהגת היום', chTodayYes: 'לפי הספר — נוהגת גם היום',
     jumpTo: 'קפוץ לחלק בתפילה…', partMissing: 'החלק הזה עוד לא נטען — אין לו עדיין גרסה ברישיון ברור. לא נכתב מהזיכרון.',
     todayLabel: 'פרקי היום (חלוקה ל-30 יום)', readToday: 'קראתי היום', readTodayDone: 'נרשם ✓', allPsalms: 'כל 150 הפרקים',
     tehNote: 'החלוקה לפי יום בחודש העברי. אחרי השקיעה היום העברי מתחלף — האפליקציה מחשבת לפי חצות.',
@@ -223,7 +223,7 @@ const LANG = {
     ttsOpen: 'Read aloud', ttsPlay: 'Play', ttsPause: 'Pause', ttsStop: 'Stop', ttsSpeed: 'Speed', ttsFrom: 'From part', ttsTo: 'To part', ttsSkipRub: 'Skip instructions', ttsNoNik: 'Read without vowel marks',
     ttsHint: 'You can also tap a paragraph to start reading from there.', ttsNoVoice: 'No Hebrew voice found on this device. Install one in phone settings: General management → Language → Text-to-speech (or Google TTS) → install Hebrew voice data.', ttsErr: 'Reading stopped because of a problem with the device voice.', ttsDone: 'Finished reading', ttsUnsupported: 'This device does not support read-aloud',
     guideNote: 'Practical instructions (what to do, when to bless) appear in italics inside the text, as in the siddur. Guides are assembled from the siddur itself — not written from memory. For questions, ask a rabbi.', stReview: 'Not fully reviewed', partReview: 'This text comes from a source not yet fully reviewed (may contain inaccuracies). Please verify against a siddur or a rabbi.',
-    mSearchPh: 'Search a mitzvah (e.g. Shabbat, interest, tefillin)…', mNone: 'No mitzvot found', mSrc: 'Source: the Rambam’s list at the start of Mishneh Torah. Detailed explanations per mitzvah — coming later (Sefer HaChinukh).',
+    mSearchPh: 'Search a mitzvah (e.g. Shabbat, interest, tefillin)…', mNone: 'No mitzvot found', mSrc: 'List of mitzvot: Rambam, start of Mishneh Torah.', chWhat: 'What the mitzvah is', chWhy: 'The reason (root of the mitzvah)', chWhen: 'When and to whom it applies', chSrc: 'Explanation from Sefer HaChinukh (section {0}); English by R. Francis Nataf via Sefaria, CC0. A classic text for study — for practical rulings ask a rabbi.', chSrc2: 'Explanation from Sefer HaChinukh (sections {0}); English by R. Francis Nataf via Sefaria, CC0. A classic text for study — for practical rulings ask a rabbi.', chNone: 'This mitzvah has no matching section in Sefer HaChinukh on Sefaria. It will be added later.', chLoading: 'Loading explanation…', chA: 'Everywhere and at all times', chT: 'While the Temple stands', chL: 'In the Land of Israel', chGA: 'Men and women', chGM: 'Men', chGK: 'Priests (kohanim)', chTodayNo: 'According to the book — not practised today', chTodayYes: 'According to the book — practised today as well',
     jumpTo: 'Jump to a part…', partMissing: 'This part is not loaded yet — no clearly licensed version exists. It is not written from memory.',
     todayLabel: "Today's chapters (30-day cycle)", readToday: 'I read today', readTodayDone: 'Recorded ✓', allPsalms: 'All 150 chapters',
     tehNote: 'By day of the Hebrew month. After sunset the Hebrew day changes — the app calculates by midnight.',
@@ -705,24 +705,46 @@ function openMitzvah(id) {
   const title = it ? (he ? it.he : it.en) : T('mGeneric', type, num);
   const sub = it ? (he ? it.en : it.he) : '';
   const src = it ? (he ? it.srcHe : it.srcEn) : '';
+  const lk = he ? 'he' : 'en';
+  const chBlock = function () {
+    const j = D.chk && D.chk[lk]; if (!j) return '<p class="mu sm">' + esc(T('chLoading')) + '</p>';
+    const arr = j.items[id]; if (!arr) return '<p class="mu sm">' + esc(T('chNone')) + '</p>';
+    let o = '';
+    arr.forEach(function (e) {
+      if (e.t && arr.length > 1) o += '<h4 style="margin:10px 0 2px">' + esc(e.t) + '</h4>';
+      e.p.forEach(function (txt, k) {
+        const kind = e.k[k]; if (!txt) return;
+        const hd = kind === 'd' ? 'chWhat' : kind === 'r' ? 'chWhy' : 'chWhen';
+        o += '<div class="gh" style="margin:12px 0 4px">' + esc(T(hd)) + '</div><p style="margin:2px 0;line-height:1.8">' + esc(txt) + '</p>';
+        if (kind === 'w' && (e.w || e.g)) {
+          o += '<p style="margin:4px 0">' + [e.w ? T('ch' + e.w.toUpperCase()) : '', e.g ? T('chG' + e.g.toUpperCase()) : ''].filter(Boolean).map(function (x) { return '<span class="tag">' + esc(x) + '</span>'; }).join(' ') + '</p>';
+        }
+      });
+    });
+    const ns = arr.map(function (e) { return e.n; }).join(', ');
+    return o + '<p class="mu sm" style="margin:10px 0 4px">' + esc(arr.length > 1 ? T('chSrc2', ns) : T('chSrc', ns)) + '</p>';
+  };
   const body = function () {
     const mm = S.marks[id] || {}; const l2 = mm.d && mm.d.length ? mm.d[mm.d.length - 1] : '';
     return '<h3 style="margin-bottom:2px">' + esc(title) + '</h3><p class="mu sm" style="margin:2px 0 6px">' + esc(type) + ' · ' + esc(num) + ' ' + status + '</p>' +
       (sub ? '<p class="mu sm" dir="' + (he ? 'ltr' : 'rtl') + '" style="margin:4px 0">' + esc(sub) + '</p>' : '') +
       (src ? '<p class="sm" style="margin:6px 0;color:var(--mu);line-height:1.6">' + esc(src) + '</p>' : '') +
-      (it ? '<p class="mu sm" style="margin:6px 0 4px">' + esc(T('mSrc')) + '</p>' : '<p class="mu">' + esc(T('mGenericBody')) + '</p>') +
+      '<div class="chk">' + chBlock() + '</div>' +
+      (it ? '<p class="mu sm" style="margin:6px 0 4px">' + esc(T('mSrc')) + '</p>' : '') +
       '<div class="mbtns"><button class="btn" data-act="mL" aria-pressed="' + (mm.l ? 'true' : 'false') + '">' + esc(T('iLearned')) + '</button>' +
       '<button class="btn" data-act="mD">' + esc(T('iDoneToday')) + '</button>' +
       (mm.d && mm.d.length ? '<p class="mu sm" style="margin:2px 0">' + esc(T('doneCount', mm.d.length, l2)) + '</p><button class="btn" data-act="mU">' + esc(T('undoDone')) + '</button>' : '') +
       '<button class="btn" data-act="mN" aria-pressed="' + (mm.na ? 'true' : 'false') + '">' + esc(T('iNa')) + '</button></div>';
   };
   const redraw = function (mod) { $('.modal', mod.ov).innerHTML = body(); if (R.screen === 'mitzvot') { const y = $('#view').scrollTop; const q = ($('#mSearch') || {}).value || ''; render(); const e = $('#mSearch'); if (e && q) { e.value = q; mSearchRun(); } $('#view').scrollTop = y; } if (R.screen === 'home') render(); };
-  openModal(body(), {
+  const mod0 = openModal(body(), {
     mL: function (el, e, mod) { const x = mk(id); if (x.l) delete x.l; else x.l = today(); save(); redraw(mod); },
     mD: function (el, e, mod) { const x = mk(id); x.d = x.d || []; const t = today(); if (x.d.indexOf(t) < 0) x.d.push(t); if (!x.l) x.l = t; delete x.na; save(); toast('✓'); redraw(mod); },
     mU: function (el, e, mod) { const x = mk(id); if (x.d && x.d.length) x.d.pop(); save(); redraw(mod); },
     mN: function (el, e, mod) { const x = mk(id); if (x.na) delete x.na; else x.na = true; save(); redraw(mod); }
   });
+  D.chk = D.chk || {};
+  if (!D.chk[lk]) loadJson('data/chinukh/' + lk + '.json').then(function (j) { D.chk[lk] = j; }).catch(function () { D.chk[lk] = { items: {} }; }).then(function () { const c = $('.chk', mod0.ov); if (c) c.innerHTML = chBlock(); });
 }
 
 SCREENS.more = function () {
@@ -755,6 +777,10 @@ const SOURCES = [
     ['Daat Siddur Ashkenaz', 'he', 'Public Domain'], ['Sefaria Community Translation', 'en', 'CC0']] },
   { h: 'תהילים', e: 'Psalms', items: [
     ['Miqra according to the Masorah', 'he', 'CC-BY-SA'], ['THE JPS TANAKH: Gender-Sensitive Edition', 'en', 'CC-BY-NC']] },
+  { h: 'הסברי המצוות — ספר החינוך', e: 'Mitzvah explanations — Sefer HaChinukh', items: [
+    ['Sefer HaChinukh — Vocalized Edition', 'he', 'CC0'], ['Sefer HaChinukh, translated by R. Francis Nataf, Sefaria 2018', 'en', 'CC0']] },
+  { h: 'לוח שנה, פרשות וחגים', e: 'Calendar, parashot and holidays', items: [
+    ['Hebcal.com — Hebrew calendar data', 'he', 'CC-BY 4.0']] },
   { h: 'תרי״ג מצוות (רשימת הרמב״ם, פתיחת משנה תורה)', e: '613 mitzvot (Rambam’s list, start of Mishneh Torah)', items: [
     ['Wikisource Mishneh Torah', 'he', 'CC-BY-SA'], ['Mishneh Torah, trans. by Eliyahu Touger. Jerusalem, Moznaim Pub. c1986-c2007', 'en', 'CC-BY-NC']] }
 ];
