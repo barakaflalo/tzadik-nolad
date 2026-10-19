@@ -69,13 +69,25 @@
    "id": "candles",
    "he": "הדלקת נרות שבת",
    "en": "Shabbat candles",
-   "ready": false
+   "ready": true,
+   "status": "verified",
+   "beginner": true
   },
   {
    "id": "pray",
-   "he": "איך מתפללים — צעד אחרי צעד",
-   "en": "How to pray — step by step",
-   "ready": false
+   "he": "איך מתפללים — צעד אחרי צעד (תפילת מנחה)",
+   "en": "How to pray — step by step (Mincha)",
+   "ready": true,
+   "status": "verified",
+   "beginner": true
+  },
+  {
+   "id": "kiddush",
+   "he": "קידוש והבדלה",
+   "en": "Kiddush and Havdalah",
+   "status": "review",
+   "ready": true,
+   "beginner": true
   }
  ]
 }

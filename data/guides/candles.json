@@ -1,0 +1,15 @@
+{
+ "id": "candles",
+ "title": {
+  "he": "הדלקת נרות שבת",
+  "en": "Shabbat candles"
+ },
+ "status": "verified",
+ "refs": [
+  {
+   "nusach": "edot",
+   "file": "assorted",
+   "part": "assorted-shabbat-candle-lighting"
+  }
+ ]
+}

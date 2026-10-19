@@ -1,0 +1,20 @@
+{
+ "id": "kiddush",
+ "title": {
+  "he": "קידוש והבדלה",
+  "en": "Kiddush and Havdalah"
+ },
+ "status": "review",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "shabbat",
+   "part": "shabbat-kiddush"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "shabbat",
+   "part": "shabbat-havdalah"
+  }
+ ]
+}

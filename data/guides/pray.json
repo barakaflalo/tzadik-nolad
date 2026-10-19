@@ -1,0 +1,125 @@
+{
+ "id": "pray",
+ "title": {
+  "he": "איך מתפללים — צעד אחרי צעד (תפילת מנחה)",
+  "en": "How to pray — step by step (Mincha)"
+ },
+ "status": "verified",
+ "refs": [
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-ashrei"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-patriarchs"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-divine-might"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-holiness-of-god"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-keduasha"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-knowledge"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-repentance"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-forgiveness"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-redemption"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-healing"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-prosperity"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-gathering-the-exiles"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-justice"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-against-enemies"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-the-righteous"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-rebuilding-jerusalem"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-kingdom-of-david"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-response-to-prayer"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-temple-service"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-thanksgiving"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-peace"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-amida-concluding-passage"
+  },
+  {
+   "nusach": "ashkenaz",
+   "file": "minchah",
+   "part": "minchah-concluding-prayers-alenu"
+  }
+ ]
+}
