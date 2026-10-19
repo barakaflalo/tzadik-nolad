@@ -1,0 +1,23 @@
+{
+  "name": "צדיק נולד",
+  "short_name": "צדיק נולד",
+  "description": "סידור, תהילים, מדריכי מצוות ולוח תרי״ג מצוות — חינם, בלי פרסומות, עובד גם בלי אינטרנט.",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b0b",
+  "theme_color": "#0b0b0b",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "סידור", "url": "./?go=siddur", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "לוח המצוות", "url": "./?go=mitzvot", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "תהילים היום", "url": "./?go=tehillim", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+  ]
+}

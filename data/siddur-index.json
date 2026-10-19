@@ -1,0 +1,83 @@
+{
+  "_comment": "מבנה תוכן העניינים של שלושת הסידורים, לפי עמודי הסידורים בספריא (נבדק 19.10.2026). אין כאן נוסחי תפילה — רק מבנה. core=true מסמן את מה שנכנס לגרסה הראשונה. כל קטע יקבל קובץ data/siddur/<nusach>/<id>.json (ראו DATA_FORMAT.md).",
+  "version": 1,
+  "nusachim": [
+    {
+      "id": "ashkenaz", "he": "אשכנז", "en": "Ashkenaz", "sefaria": "Siddur Ashkenaz",
+      "sections": [
+        { "id": "weekday",   "he": "חול",   "en": "Weekday",  "core": true },
+        { "id": "shabbat",   "he": "שבת",   "en": "Shabbat" },
+        { "id": "festivals", "he": "מועדים", "en": "Festivals" },
+        { "id": "berachot",  "he": "ברכות", "en": "Blessings", "core": true },
+        { "id": "kaddish",   "he": "קדיש",  "en": "Kaddish" }
+      ]
+    },
+    {
+      "id": "sefard", "he": "ספרד", "en": "Sefard", "sefaria": "Siddur Sefard",
+      "sections": [
+        { "id": "upon-arising",   "he": "בקימה", "en": "Upon Arising", "core": true },
+        { "id": "shacharit",      "he": "שחרית לחול", "en": "Weekday Shacharit", "core": true },
+        { "id": "additional",     "he": "תפילות נוספות", "en": "Additional Prayers" },
+        { "id": "mincha",         "he": "מנחה לחול", "en": "Weekday Mincha", "core": true },
+        { "id": "maariv",         "he": "ערבית לחול", "en": "Weekday Maariv", "core": true },
+        { "id": "lag-baomer",     "he": "שירי ל״ג בעומר", "en": "Lag BaOmer Songs" },
+        { "id": "various-blessings", "he": "ברכות שונות", "en": "Various Blessings" },
+        { "id": "birkat-hamazon", "he": "ברכת המזון", "en": "Birchat HaMazon", "core": true },
+        { "id": "blessings",      "he": "ברכות", "en": "Blessings", "core": true },
+        { "id": "mincha-erev-shabbat", "he": "מנחה לערב שבת", "en": "Shabbat Eve Mincha" },
+        { "id": "kabbalat-shabbat", "he": "קבלת שבת", "en": "Kabbalat Shabbat" },
+        { "id": "maariv-shabbat", "he": "ערבית לשבת", "en": "Shabbat Eve Maariv" },
+        { "id": "shabbat-evening-meal", "he": "סעודת ליל שבת", "en": "Shabbat Evening Meal" },
+        { "id": "shabbat-morning", "he": "שחרית לשבת", "en": "Shabbat Morning Services" },
+        { "id": "musaf",          "he": "מוסף", "en": "Musaf" },
+        { "id": "shabbat-day-meal", "he": "סעודת יום שבת", "en": "Shabbat Day Meal" },
+        { "id": "shabbat-mincha", "he": "מנחה לשבת", "en": "Shabbat Mincha" },
+        { "id": "pirkei-avot",    "he": "פרקי אבות", "en": "Pirkei Avot" },
+        { "id": "third-meal",     "he": "סעודה שלישית", "en": "Third Meal" },
+        { "id": "motzaei-shabbat", "he": "מוצאי שבת", "en": "Motzaei Shabbat" },
+        { "id": "shaking-lulav",  "he": "נענוע לולב", "en": "Shaking Lulav" },
+        { "id": "rosh-chodesh",   "he": "ראש חודש", "en": "Rosh Chodesh" },
+        { "id": "holidays",       "he": "חגים", "en": "Holidays" },
+        { "id": "nissan",         "he": "ניסן", "en": "Nissan" },
+        { "id": "haggadah",       "he": "הגדה של פסח", "en": "Pesach Haggadah" },
+        { "id": "sukkot",         "he": "סוכות", "en": "Sukkot" },
+        { "id": "simchat-torah",  "he": "שמחת תורה", "en": "Simchat Torah" },
+        { "id": "shavuot",        "he": "שבועות", "en": "Shavuot" },
+        { "id": "yotzerot",       "he": "יוצרות", "en": "Yotzerot" },
+        { "id": "chanukah",       "he": "חנוכה", "en": "Chanukah" },
+        { "id": "purim",          "he": "פורים", "en": "Purim" },
+        { "id": "fast-days",      "he": "תעניות", "en": "Fast Days" },
+        { "id": "torah-readings", "he": "קריאת התורה", "en": "Torah Readings" },
+        { "id": "priestly-blessing", "he": "ברכת כהנים", "en": "Priestly Blessing" },
+        { "id": "various-prayers", "he": "תפילות וסגולות", "en": "Various Prayers & Segulot" }
+      ]
+    },
+    {
+      "id": "edot", "he": "עדות המזרח", "en": "Edot HaMizrach", "sefaria": "Siddur Edot HaMizrach",
+      "sections": [
+        { "id": "preparatory",    "he": "תפילות הכנה", "en": "Preparatory Prayers", "core": true },
+        { "id": "midnight",       "he": "תיקון חצות", "en": "The Midnight Rite" },
+        { "id": "shacharit",      "he": "שחרית לחול", "en": "Weekday Shacharit", "core": true },
+        { "id": "shacharit-additions", "he": "תוספות לשחרית", "en": "Additions for Shacharit" },
+        { "id": "mincha",         "he": "מנחה לחול", "en": "Weekday Mincha", "core": true },
+        { "id": "arvit",          "he": "ערבית לחול", "en": "Weekday Arvit", "core": true },
+        { "id": "shabbat-arvit",  "he": "ערבית לשבת", "en": "Shabbat Arvit" },
+        { "id": "shabbat-evening", "he": "ליל שבת", "en": "Shabbat Evening" },
+        { "id": "shabbat-shacharit", "he": "שחרית לשבת", "en": "Shabbat Shacharit" },
+        { "id": "shabbat-musaf",  "he": "מוסף לשבת", "en": "Shabbat Mussaf" },
+        { "id": "daytime-meal",   "he": "סעודת יום", "en": "Daytime Meal" },
+        { "id": "shabbat-mincha", "he": "מנחה לשבת", "en": "Shabbat Mincha" },
+        { "id": "third-meal",     "he": "סעודה שלישית", "en": "Third Meal" },
+        { "id": "havdalah",       "he": "הבדלה", "en": "Havdalah" },
+        { "id": "rosh-chodesh",   "he": "ראש חודש", "en": "Rosh Hodesh" },
+        { "id": "three-festivals", "he": "תפילות לשלוש רגלים", "en": "Prayers for Three Festivals" },
+        { "id": "chanukah",       "he": "חנוכה", "en": "Hanukkah" },
+        { "id": "purim",          "he": "פורים", "en": "Purim" },
+        { "id": "nissan",         "he": "ניסן", "en": "Nissan" },
+        { "id": "assorted",       "he": "ברכות ותפילות שונות", "en": "Assorted Blessings and Prayers", "core": true },
+        { "id": "fast-mourning",  "he": "תעניות ואבלות", "en": "Fast Days and Mourning" },
+        { "id": "mishna-shabbat", "he": "לימוד משנה לשבת", "en": "Mishna Study for Shabbat" }
+      ]
+    }
+  ]
+}

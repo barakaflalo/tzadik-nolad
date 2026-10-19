@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-theme="gold" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="theme-color" content="#0b0b0b">
+<meta name="description" content="צדיק נולד — סידור, תהילים, מדריכי מצוות ולוח תרי״ג מצוות. חינם, בלי פרסומות, עובד גם בלי אינטרנט.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>צדיק נולד</title>
+<style>
+:root{
+  --fs:20px;
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --read:"Frank Ruhl Libre","David Libre","Noto Serif Hebrew","David","Times New Roman",serif;
+}
+html[data-theme="gold"]  {--ac:#d4af37;--acl:#7a5f00}
+html[data-theme="blue"]  {--ac:#5aa9ff;--acl:#0b5cad}
+html[data-theme="green"] {--ac:#4cc38a;--acl:#0d7a47}
+html[data-theme="purple"]{--ac:#b18cff;--acl:#5b32b4}
+html[data-theme="red"]   {--ac:#ff7a7a;--acl:#b02323}
+html[data-mode="dark"]  {--bg:#0b0b0b;--card:#151515;--bd:#2c2820;--tx:#f0e6c8;--mu:#a89f84;--ok:#4cc38a;--warn:#e8a23c;--dng:#e5534b;--on:#0b0b0b}
+html[data-mode="light"] {--bg:#f6f1e3;--card:#fffdf6;--bd:#d9cfae;--tx:#2a2410;--mu:#6d6544;--ok:#0d7a47;--warn:#9a5b00;--dng:#b02323;--on:#fffdf6;--ac:var(--acl)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:var(--ui)}
+body{overflow:hidden}
+button{font:inherit;color:inherit}
+#app{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;grid-template-columns:minmax(0,1fr);max-width:720px;margin:0 auto;position:relative}
+header{display:flex;align-items:center;gap:8px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top));border-bottom:1px solid var(--bd);background:var(--bg);z-index:40;min-width:0}
+header h1{flex:1;min-width:0;margin:0;font-size:19px;font-weight:700;color:var(--ac);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--ac);flex:none}
+.ib svg{width:24px;height:24px}
+[dir=ltr] .back svg{transform:scaleX(-1)}
+#view{overflow-y:auto;overflow-x:hidden;padding:14px 14px 28px;min-width:0}
+nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:64px;border-top:1px solid var(--bd);background:var(--bg);padding-bottom:env(safe-area-inset-bottom);z-index:40}
+nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--mu);font-size:12px;cursor:pointer;min-width:0}
+nav button svg{width:24px;height:24px}
+nav button.on{color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px;min-width:0}
+.card h2{margin:0 0 8px;font-size:17px;color:var(--ac)}
+.card p{margin:6px 0;line-height:1.6}
+.mu{color:var(--mu)} .sm{font-size:13px}
+.btn{min-height:46px;padding:10px 16px;border-radius:12px;border:1px solid var(--ac);background:none;color:var(--ac);font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn.pri{background:var(--ac);color:var(--on)}
+.btn.danger{border-color:var(--dng);color:var(--dng)}
+.btn.blk{display:flex;width:100%}
+.btn[aria-pressed=true]{background:var(--ac);color:var(--on)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>*{min-width:0}
+.big{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.big button{min-height:92px;border-radius:16px;border:1px solid var(--ac);background:var(--card);color:var(--tx);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:17px;font-weight:700;cursor:pointer}
+.big svg{width:30px;height:30px;color:var(--ac)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;mask-image:linear-gradient(to left,#000 92%,transparent)}
+.chip{flex:none;min-height:40px;padding:6px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;white-space:nowrap}
+.chip.on{border-color:var(--ac);color:var(--ac);font-weight:700}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--bd);color:var(--mu);vertical-align:middle}
+.tag.warn{border-color:var(--warn);color:var(--warn)}.tag.ok{border-color:var(--ok);color:var(--ok)}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:10px;width:100%;text-align:start;min-height:52px;padding:10px 14px;border-radius:14px;border:1px solid var(--bd);background:var(--card);cursor:pointer}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block;overflow-wrap:anywhere}
+.item.core{border-color:var(--ac)}
+.ring{display:flex;align-items:center;gap:16px}
+.ring svg{width:92px;height:92px;flex:none}
+.ring .num{font-size:28px;font-weight:800;color:var(--ac)}
+.grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.mc{width:42px;height:42px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:13px;cursor:pointer;padding:0}
+.mc.l{border-color:var(--ac);color:var(--ac)}
+.mc.d{background:var(--ac);color:var(--on);border-color:var(--ac);font-weight:700}
+.mc.na{opacity:.45;text-decoration:line-through}
+.gh{margin:6px 0 8px;font-weight:700;color:var(--mu);font-size:14px}
+label.f{display:block;margin:10px 0 4px;font-size:14px;color:var(--mu)}
+input[type=text],select{width:100%;min-height:46px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);padding:8px 12px;font-size:16px}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.dots{display:flex;gap:10px}
+.dot{width:40px;height:40px;border-radius:50%;border:3px solid transparent;cursor:pointer;padding:0}
+.dot.on{border-color:var(--tx)}
+.reader{font-family:var(--read);font-size:var(--fs);line-height:1.9}
+.reader .seg{margin:0 0 14px}
+.reader .en{font-family:var(--ui);font-size:.72em;color:var(--mu);line-height:1.6;margin:-8px 0 16px}
+.ph{border:1px dashed var(--ac);border-radius:14px;padding:16px;line-height:1.7;font-family:var(--ui);font-size:16px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:flex-end;justify-content:center;z-index:60;opacity:0;transition:opacity .15s}
+.modal-overlay.open{opacity:1}
+.modal{width:100%;max-width:560px;max-height:86vh;overflow:auto;background:var(--card);border:1px solid var(--bd);border-radius:20px 20px 0 0;padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+.modal h3{margin:0 0 6px;color:var(--ac);font-size:19px}
+.mtxt{line-height:1.7;margin:4px 0 14px}
+.mbtns{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ac);color:var(--on);padding:10px 18px;border-radius:20px;font-weight:700;z-index:90;opacity:0;pointer-events:none;transition:opacity .2s;max-width:88vw;text-align:center}
+#toast.show{opacity:1}
+.wiz{position:fixed;inset:0;background:var(--bg);z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.wiz .box{width:100%;max-width:460px}
+.wiz h2{color:var(--ac);font-size:24px;margin:0 0 10px}
+.wiz p{line-height:1.7}
+.opt{display:block;width:100%;text-align:start;margin:8px 0;padding:14px;border-radius:14px;border:1px solid var(--bd);background:var(--card);cursor:pointer;font-size:17px}
+.opt.on{border-color:var(--ac);color:var(--ac);font-weight:700}
+.badge{text-align:center;color:var(--mu);font-size:12px;margin:20px 0 4px}
+.steps{display:flex;gap:6px;justify-content:center;margin-bottom:14px}.steps i{width:8px;height:8px;border-radius:50%;background:var(--bd)}.steps i.on{background:var(--ac)}
+body.ov-open #toast{bottom:20px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <button class="ib back" id="hBack" data-act="back" aria-label="חזרה" hidden></button>
+    <h1 id="hTitle"></h1>
+    <button class="ib" data-act="theme" id="hMode" aria-label="יום/לילה"></button>
+    <button class="ib" data-act="about" id="hAbout" aria-label="אודות"></button>
+  </header>
+  <main id="view"></main>
+  <nav id="nav"></nav>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* ══════════ צדיק נולד — שלד ראשי ══════════
+   חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
+   י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
+   כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
+const VERSION = '0.1.0';
+const DATA_V  = '1';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+
+/* ───── אחסון (Storage shim) ───── */
+const store = (function () {
+  const mem = {}; let ok = true;
+  try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); } catch (e) { ok = false; }
+  const P = 'tznolad_';
+  return {
+    get(k) { try { return ok ? localStorage.getItem(P + k) : (k in mem ? mem[k] : null); } catch (e) { return k in mem ? mem[k] : null; } },
+    set(k, v) { if (!ok) { mem[k] = v; return true; } try { localStorage.setItem(P + k, v); return true; } catch (e) { mem[k] = v; toast(T('saveFail')); return false; } },
+    clearAll() { try { if (ok) Object.keys(localStorage).filter(function (x) { return x.indexOf(P) === 0; }).forEach(function (x) { localStorage.removeItem(x); }); } catch (e) {} Object.keys(mem).forEach(function (x) { delete mem[x]; }); }
+  };
+})();
+
+/* ───── תרגום (LANG + T) — עברית ואנגלית; החלטה מתועדת: אפליקציה מקומית לתוכן עברי (כמו LexCalendar) ───── */
+const LANG = {
+  he: {
+    appName: 'צדיק נולד', home: 'בית', siddur: 'סידור', tehillim: 'תהילים', mitzvot: 'מצוות', more: 'עוד', guides: 'מדריכים',
+    settings: 'הגדרות', sources: 'מקורות ורישיונות', about: 'אודות', back: 'חזרה', yes: 'כן', no: 'ביטול', ok: 'אישור',
+    hello: 'שלום', helloNamed: 'שלום, {0}', today: 'היום', saveFail: 'השמירה נכשלה — אין מקום פנוי במכשיר',
+    progress: 'ההתקדמות שלי', learned: 'נלמדו', done: 'קויימו', streak: 'ימים ברצף', of613: 'מתוך 613',
+    todayTehillim: 'תהילים היום', chapters: 'פרקים', openTehillim: 'פתח את התהילים',
+    beginnerTitle: 'מתחילים מכאן', beginnerBody: 'מסלול קצר ורגוע: מה מניחים, מה מברכים, ואיך מתפללים — צעד אחרי צעד.', beginnerBtn: 'למסלול למתחילים',
+    contTitle: 'להמשיך מאיפה שעצרתי', continue: 'המשך',
+    nusach: 'נוסח', nusachAshkenaz: 'אשכנז', nusachSefard: 'ספרד', nusachEdot: 'עדות המזרח',
+    startHere: 'להתחיל מכאן', allSections: 'כל הקטעים', inPrep: 'בהכנה', demoSection: 'קטע הדגמה (בדיקת תצוגה)',
+    nusachNote: 'לא בטוח/ה איזה נוסח שלך? אפשר להחליף בכל רגע. בשאלות מנהג — לשאול רב.',
+    fontSize: 'גודל כתב', showEn: 'הצג תרגום', loading: 'טוען…',
+    phSiddur: 'הנוסח של «{0}» עוד לא נטען לאפליקציה. הוא יגיע ממקור מאומת (ספריא), עם שם הגרסה והרישיון שלה — לא מהזיכרון של בינה.',
+    phTehillim: 'נוסח התהילים עוד לא נטען. הוא יגיע ממקור מאומת (ספריא).',
+    phGuide: 'המדריך הזה בהכנה. הוא ייכתב ממקור הלכתי מאומת, עם סימון מקור וסטטוס אימות — ולא מהזיכרון של בינה.',
+    todayLabel: 'פרקי היום (חלוקה ל-30 יום)', readToday: 'קראתי היום', readTodayDone: 'נרשם ✓', allPsalms: 'כל 150 הפרקים',
+    tehNote: 'החלוקה לפי יום בחודש העברי. אחרי השקיעה היום העברי מתחלף — האפליקציה מחשבת לפי חצות.',
+    mitzvotTitle: 'לוח תרי״ג המצוות', aseh: 'עשה', lota: 'לא תעשה', fAll: 'הכל', fLearned: 'נלמדו', fDone: 'קויימו', fTodo: 'טרם נלמדו', fNa: 'לא חלות עליי',
+    mitzvotNote: 'לימוד כל 613 אפשרי לכל אחד. קיום — רק במצוות שחלות עליך (למשל מצוות הקשורות לבית המקדש או לכהנים אינן חלות היום). סימון «לא חלה עליי» לא נספר בחיסור.',
+    mGeneric: 'מצוות {0} מס׳ {1}', mGenericBody: 'פרטי המצווה (מקור, הסבר ואיך מקיימים) יתמלאו מספר החינוך בספריא.',
+    stDemo: 'דוגמה — לא מאומת', stPending: 'תוכן בהכנה', stVerified: 'מאומת',
+    iLearned: 'למדתי', iDoneToday: 'קיימתי היום', iNa: 'לא חלה עליי', undoDone: 'בטל קיום אחרון', doneCount: 'קויימה {0} פעמים · אחרונה: {1}',
+    guidesTitle: 'מדריכים', g_tefillin: 'הנחת תפילין', g_tzitzit: 'טלית וציצית', g_shema: 'קריאת שמע', g_bentsch: 'ברכת המזון', g_brachot: 'איזו ברכה על מה', g_mezuzah: 'מזוזה', g_candles: 'הדלקת נרות שבת', g_pray: 'איך מתפללים — צעד אחרי צעד',
+    settingsUser: 'שם (יופיע בגיבוי ובשיתוף)', settingsLang: 'שפה', settingsTheme: 'ערכת צבע', settingsMode: 'מצב תצוגה', dark: 'לילה', light: 'יום',
+    settingsNusach: 'נוסח ברירת מחדל', settingsBackup: 'גיבוי ושחזור', export: 'ייצוא גיבוי', import: 'שחזור מקובץ', resetAll: 'מחיקת כל הנתונים',
+    exported: 'הגיבוי נשמר', importBad: 'הקובץ לא נראה כמו גיבוי של האפליקציה', importAsk: 'השחזור יחליף את כל הנתונים הנוכחיים. להמשיך?', imported: 'הנתונים שוחזרו',
+    resetAsk1: 'למחוק את כל הנתונים מהמכשיר? לא ניתן לשחזר בלי קובץ גיבוי.', resetAsk2: 'בטוח? זו הזדמנות אחרונה.', resetDone: 'הכל נמחק', persist: 'אחסון מתמשך',
+    persistYes: 'מאושר — הדפדפן לא ימחק לבד', persistNo: 'לא אושר — כדאי לייצא גיבוי מדי פעם',
+    audNew: 'אני רק מתחיל/ה', audKnown: 'אני כבר מכיר/ה', onbTitle: 'ברוכים הבאים', onbBody: 'סידור, תהילים, מדריכים ולוח תרי״ג מצוות — חינם, בלי פרסומות, ועובד גם בלי אינטרנט. הכל נשמר רק אצלך במכשיר.',
+    onbWho: 'איפה אתה/את על המפה?', onbNusachT: 'באיזה נוסח מתפללים?', onbNameT: 'איך לקרוא לך?', onbNameHint: 'לא חובה', next: 'הבא', start: 'מתחילים', skip: 'דלג',
+    disclaimer: 'האפליקציה נועדה ללמידה ולליווי, ואינה תחליף לפסיקת רב. בשאלות הלכה או מנהג — יש לפנות לרב.',
+    aboutVer: 'גרסה', aboutDev: 'פותח', aboutPlat: 'פלטפורמה', aboutStore: 'אחסון', aboutLic: 'רישיון', storeVal: 'על המכשיר בלבד', free: 'חינם · בלי פרסומות · בלי מנוי',
+    openStore: 'חנות AppNest', share: 'שתף את האפליקציה', feedback: 'שלח משוב', privacy: 'מדיניות פרטיות', copied: 'הקישור הועתק',
+    srcTitle: 'מקורות ורישיונות', srcNote: 'הטקסטים בכל גרסה מסומנים בשם הגרסה ובסוג הרישיון. כרגע האפליקציה היא שלד — עוד לא נטען בה נוסח אמיתי.',
+    srcSefaria: 'ספריא — נוסחי התפילה (אשכנז, ספרד, עדות המזרח), תהילים, ספר החינוך. לכל גרסה רישיון משלה (CC0 / CC-BY / נחלת הכלל / CC-BY-NC…). האפליקציה חינמית ולא מסחרית.',
+    srcHebcal: 'Hebcal — תאריך עברי וזמנים (מתוכנן; רישיון CC-BY 4.0 לתוצרי ה-API).',
+    srcRambam: 'ספר המצוות לרמב״ם — מספור המצוות (עשה 1–248, לא תעשה 1–365). הטקסט המלא יגיע מספר החינוך.',
+    srcTeh: 'חלוקת תהילים ל-30 יום: מתיישבת עם ספריית Hebcal (בדיקה חלקית) — לאמת לפני הפצה.',
+    open: 'פתוח', whatsNext: 'מה בא אחר כך', tabHome: 'בית'
+  },
+  en: {
+    appName: 'Tzadik Nolad', home: 'Home', siddur: 'Siddur', tehillim: 'Psalms', mitzvot: 'Mitzvot', more: 'More', guides: 'Guides',
+    settings: 'Settings', sources: 'Sources & licenses', about: 'About', back: 'Back', yes: 'Yes', no: 'Cancel', ok: 'OK',
+    hello: 'Hello', helloNamed: 'Hello, {0}', today: 'Today', saveFail: 'Saving failed — device storage is full',
+    progress: 'My progress', learned: 'Learned', done: 'Performed', streak: 'day streak', of613: 'of 613',
+    todayTehillim: "Today's Psalms", chapters: 'chapters', openTehillim: 'Open Psalms',
+    beginnerTitle: 'Start here', beginnerBody: 'A short, calm path: what to put on, what to say, and how to pray — step by step.', beginnerBtn: 'Beginner path',
+    contTitle: 'Continue where I stopped', continue: 'Continue',
+    nusach: 'Nusach', nusachAshkenaz: 'Ashkenaz', nusachSefard: 'Sefard', nusachEdot: 'Edot HaMizrach',
+    startHere: 'Start here', allSections: 'All sections', inPrep: 'In preparation', demoSection: 'Demo section (display check)',
+    nusachNote: 'Not sure which nusach is yours? You can change it any time. For questions of custom, ask a rabbi.',
+    fontSize: 'Text size', showEn: 'Show translation', loading: 'Loading…',
+    phSiddur: 'The text of “{0}” is not loaded yet. It will come from a verified source (Sefaria), with its version name and license — not from an AI’s memory.',
+    phTehillim: 'The Psalms text is not loaded yet. It will come from a verified source (Sefaria).',
+    phGuide: 'This guide is in preparation. It will be written from a verified halachic source, with a source and verification status — not from an AI’s memory.',
+    todayLabel: "Today's chapters (30-day cycle)", readToday: 'I read today', readTodayDone: 'Recorded ✓', allPsalms: 'All 150 chapters',
+    tehNote: 'By day of the Hebrew month. After sunset the Hebrew day changes — the app calculates by midnight.',
+    mitzvotTitle: 'The 613 Mitzvot board', aseh: 'Positive', lota: 'Negative', fAll: 'All', fLearned: 'Learned', fDone: 'Performed', fTodo: 'Not yet learned', fNa: 'Not applicable',
+    mitzvotNote: 'Anyone can learn all 613. Performing applies only to the mitzvot that apply to you (e.g. Temple- or priest-related ones do not apply today). “Not applicable” is not counted against you.',
+    mGeneric: '{0} mitzvah #{1}', mGenericBody: 'The details of this mitzvah (source, explanation, how to perform it) will be filled in from Sefer HaChinukh on Sefaria.',
+    stDemo: 'Demo — unverified', stPending: 'Content in preparation', stVerified: 'Verified',
+    iLearned: 'I learned it', iDoneToday: 'I did it today', iNa: 'Not applicable to me', undoDone: 'Undo last', doneCount: 'Performed {0} times · last: {1}',
+    guidesTitle: 'Guides', g_tefillin: 'Putting on tefillin', g_tzitzit: 'Tallit and tzitzit', g_shema: 'Reciting the Shema', g_bentsch: 'Grace after meals', g_brachot: 'Which blessing for what', g_mezuzah: 'Mezuzah', g_candles: 'Shabbat candles', g_pray: 'How to pray — step by step',
+    settingsUser: 'Name (appears in backups and sharing)', settingsLang: 'Language', settingsTheme: 'Color theme', settingsMode: 'Display mode', dark: 'Night', light: 'Day',
+    settingsNusach: 'Default nusach', settingsBackup: 'Backup & restore', export: 'Export backup', import: 'Restore from file', resetAll: 'Delete all data',
+    exported: 'Backup saved', importBad: 'This file does not look like an app backup', importAsk: 'Restoring replaces all current data. Continue?', imported: 'Data restored',
+    resetAsk1: 'Delete all data from this device? It cannot be recovered without a backup file.', resetAsk2: 'Are you sure? Last chance.', resetDone: 'Everything deleted', persist: 'Persistent storage',
+    persistYes: 'Granted — the browser will not clear it on its own', persistNo: 'Not granted — export a backup now and then',
+    audNew: "I'm just starting", audKnown: 'I already know the basics', onbTitle: 'Welcome', onbBody: 'Siddur, Psalms, guides and the 613 mitzvot board — free, no ads, works offline. Everything stays on your device.',
+    onbWho: 'Where are you on the map?', onbNusachT: 'Which nusach do you pray?', onbNameT: 'What should we call you?', onbNameHint: 'Optional', next: 'Next', start: 'Start', skip: 'Skip',
+    disclaimer: 'This app is for learning and accompaniment, not a substitute for a rabbi’s ruling. For halachic or custom questions, ask a rabbi.',
+    aboutVer: 'Version', aboutDev: 'Developer', aboutPlat: 'Platform', aboutStore: 'Storage', aboutLic: 'License', storeVal: 'On this device only', free: 'Free · no ads · no subscription',
+    openStore: 'AppNest store', share: 'Share the app', feedback: 'Send feedback', privacy: 'Privacy policy', copied: 'Link copied',
+    srcTitle: 'Sources & licenses', srcNote: 'Each text is labeled with its version name and license type. Right now this is a skeleton — no real liturgical text is loaded yet.',
+    srcSefaria: 'Sefaria — prayer texts (Ashkenaz, Sefard, Edot HaMizrach), Psalms, Sefer HaChinukh. Each version has its own license (CC0 / CC-BY / Public Domain / CC-BY-NC…). This app is free and non-commercial.',
+    srcHebcal: 'Hebcal — Hebrew date and times (planned; CC-BY 4.0 for API output).',
+    srcRambam: 'Rambam’s Sefer HaMitzvot — numbering (positive 1–248, negative 1–365). Full text will come from Sefer HaChinukh.',
+    srcTeh: 'Psalms 30-day split: consistent with Hebcal’s library (partial check) — verify before release.',
+    open: 'Open', whatsNext: "What's next", tabHome: 'Home'
+  }
+};
+function T(k) {
+  const l = (typeof S !== 'undefined' && S.lang) || 'he';
+  let s = (LANG[l] && LANG[l][k]); if (s == null) s = LANG.en[k]; if (s == null) s = k;
+  for (let i = 1; i < arguments.length; i++) s = s.replace('{' + (i - 1) + '}', arguments[i]);
+  return s;
+}
+
+/* ───── מצב שמור ───── */
+const DEF = { v: 1, user: '', lang: 'he', theme: 'gold', mode: 'dark', nusach: 'ashkenaz', audience: '', fs: 20, showEn: false,
+  onboarded: false, marks: {}, tehDays: {}, last: null, lastBackup: 0 };
+let S = (function () {
+  try { const r = JSON.parse(store.get('state') || 'null'); return Object.assign({}, DEF, r || {}); } catch (e) { return Object.assign({}, DEF); }
+})();
+let _st = null;
+function save() { _st = null; return store.set('state', JSON.stringify(S)); }
+
+/* ───── עזרים ───── */
+const $ = function (s, r) { return (r || document).querySelector(s); };
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function today(d) { d = d || new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function safeName(s) { return String(s).replace(/[^\p{L}\p{N}_-]+/gu, '_').slice(0, 24); }
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove('show'); }, 2200); }
+const ICON = {
+  home: 'M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10',
+  book: 'M12 6c-2-1.5-5-2-8-2v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2zM12 6v14',
+  list: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
+  grid: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',
+  more: 'M5 12h.01M12 12h.01M19 12h.01',
+  back: 'M9 6l6 6-6 6',
+  info: 'M12 8h.01M11 12h1v5h1M12 3a9 9 0 100 18 9 9 0 000-18z',
+  sun: 'M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6L4.2 4.2M19.8 19.8l-1.4-1.4M18.4 5.6l1.4-1.4M4.2 19.8l1.4-1.4M12 7a5 5 0 100 10 5 5 0 000-10z',
+  moon: 'M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z',
+  scroll: 'M7 3h11a2 2 0 012 2v12a3 3 0 01-3 3H6a3 3 0 01-3-3v-1h4V5a2 2 0 012-2zM10 8h6M10 12h6',
+  gear: 'M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1-2 3.4-.2-.1a1.7 1.7 0 00-1.8.1 1.7 1.7 0 00-1 1.5V22h-4v-.2a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8-.1l-.2.1-2-3.4.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H2v-4h.2a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1 2-3.4.2.1a1.7 1.7 0 001.8-.1 1.7 1.7 0 001-1.5V2h4v.2a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8.1l.2-.1 2 3.4-.1.1a1.7 1.7 0 00-.3 1.8 1.7 1.7 0 001.5 1H22v4h-.2a1.7 1.7 0 00-1.4 1z'
+};
+function ic(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + ICON[n] + '"/></svg>'; }
+function hnum(n) {
+  const u = ['', 'א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט'], t = ['', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ']; let s = '';
+  if (n >= 100) { s += 'ק'; n -= 100; }
+  if (n === 15) s += 'טו'; else if (n === 16) s += 'טז'; else s += t[Math.floor(n / 10)] + u[n % 10];
+  return s.length > 1 ? s.slice(0, -1) + '״' + s.slice(-1) : s + '׳';
+}
+function hebDate(d) {
+  try { return new Intl.DateTimeFormat(S.lang === 'he' ? 'he-u-ca-hebrew' : 'en-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d); }
+  catch (e) { return d.toLocaleDateString(); }
+}
+function hebDay(d) { try { return parseInt(new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric' }).format(d), 10); } catch (e) { return d.getDate(); } }
+
+/* ───── נתונים ───── */
+const D = { mitz: null, sid: null };
+function dataUrl(p) { return p + '?v=' + DATA_V; }
+function loadJson(p) { return fetch(dataUrl(p)).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
+function loadCore() {
+  return Promise.all([
+    loadJson('data/mitzvot.json').then(function (j) { const m = {}; (j.items || []).forEach(function (x) { m[x.id] = x; }); D.mitz = { counts: j.counts || { a: 248, l: 365 }, map: m }; }).catch(function () { D.mitz = { counts: { a: 248, l: 365 }, map: {} }; }),
+    loadJson('data/siddur-index.json').then(function (j) { D.sid = j.nusachim || []; }).catch(function () { D.sid = []; })
+  ]);
+}
+
+/* תהילים — חלוקה ל-30 יום (תואם ל-Hebcal: יום 2 = 10-17, ימים 29+30 מאוחדים בחודש של 29 יום = 140-150; קי״ט מתפצל ל-2 ימים).
+   ⚠ נבדק חלקית מול התיעוד של Hebcal — לאמת מול מקור לפני הפצה (מופיע גם במסך "מקורות"). */
+const PS30 = ['1-9', '10-17', '18-22', '23-28', '29-34', '35-38', '39-43', '44-48', '49-54', '55-59', '60-65', '66-68', '69-71', '72-76', '77-78', '79-82', '83-87', '88-89', '90-96', '97-103', '104-105', '106-107', '108-112', '113-118', '119:1-96', '119:97-176', '120-134', '135-139', '140-144', '145-150'];
+function tehToday(d) {
+  const day = hebDay(d), nxt = new Date(d.getTime() + 864e5);
+  let idx = day - 1;
+  if (day === 29 && hebDay(nxt) === 1) return { label: '140-150', from: 140, to: 150 };
+  const r = PS30[Math.min(idx, 29)];
+  if (r.indexOf(':') > -1) return { label: r.replace(':', ' · '), from: 119, to: 119, part: r };
+  const p = r.split('-'); return { label: r, from: +p[0], to: +p[1] };
+}
+
+/* ───── סימונים וסטטיסטיקה (נגזרת, לא שמורה — מתאפסת בכל שמירה) ───── */
+function mk(id) { return S.marks[id] || (S.marks[id] = {}); }
+function stats() {
+  if (_st) return _st;
+  let learned = 0, done = 0, na = 0; const days = {};
+  Object.keys(S.marks).forEach(function (id) {
+    const m = S.marks[id];
+    if (m.l) learned++;
+    if (m.d && m.d.length) { done++; m.d.forEach(function (x) { days[x] = 1; }); }
+    if (m.na) na++;
+  });
+  Object.keys(S.tehDays).forEach(function (x) { days[x] = 1; });
+  let streak = 0, d = new Date(); if (!days[today(d)]) d = new Date(d.getTime() - 864e5);
+  while (days[today(d)]) { streak++; d = new Date(d.getTime() - 864e5); }
+  return (_st = { learned: learned, done: done, na: na, streak: streak });
+}
+function mState(id) { const m = S.marks[id]; if (!m) return ''; if (m.na) return 'na'; if (m.d && m.d.length) return 'd'; if (m.l) return 'l'; return ''; }
+
+/* ───── ניווט ───── */
+const R = { screen: 'home', params: {}, mf: 'all', rdBack: 'home' };
+const SCREENS = {};
+const NAV = [['home', 'home', 'home'], ['siddur', 'book', 'siddur'], ['tehillim', 'list', 'tehillim'], ['mitzvot', 'grid', 'mitzvot'], ['more', 'more', 'more']];
+const TOPNAV = { home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', settings: 'more', sources: 'more', about: 'more' };
+function go(name, params) { R.screen = name; R.params = params || {}; render(); $('#view').scrollTop = 0; }
+function render() {
+  const v = $('#view'); const fn = SCREENS[R.screen] || SCREENS.home;
+  const keep = R.screen === 'reader' ? R.title : null; R.title = keep;
+  const body = fn(R.params);
+  $('#hTitle').textContent = R.screen === 'home' ? T('appName') : (R.title || T(R.screen === 'reader' ? 'siddur' : R.screen));
+  R.title = keep;
+  v.innerHTML = body + '<div class="badge">AppNest · צדיק נולד ' + VERSION + '</div>';
+  const back = $('#hBack'); back.hidden = R.screen === 'home';
+  const act = TOPNAV[R.screen] || (R.rdBack && TOPNAV[R.rdBack]) || '';
+  $('#nav').innerHTML = NAV.map(function (n) { return '<button data-act="nav" data-to="' + n[0] + '" class="' + (act === n[0] ? 'on' : '') + '" aria-label="' + esc(T(n[2])) + '">' + ic(n[1]) + '<span>' + esc(T(n[2])) + '</span></button>'; }).join('');
+  if (R.after) { const f = R.after; R.after = null; f(); }
+}
+function setTitle(t) { R.title = t; }
+
+/* ───── חלונות: מנהל אחד (חלק ל״ב) + הגנת קליק רפאים (חלק ל״א) ───── */
+const WM = { stack: [], skip: 0 };
+function openModal(html, acts) {
+  const ov = document.createElement('div'); ov.className = 'modal-overlay';
+  ov.innerHTML = '<div class="modal" role="dialog" aria-modal="true">' + html + '</div>';
+  const m = { ov: ov, t0: Date.now(), acts: acts || {}, close: function () { closeModal(m); } };
+  ov.addEventListener('click', function (e) {
+    if (Date.now() - m.t0 < 450) { e.preventDefault(); e.stopPropagation(); return; }   /* קליק רפאים */
+    if (e.target === ov) { m.close(); return; }
+    const el = e.target.closest('[data-act]');
+    if (el && ov.contains(el) && m.acts[el.dataset.act]) m.acts[el.dataset.act](el, e, m);
+  }, true);
+  document.body.appendChild(ov);
+  requestAnimationFrame(function () { ov.classList.add('open'); });
+  WM.stack.push(m); history.pushState({ m: WM.stack.length }, ''); document.body.classList.add('ov-open');
+  return m;
+}
+function closeModal(m, fromPop) {
+  const i = WM.stack.indexOf(m); if (i < 0) return;
+  WM.stack.splice(i, 1); m.ov.remove();
+  if (!WM.stack.length) document.body.classList.remove('ov-open');
+  if (!fromPop) { WM.skip++; history.back(); }
+  if (m.onclose) m.onclose();
+}
+function appConfirm(text, o) {
+  o = o || {};
+  return new Promise(function (res) {
+    let done = false; const fin = function (v) { if (!done) { done = true; res(v); } };
+    const m = openModal('<p class="mtxt">' + esc(text) + '</p><div class="mbtns"><button class="btn ' + (o.danger ? 'danger' : 'pri') + '" data-act="y">' + esc(o.yes || T('yes')) + '</button><button class="btn" data-act="n">' + esc(o.no || T('no')) + '</button></div>',
+      { y: function (el, e, mm) { fin(true); mm.close(); }, n: function (el, e, mm) { fin(false); mm.close(); } });
+    m.onclose = function () { fin(false); };
+  });
+}
+window.addEventListener('popstate', function () {
+  if (WM.skip > 0) { WM.skip--; return; }
+  if (WM.stack.length) { closeModal(WM.stack[WM.stack.length - 1], true); return; }
+  if (R.screen !== 'home') { go(R.screen === 'reader' ? (R.rdBack || 'home') : 'home'); history.pushState({ g: 1 }, ''); return; }
+  history.back();
+});
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && WM.stack.length) closeModal(WM.stack[WM.stack.length - 1]); });
+
+/* ───── עיצוב / יישום הגדרות ───── */
+function apply() {
+  const h = document.documentElement;
+  h.dataset.theme = S.theme; h.dataset.mode = S.mode; h.lang = S.lang; h.dir = S.lang === 'he' ? 'rtl' : 'ltr';
+  h.style.setProperty('--fs', S.fs + 'px');
+  const meta = $('meta[name=theme-color]'); if (meta) meta.content = S.mode === 'dark' ? '#0b0b0b' : '#f6f1e3';
+  $('#hBack').innerHTML = ic('back'); $('#hAbout').innerHTML = ic('info');
+  $('#hMode').innerHTML = ic(S.mode === 'dark' ? 'sun' : 'moon');
+  $('#hBack').setAttribute('aria-label', T('back')); $('#hAbout').setAttribute('aria-label', T('about'));
+  document.title = T('appName');
+}
+const nuName = function (id) { return { ashkenaz: T('nusachAshkenaz'), sefard: T('nusachSefard'), edot: T('nusachEdot') }[id] || id; };
+
+/* ───── מסכים ───── */
+SCREENS.home = function () {
+  const st = stats(), pct = Math.min(1, st.learned / 613), C = 2 * Math.PI * 36, now = new Date(), th = tehToday(now);
+  let h = '<div class="card"><h2>' + esc(S.user ? T('helloNamed', S.user) : T('hello')) + '</h2><p>' + esc(hebDate(now)) + '</p></div>';
+  if (S.audience === 'new') h += '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="guides">' + esc(T('beginnerBtn')) + '</button></div>';
+  h += '<div class="big">' +
+    '<button data-act="go" data-to="siddur">' + ic('book') + esc(T('siddur')) + '</button>' +
+    '<button data-act="go" data-to="tehillim">' + ic('list') + esc(T('tehillim')) + '</button>' +
+    '<button data-act="go" data-to="mitzvot">' + ic('grid') + esc(T('mitzvot')) + '</button>' +
+    '<button data-act="go" data-to="guides">' + ic('scroll') + esc(T('guides')) + '</button></div>';
+  h += '<div class="card"><h2>' + esc(T('progress')) + '</h2><div class="ring"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="36" fill="none" stroke="var(--bd)" stroke-width="9"/><circle cx="46" cy="46" r="36" fill="none" stroke="var(--ac)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (pct * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 46 46)"/></svg>' +
+    '<div><div class="num">' + st.learned + '</div><div class="mu sm">' + esc(T('learned')) + ' · ' + esc(T('of613')) + '</div><div class="sm" style="margin-top:6px">' + esc(T('done')) + ': <b>' + st.done + '</b> · ' + st.streak + ' ' + esc(T('streak')) + '</div></div></div></div>';
+  h += '<div class="card"><h2>' + esc(T('todayTehillim')) + '</h2><p>' + esc(th.label) + ' <span class="mu sm">(' + esc(T('chapters')) + ')</span></p><button class="btn blk" data-act="go" data-to="tehillim">' + esc(T('openTehillim')) + '</button></div>';
+  if (S.last && S.last.kind === 'siddur') h += '<div class="card"><h2>' + esc(T('contTitle')) + '</h2><p>' + esc(S.last.title) + '</p><button class="btn blk" data-act="cont">' + esc(T('continue')) + '</button></div>';
+  h += '<p class="mu sm" style="text-align:center">' + esc(T('disclaimer')) + '</p>';
+  return h;
+};
+
+SCREENS.siddur = function () {
+  const nus = (D.sid || []).find(function (n) { return n.id === (R.params.nusach || S.nusach); }) || (D.sid || [])[0];
+  let h = '<div class="chips">' + (D.sid || []).map(function (n) { return '<button class="chip ' + (nus && n.id === nus.id ? 'on' : '') + '" data-act="nus" data-id="' + n.id + '">' + esc(nuName(n.id)) + '</button>'; }).join('') + '</div>';
+  h += '<p class="mu sm">' + esc(T('nusachNote')) + '</p>';
+  if (!nus) return h + '<div class="ph">' + esc(T('loading')) + '</div>';
+  const row = function (s) { return '<button class="item ' + (s.core ? 'core' : '') + '" data-act="sec" data-nu="' + nus.id + '" data-id="' + s.id + '"><span class="t"><b>' + esc(S.lang === 'he' ? s.he : s.en) + '</b></span>' + (s.ready ? '' : '<span class="tag warn">' + esc(T('inPrep')) + '</span>') + '</button>'; };
+  const core = nus.sections.filter(function (s) { return s.core; }), rest = nus.sections.filter(function (s) { return !s.core; });
+  if (nus.id === 'ashkenaz') h += '<div class="gh">' + esc(T('demoSection')) + '</div><div class="list" style="margin-bottom:14px"><button class="item" data-act="demo"><span class="t"><b>' + esc(T('demoSection')) + '</b></span><span class="tag">demo</span></button></div>';
+  if (core.length) h += '<div class="gh">' + esc(T('startHere')) + '</div><div class="list" style="margin-bottom:14px">' + core.map(row).join('') + '</div>';
+  if (rest.length) h += '<div class="gh">' + esc(T('allSections')) + '</div><div class="list">' + rest.map(row).join('') + '</div>';
+  return h;
+};
+
+SCREENS.reader = function (p) {
+  /* p: {kind, title, path?, ph?} — path = קובץ נתונים; ללא קובץ → הודעת "בהכנה" כנה */
+  let h = '<div class="row" style="margin-bottom:12px"><button class="btn" data-act="fs" data-d="-2" aria-label="A-">A−</button><button class="btn" data-act="fs" data-d="2" aria-label="A+">A+</button><button class="btn" data-act="toggleEn" aria-pressed="' + (S.showEn ? 'true' : 'false') + '">' + esc(T('showEn')) + '</button></div>';
+  h += '<div id="rdBody" class="reader"><div class="ph">' + esc(T('loading')) + '</div></div>';
+  R.after = function () { fillReader(p); };
+  return h;
+};
+function fillReader(p) {
+  const box = $('#rdBody'); if (!box) return;
+  const ph = function () { box.innerHTML = '<div class="ph">' + esc(p.ph || '') + '</div>'; };
+  if (!p.path) { ph(); return; }
+  loadJson(p.path).then(function (j) {
+    if (!$('#rdBody')) return;
+    const segs = (j.segments || []).map(function (s) { return '<p class="seg">' + esc(s.he) + '</p>' + (S.showEn && s.en ? '<p class="en" dir="ltr">' + esc(s.en) + '</p>' : '') + (s.note ? '<p class="en">' + esc(s.note) + '</p>' : ''); }).join('');
+    const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
+    box.innerHTML = (j.status && j.status !== 'verified' ? '<p><span class="tag warn">' + esc(j.status === 'demo' ? T('stDemo') : T('stPending')) + '</span></p>' : '') + segs + (vers ? '<p class="en" style="margin-top:20px">' + vers + '</p>' : '');
+  }).catch(ph);
+}
+
+SCREENS.tehillim = function () {
+  const th = tehToday(new Date()), done = !!S.tehDays[today()];
+  let h = '<div class="card"><h2>' + esc(T('todayLabel')) + '</h2><p style="font-size:24px;font-weight:800;color:var(--ac)">' + esc(th.label) + '</p>' +
+    '<div class="row"><button class="btn pri" data-act="tehOpen" data-from="' + th.from + '" data-to="' + th.to + '">' + esc(T('openTehillim')) + '</button>' +
+    '<button class="btn" data-act="tehRead" ' + (done ? 'aria-pressed="true"' : '') + '>' + esc(done ? T('readTodayDone') : T('readToday')) + '</button></div>' +
+    '<p class="mu sm">' + esc(T('tehNote')) + '</p></div>';
+  h += '<div class="gh">' + esc(T('allPsalms')) + '</div><div class="grid">';
+  for (let i = 1; i <= 150; i++) h += '<button class="mc ' + (i >= th.from && i <= th.to ? 'l' : '') + '" data-act="tehCh" data-n="' + i + '" aria-label="' + i + '">' + (S.lang === 'he' ? hnum(i) : i) + '</button>';
+  return h + '</div>';
+};
+
+const GUIDES = ['g_pray', 'g_tefillin', 'g_tzitzit', 'g_shema', 'g_brachot', 'g_bentsch', 'g_mezuzah', 'g_candles'];
+SCREENS.guides = function () {
+  setTitle(T('guidesTitle'));
+  return '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p></div><div class="list">' +
+    GUIDES.map(function (g) { return '<button class="item" data-act="guide" data-id="' + g + '"><span class="t"><b>' + esc(T(g)) + '</b></span><span class="tag warn">' + esc(T('inPrep')) + '</span></button>'; }).join('') + '</div>';
+};
+
+SCREENS.mitzvot = function () {
+  setTitle(T('mitzvotTitle'));
+  const f = R.mf, st = stats(), cnt = (D.mitz && D.mitz.counts) || { a: 248, l: 365 };
+  const F = [['all', 'fAll'], ['a', 'aseh'], ['l', 'lota'], ['learned', 'fLearned'], ['done', 'fDone'], ['todo', 'fTodo'], ['na', 'fNa']];
+  let h = '<div class="card"><p><b>' + st.learned + '</b> / 613 · ' + esc(T('done')) + ': <b>' + st.done + '</b></p><p class="mu sm">' + esc(T('mitzvotNote')) + '</p></div>';
+  h += '<div class="chips">' + F.map(function (x) { return '<button class="chip ' + (f === x[0] ? 'on' : '') + '" data-act="mf" data-f="' + x[0] + '">' + esc(T(x[1])) + '</button>'; }).join('') + '</div>';
+  const show = function (id) {
+    const s = mState(id);
+    if (f === 'learned') return !!(S.marks[id] && S.marks[id].l);
+    if (f === 'done') return s === 'd';
+    if (f === 'todo') return !(S.marks[id] && S.marks[id].l);
+    if (f === 'na') return s === 'na';
+    return true;
+  };
+  [['a', 'aseh'], ['l', 'lota']].forEach(function (g) {
+    if (f === 'a' && g[0] === 'l' || f === 'l' && g[0] === 'a') return;
+    let cells = '';
+    for (let i = 1; i <= cnt[g[0]]; i++) { const id = g[0] + i; if (!show(id)) continue; cells += '<button class="mc ' + mState(id) + '" data-act="mz" data-id="' + id + '" aria-label="' + esc(T(g[1]) + ' ' + i) + '">' + i + '</button>'; }
+    h += '<div class="gh">' + esc(T(g[1])) + ' (' + cnt[g[0]] + ')</div><div class="grid">' + (cells || '<span class="mu sm">—</span>') + '</div>';
+  });
+  return h;
+};
+function openMitzvah(id) {
+  const type = id[0] === 'a' ? T('aseh') : T('lota'), num = id.slice(1), it = (D.mitz && D.mitz.map[id]) || null, m = S.marks[id] || {};
+  const status = it ? (it.status === 'verified' ? '<span class="tag ok">' + esc(T('stVerified')) + '</span>' : '<span class="tag warn">' + esc(it.status === 'demo' ? T('stDemo') : T('stPending')) + '</span>') : '<span class="tag warn">' + esc(T('stPending')) + '</span>';
+  const title = it && it.he ? it.he : T('mGeneric', type, num);
+  const last = m.d && m.d.length ? m.d[m.d.length - 1] : '';
+  const body = function () {
+    const mm = S.marks[id] || {}; const l2 = mm.d && mm.d.length ? mm.d[mm.d.length - 1] : '';
+    return '<h3>' + esc(title) + '</h3><p>' + esc(type) + ' · ' + esc(num) + ' ' + status + '</p>' + (it && it.he ? '' : '<p class="mu">' + esc(T('mGenericBody')) + '</p>') +
+      '<div class="mbtns"><button class="btn" data-act="mL" aria-pressed="' + (mm.l ? 'true' : 'false') + '">' + esc(T('iLearned')) + '</button>' +
+      '<button class="btn" data-act="mD">' + esc(T('iDoneToday')) + '</button>' +
+      (mm.d && mm.d.length ? '<p class="mu sm" style="margin:2px 0">' + esc(T('doneCount', mm.d.length, l2)) + '</p><button class="btn" data-act="mU">' + esc(T('undoDone')) + '</button>' : '') +
+      '<button class="btn" data-act="mN" aria-pressed="' + (mm.na ? 'true' : 'false') + '">' + esc(T('iNa')) + '</button></div>';
+  };
+  const redraw = function (mod) { $('.modal', mod.ov).innerHTML = body(); if (R.screen === 'mitzvot') { const y = $('#view').scrollTop; render(); $('#view').scrollTop = y; } if (R.screen === 'home') render(); };
+  openModal(body(), {
+    mL: function (el, e, mod) { const x = mk(id); if (x.l) delete x.l; else x.l = today(); save(); redraw(mod); },
+    mD: function (el, e, mod) { const x = mk(id); x.d = x.d || []; const t = today(); if (x.d.indexOf(t) < 0) x.d.push(t); if (!x.l) x.l = t; delete x.na; save(); toast('✓'); redraw(mod); },
+    mU: function (el, e, mod) { const x = mk(id); if (x.d && x.d.length) x.d.pop(); save(); redraw(mod); },
+    mN: function (el, e, mod) { const x = mk(id); if (x.na) delete x.na; else x.na = true; save(); redraw(mod); }
+  });
+}
+
+SCREENS.more = function () {
+  setTitle(T('more'));
+  const row = function (to, ico, key) { return '<button class="item" data-act="go" data-to="' + to + '"><span style="color:var(--ac);display:grid;width:26px">' + ic(ico) + '</span><span class="t"><b>' + esc(T(key)) + '</b></span></button>'; };
+  return '<div class="list">' + row('guides', 'scroll', 'guides') + row('settings', 'gear', 'settings') + row('sources', 'book', 'sources') + row('about', 'info', 'about') + '</div>';
+};
+
+SCREENS.settings = function () {
+  setTitle(T('settings'));
+  const themes = ['gold', 'blue', 'green', 'purple', 'red'], cols = { gold: '#d4af37', blue: '#5aa9ff', green: '#4cc38a', purple: '#b18cff', red: '#ff7a7a' };
+  const opt = function (v, t, cur) { return '<option value="' + v + '"' + (cur === v ? ' selected' : '') + '>' + esc(t) + '</option>'; };
+  let persist = '';
+  R.after = function () { if (navigator.storage && navigator.storage.persisted) navigator.storage.persisted().then(function (p) { const e = $('#persistTxt'); if (e) e.textContent = p ? T('persistYes') : T('persistNo'); }); };
+  return '<div class="card"><label class="f" for="fUser">' + esc(T('settingsUser')) + '</label><input type="text" id="fUser" value="' + esc(S.user) + '" maxlength="40" autocomplete="off">' +
+    '<label class="f" for="fLang">' + esc(T('settingsLang')) + '</label><select id="fLang">' + opt('he', 'עברית', S.lang) + opt('en', 'English', S.lang) + '</select>' +
+    '<label class="f">' + esc(T('settingsTheme')) + '</label><div class="dots">' + themes.map(function (t) { return '<button class="dot ' + (S.theme === t ? 'on' : '') + '" style="background:' + cols[t] + '" data-act="setTheme" data-t="' + t + '" aria-label="' + t + '"></button>'; }).join('') + '</div>' +
+    '<label class="f">' + esc(T('settingsMode')) + '</label><div class="row"><button class="btn" data-act="setMode" data-m="dark" aria-pressed="' + (S.mode === 'dark') + '">' + esc(T('dark')) + '</button><button class="btn" data-act="setMode" data-m="light" aria-pressed="' + (S.mode === 'light') + '">' + esc(T('light')) + '</button></div>' +
+    '<label class="f" for="fNus">' + esc(T('settingsNusach')) + '</label><select id="fNus">' + ['ashkenaz', 'sefard', 'edot'].map(function (n) { return opt(n, nuName(n), S.nusach); }).join('') + '</select>' +
+    '<label class="f" for="fFs">' + esc(T('fontSize')) + ' (' + S.fs + ')</label><input type="range" id="fFs" min="14" max="36" step="2" value="' + S.fs + '"></div>' +
+    '<div class="card"><h2>' + esc(T('settingsBackup')) + '</h2><div class="mbtns" style="margin-top:0"><button class="btn" data-act="export">' + esc(T('export')) + '</button><button class="btn" data-act="import">' + esc(T('import')) + '</button>' +
+    '<input type="file" id="fImp" accept="application/json,.json" hidden><p class="mu sm">' + esc(T('persist')) + ': <span id="persistTxt">…</span></p>' +
+    '<button class="btn danger" data-act="reset">' + esc(T('resetAll')) + '</button></div></div>';
+};
+
+SCREENS.sources = function () {
+  setTitle(T('sources'));
+  return '<div class="card"><p class="mu">' + esc(T('srcNote')) + '</p></div>' +
+    ['srcSefaria', 'srcHebcal', 'srcRambam', 'srcTeh'].map(function (k) { return '<div class="card"><p>' + esc(T(k)) + '</p></div>'; }).join('');
+};
+
+SCREENS.about = function () {
+  setTitle(T('about'));
+  const rw = function (a, b) { return '<p style="display:flex;justify-content:space-between;gap:12px;margin:8px 0"><span class="mu">' + esc(a) + '</span><b style="text-align:end">' + esc(b) + '</b></p>'; };
+  return '<div class="card" style="text-align:center"><img src="icon-192.png" alt="" width="84" height="84" style="border-radius:20px"><h2 style="margin-top:10px">' + esc(T('appName')) + '</h2><p class="mu">' + esc(T('free')) + '</p></div>' +
+    '<div class="card">' + rw(T('aboutVer'), VERSION) + rw(T('aboutDev'), 'Barak Aflalo') + rw(T('aboutPlat'), 'PWA · HTML5') + rw(T('aboutStore'), T('storeVal')) + rw(T('aboutLic'), '© AppNest 2026') + '</div>' +
+    '<div class="mbtns"><a class="btn" href="https://appnest-store.pages.dev" target="_blank" rel="noopener">' + esc(T('openStore')) + '</a><button class="btn" data-act="share">' + esc(T('share')) + '</button>' +
+    '<a class="btn" href="mailto:appnest55@gmail.com?subject=' + encodeURIComponent('צדיק נולד ' + VERSION) + '">' + esc(T('feedback')) + '</a><a class="btn" href="privacy_policy.html">🔒 ' + esc(T('privacy')) + '</a></div>' +
+    '<p class="mu sm" style="margin-top:16px">' + esc(T('disclaimer')) + '</p>';
+};
+
+/* ───── פעולות (event delegation) ───── */
+function openReader(o, back) { R.rdBack = back || R.screen; R.title = o.title; if (o.kind === 'siddur') { S.last = { kind: 'siddur', title: o.title, nu: o.nu, id: o.id }; save(); } go('reader', o); }
+const ACT = {
+  go: function (el) { go(el.dataset.to); },
+  nav: function (el) { go(el.dataset.to); },
+  back: function () { go(R.screen === 'reader' ? (R.rdBack || 'home') : 'home'); },
+  about: function () { go('about'); },
+  theme: function () { S.mode = S.mode === 'dark' ? 'light' : 'dark'; save(); apply(); if (R.screen === 'settings') render(); },
+  cont: function () { const l = S.last; if (l) openSection(l.nu, l.id); },
+  nus: function (el) { S.nusach = el.dataset.id; save(); go('siddur', { nusach: el.dataset.id }); },
+  sec: function (el) { openSection(el.dataset.nu, el.dataset.id); },
+  demo: function () { openReader({ kind: 'siddur', nu: 'ashkenaz', id: 'demo', title: T('demoSection'), path: 'data/siddur/ashkenaz/demo.json' }, 'siddur'); },
+  fs: function (el) { S.fs = Math.max(14, Math.min(36, S.fs + (+el.dataset.d))); save(); apply(); },
+  toggleEn: function () { S.showEn = !S.showEn; save(); const p = R.params; render(); },
+  tehOpen: function (el) { const f = +el.dataset.from; tehReader(f, +el.dataset.to); },
+  tehCh: function (el) { tehReader(+el.dataset.n, +el.dataset.n); },
+  tehRead: function () { const t = today(); if (S.tehDays[t]) delete S.tehDays[t]; else S.tehDays[t] = 1; save(); render(); },
+  guide: function (el) { openReader({ kind: 'guide', title: T(el.dataset.id), ph: T('phGuide') }, 'guides'); },
+  mf: function (el) { R.mf = el.dataset.f; const y = $('#view').scrollTop; render(); $('#view').scrollTop = y; },
+  mz: function (el) { openMitzvah(el.dataset.id); },
+  setTheme: function (el) { S.theme = el.dataset.t; save(); apply(); render(); },
+  setMode: function (el) { S.mode = el.dataset.m; save(); apply(); render(); },
+  export: exportBackup,
+  import: function () { $('#fImp').click(); },
+  reset: function () {
+    appConfirm(T('resetAsk1'), { danger: true }).then(function (a) { if (!a) return; return appConfirm(T('resetAsk2'), { danger: true }).then(function (b) { if (!b) return; store.clearAll(); S = Object.assign({}, DEF, { marks: {}, tehDays: {} }); _st = null; apply(); go('home'); toast(T('resetDone')); setTimeout(wizard, 300); }); });
+  },
+  share: function () {
+    const url = location.href.split('?')[0];
+    if (navigator.share) navigator.share({ title: T('appName'), text: (S.user ? S.user + ' · ' : '') + T('appName'), url: url }).catch(function () {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { toast(T('copied')); });
+  }
+};
+function openSection(nu, id) {
+  const n = (D.sid || []).find(function (x) { return x.id === nu; }); const s = n && n.sections.find(function (x) { return x.id === id; }); if (!s) return;
+  const title = nuName(nu) + ' · ' + (S.lang === 'he' ? s.he : s.en);
+  openReader({ kind: 'siddur', nu: nu, id: id, title: title, path: s.ready ? 'data/siddur/' + nu + '/' + id + '.json' : null, ph: T('phSiddur', S.lang === 'he' ? s.he : s.en) }, 'siddur');
+}
+function tehReader(from, to) { openReader({ kind: 'tehillim', title: T('tehillim') + ' ' + (S.lang === 'he' ? hnum(from) + (to > from ? '–' + hnum(to) : '') : from + (to > from ? '–' + to : '')), ph: T('phTehillim') }, 'tehillim'); }
+document.addEventListener('click', function (e) {
+  if (e.target.closest('.modal-overlay')) return;                         /* החלונות מטופלים בעצמם */
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const f = ACT[el.dataset.act]; if (f) f(el, e);
+});
+document.addEventListener('input', function (e) {
+  const id = e.target.id;
+  if (id === 'fUser') { S.user = e.target.value.slice(0, 40); save(); }
+  else if (id === 'fFs') { S.fs = +e.target.value; save(); apply(); }
+});
+document.addEventListener('change', function (e) {
+  const id = e.target.id;
+  if (id === 'fLang') { S.lang = e.target.value; save(); apply(); render(); }
+  else if (id === 'fNus') { S.nusach = e.target.value; save(); }
+  else if (id === 'fImp') importBackup(e.target);
+});
+
+/* ───── גיבוי ושחזור (פורמט אחד: {app, version, exportedAt, user, data}) ───── */
+function exportBackup() {
+  const out = { app: 'tzadik-nolad', version: VERSION, exportedAt: new Date().toISOString(), user: S.user, data: { state: S } };
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(out)], { type: 'application/json' }));
+  a.download = 'tzadik-nolad-' + (S.user ? safeName(S.user) + '-' : '') + today() + '.json'; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000); S.lastBackup = Date.now(); save(); toast(T('exported'));
+}
+function importBackup(inp) {
+  const f = inp.files && inp.files[0]; inp.value = ''; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = function () {
+    let j; try { j = JSON.parse(rd.result); } catch (e) { toast(T('importBad')); return; }
+    if (!j || j.app !== 'tzadik-nolad' || !j.data || !j.data.state) { toast(T('importBad')); return; }
+    appConfirm(T('importAsk')).then(function (ok) { if (!ok) return; S = Object.assign({}, DEF, j.data.state); save(); apply(); render(); toast(T('imported')); });
+  };
+  rd.readAsText(f);
+}
+
+/* ───── מדריך פתיחה (חלון הסכמה — מחוץ למחסנית החלונות, חזרה לא עוקפת אותו) ───── */
+function wizard() {
+  if (S.onboarded) return;
+  let step = 0; const w = document.createElement('div'); w.className = 'wiz';
+  const draw = function () {
+    const dots = '<div class="steps">' + [0, 1, 2].map(function (i) { return '<i class="' + (i === step ? 'on' : '') + '"></i>'; }).join('') + '</div>';
+    let h = '';
+    if (step === 0) h = '<h2>' + esc(T('onbTitle')) + '</h2><p>' + esc(T('onbBody')) + '</p><p class="mu sm">' + esc(T('disclaimer')) + '</p><h3>' + esc(T('onbWho')) + '</h3>' +
+      '<button class="opt ' + (S.audience === 'new' ? 'on' : '') + '" data-w="aud" data-v="new">' + esc(T('audNew')) + '</button><button class="opt ' + (S.audience === 'known' ? 'on' : '') + '" data-w="aud" data-v="known">' + esc(T('audKnown')) + '</button>';
+    else if (step === 1) h = '<h2>' + esc(T('onbNusachT')) + '</h2>' + ['ashkenaz', 'sefard', 'edot'].map(function (n) { return '<button class="opt ' + (S.nusach === n ? 'on' : '') + '" data-w="nus" data-v="' + n + '">' + esc(nuName(n)) + '</button>'; }).join('') + '<p class="mu sm">' + esc(T('nusachNote')) + '</p>';
+    else h = '<h2>' + esc(T('onbNameT')) + '</h2><input type="text" id="wName" value="' + esc(S.user) + '" maxlength="40" placeholder="' + esc(T('onbNameHint')) + '" autocomplete="off">';
+    w.innerHTML = '<div class="box">' + dots + h + '<div class="mbtns"><button class="btn pri" data-w="next">' + esc(step === 2 ? T('start') : T('next')) + '</button>' + (step < 2 ? '<button class="btn" data-w="skip">' + esc(T('skip')) + '</button>' : '') + '</div></div>';
+  };
+  const finish = function () { const n = $('#wName', w); if (n) S.user = n.value.slice(0, 40); S.onboarded = true; save(); w.remove(); render(); };
+  w.addEventListener('click', function (e) {
+    const b = e.target.closest('[data-w]'); if (!b) return; const k = b.dataset.w;
+    if (k === 'aud') { S.audience = b.dataset.v; save(); draw(); }
+    else if (k === 'nus') { S.nusach = b.dataset.v; save(); draw(); }
+    else if (k === 'next') { if (step === 2) finish(); else { step++; draw(); } }
+    else if (k === 'skip') finish();
+  });
+  document.body.appendChild(w); draw();
+}
+
+/* ───── אתחול ───── */
+function init() {
+  apply();
+  history.replaceState({ r: 1 }, ''); history.pushState({ g: 1 }, '');
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {});
+  const q = new URLSearchParams(location.search), go0 = q.get('go');
+  if (go0 && SCREENS[go0] && go0 !== 'reader') { R.screen = go0; history.replaceState({ g: 1 }, '', location.pathname); }
+  loadCore().then(function () { render(); wizard(); });
+  render();
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost') && !/[?&]nosw/.test(location.search)) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "_comment": "קובץ הדגמה בלבד — מוכיח שהקורא עובד. אין כאן נוסח תפילה. נמחק כשיגיע הנוסח האמיתי.",
+  "title": { "he": "דוגמה לתצוגה", "en": "Display demo" },
+  "nusach": "ashkenaz",
+  "status": "demo",
+  "versions": [
+    { "lang": "he", "title": "הדגמה", "license": "—" }
+  ],
+  "segments": [
+    { "he": "זהו טקסט הדגמה לבדיקת התצוגה, הגודל והגלילה.", "en": "This is demo text for checking display, size and scrolling." },
+    { "he": "כשיגיע נוסח אמיתי מספריא, כל קטע יוצג כאן עם התרגום לצידו.", "en": "When real text arrives from Sefaria, each segment will show here with its translation." },
+    { "he": "אין בקובץ הזה שום נוסח תפילה.", "en": "This file contains no liturgical text." }
+  ]
+}
