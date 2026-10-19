@@ -80,6 +80,11 @@ input[type=range]{width:100%;accent-color:var(--ac)}
 .reader{font-family:var(--read);font-size:var(--fs);line-height:1.9}
 .reader .seg{margin:0 0 14px}
 .reader .en{font-family:var(--ui);font-size:.72em;color:var(--mu);line-height:1.6;margin:-8px 0 16px}
+.rub{color:var(--mu);font-family:var(--ui);font-size:.62em;font-style:italic}
+.seg.rb{margin:-6px 0 14px}
+.grp{font-family:var(--ui);font-size:14px;color:var(--mu);margin:26px 0 4px;letter-spacing:.3px}
+.pt{font-family:var(--ui);font-size:17px;color:var(--ac);margin:18px 0 8px;scroll-margin-top:8px}
+.jump{margin-bottom:12px}
 .ph{border:1px dashed var(--ac);border-radius:14px;padding:16px;line-height:1.7;font-family:var(--ui);font-size:16px}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:flex-end;justify-content:center;z-index:60;opacity:0;transition:opacity .15s}
 .modal-overlay.open{opacity:1}
@@ -120,8 +125,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.2.0';
-const DATA_V  = '2';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.3.0';
+const DATA_V  = '3';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -152,6 +157,7 @@ const LANG = {
     phSiddur: 'הנוסח של «{0}» עוד לא נטען לאפליקציה. הוא יגיע ממקור מאומת (ספריא), עם שם הגרסה והרישיון שלה — לא מהזיכרון של בינה.',
     phTehillim: 'נוסח התהילים עוד לא נטען. הוא יגיע ממקור מאומת (ספריא).',
     phGuide: 'המדריך הזה בהכנה. הוא ייכתב ממקור הלכתי מאומת, עם סימון מקור וסטטוס אימות — ולא מהזיכרון של בינה.',
+    jumpTo: 'קפוץ לחלק בתפילה…', partMissing: 'החלק הזה עוד לא נטען — אין לו עדיין גרסה ברישיון ברור. לא נכתב מהזיכרון.',
     todayLabel: 'פרקי היום (חלוקה ל-30 יום)', readToday: 'קראתי היום', readTodayDone: 'נרשם ✓', allPsalms: 'כל 150 הפרקים',
     tehNote: 'החלוקה לפי יום בחודש העברי. אחרי השקיעה היום העברי מתחלף — האפליקציה מחשבת לפי חצות.',
     mitzvotTitle: 'לוח תרי״ג המצוות', aseh: 'עשה', lota: 'לא תעשה', fAll: 'הכל', fLearned: 'נלמדו', fDone: 'קויימו', fTodo: 'טרם נלמדו', fNa: 'לא חלות עליי',
@@ -192,6 +198,7 @@ const LANG = {
     phSiddur: 'The text of “{0}” is not loaded yet. It will come from a verified source (Sefaria), with its version name and license — not from an AI’s memory.',
     phTehillim: 'The Psalms text is not loaded yet. It will come from a verified source (Sefaria).',
     phGuide: 'This guide is in preparation. It will be written from a verified halachic source, with a source and verification status — not from an AI’s memory.',
+    jumpTo: 'Jump to a part…', partMissing: 'This part is not loaded yet — no clearly licensed version exists. It is not written from memory.',
     todayLabel: "Today's chapters (30-day cycle)", readToday: 'I read today', readTodayDone: 'Recorded ✓', allPsalms: 'All 150 chapters',
     tehNote: 'By day of the Hebrew month. After sunset the Hebrew day changes — the app calculates by midnight.',
     mitzvotTitle: 'The 613 Mitzvot board', aseh: 'Positive', lota: 'Negative', fAll: 'All', fLearned: 'Learned', fDone: 'Performed', fTodo: 'Not yet learned', fNa: 'Not applicable',
@@ -407,7 +414,6 @@ SCREENS.siddur = function () {
   if (!nus) return h + '<div class="ph">' + esc(T('loading')) + '</div>';
   const row = function (s) { return '<button class="item ' + (s.core ? 'core' : '') + '" data-act="sec" data-nu="' + nus.id + '" data-id="' + s.id + '"><span class="t"><b>' + esc(S.lang === 'he' ? s.he : s.en) + '</b></span>' + (s.ready ? '' : '<span class="tag warn">' + esc(T('inPrep')) + '</span>') + '</button>'; };
   const core = nus.sections.filter(function (s) { return s.core; }), rest = nus.sections.filter(function (s) { return !s.core; });
-  if (nus.id === 'ashkenaz') h += '<div class="gh">' + esc(T('demoSection')) + '</div><div class="list" style="margin-bottom:14px"><button class="item" data-act="demo"><span class="t"><b>' + esc(T('demoSection')) + '</b></span><span class="tag">demo</span></button></div>';
   if (core.length) h += '<div class="gh">' + esc(T('startHere')) + '</div><div class="list" style="margin-bottom:14px">' + core.map(row).join('') + '</div>';
   if (rest.length) h += '<div class="gh">' + esc(T('allSections')) + '</div><div class="list">' + rest.map(row).join('') + '</div>';
   return h;
@@ -427,12 +433,32 @@ function fillReader(p) {
   loadJson(p.path).then(function (j) {
     if (!$('#rdBody')) return;
     if (p.kind === 'tehillim') { fillTehillim(box, j, p); return; }
+    if (j.parts) { fillService(box, j); return; }
     const segs = (j.segments || []).map(function (s) { return '<p class="seg">' + esc(s.he) + '</p>' + (S.showEn && s.en ? '<p class="en" dir="ltr">' + esc(s.en) + '</p>' : '') + (s.note ? '<p class="en">' + esc(s.note) + '</p>' : ''); }).join('');
     const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
     box.innerHTML = (j.status && j.status !== 'verified' ? '<p><span class="tag warn">' + esc(j.status === 'demo' ? T('stDemo') : T('stPending')) + '</span></p>' : '') + segs + (vers ? '<p class="en" style="margin-top:20px">' + vers + '</p>' : '');
   }).catch(ph);
 }
 
+function rubHtml(t) { return esc(t).replace(/⟦([^⟧]*)⟧/g, '<span class="rub">$1</span>'); }
+function fillService(box, j) {
+  const he = S.lang === 'he'; let h = '', last = '', opts = '';
+  j.parts.forEach(function (pt, i) {
+    const g = pt.group ? (he ? pt.group.he : pt.group.en) : '';
+    if (g && g !== last) { h += '<div class="grp">' + esc(g) + '</div>'; last = g; } else if (!g && last) { last = ''; }
+    const title = (pt.sub ? (he ? pt.sub.he : pt.sub.en) + ' · ' : '') + (he ? pt.he : pt.en);
+    opts += '<option value="p' + i + '">' + esc((g ? g + ' · ' : '') + title) + '</option>';
+    h += '<div class="pt" id="p' + i + '">' + esc(title) + '</div>';
+    if (pt.status === 'pending' || !pt.segments.length) { h += '<p class="mu" style="font-family:var(--ui);font-size:15px"><span class="tag warn">' + esc(T('inPrep')) + '</span> ' + esc(T('partMissing')) + '</p>'; return; }
+    pt.segments.forEach(function (sg) {
+      if (sg.rubric) { h += '<p class="seg rb rub">' + esc(sg.he) + '</p>'; return; }
+      h += '<p class="seg">' + rubHtml(sg.he) + '</p>' + (S.showEn && sg.en ? '<p class="en" dir="ltr" style="white-space:pre-line">' + esc(sg.en) + '</p>' : '');
+    });
+  });
+  const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
+  box.innerHTML = '<select class="jump" id="jumpSel" aria-label="' + esc(T('jumpTo')) + '"><option value="">' + esc(T('jumpTo')) + '</option>' + opts + '</select>' + h + '<p class="en" style="margin-top:24px">' + vers + '</p>';
+  const sel = $('#jumpSel'); if (sel) sel.addEventListener('change', function () { const e = sel.value && document.getElementById(sel.value); if (e) e.scrollIntoView({ block: 'start' }); sel.value = ''; });
+}
 function fillTehillim(box, j, p) {
   let lo = 1, hi = 999;
   if (p.part) { const r = p.part.split(':')[1].split('-'); lo = +r[0]; hi = +r[1]; }
