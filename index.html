@@ -138,8 +138,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.11.0';
-const DATA_V  = '11';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.12.0';
+const DATA_V  = '12';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -163,6 +163,7 @@ const LANG = {
     todayTehillim: 'תהילים היום', chapters: 'פרקים', openTehillim: 'פתח את התהילים',
     beginnerTitle: 'מתחילים מכאן', beginnerBody: 'מסלול קצר ורגוע: מה מניחים, מה מברכים, ואיך מתפללים — צעד אחרי צעד.', beginnerBtn: 'למסלול למתחילים',
     aiTitle: 'העוזר', aiHello: 'כתבו מה אתם מחפשים — למשל "תראה לי מנחה", "ברכה על יין" או "תהילים 23" — ואני אוביל אתכם למקום הנכון באפליקציה.', aiNote: 'אני עוזר ניווט בלבד: מחפש בתוך האפליקציה ולא מחבר תשובות הלכתיות ולא פוסק. בשאלות הלכה — לשאול רב.', aiPh: 'מה לחפש?', aiSend: 'חפש', aiFound: 'מצאתי את אלה — בחרו:', aiNone: 'לא מצאתי התאמה. נסו מילה אחרת, או בחרו מקום להתחיל:', aiHalacha: 'שימו לב: אני לא פוסק הלכה. אפשר לעיין במקורות שנמצאו, ובשאלה מעשית — לשאול רב.', aiLoading: 'מחפש…', aiTSiddur: 'סידור', aiTPart: 'קטע בתפילה', aiTGuide: 'מדריך', aiTMitz: 'מצווה', aiTTeh: 'תהילים', aiTScreen: 'מסך', aiExamples: 'תראה לי מנחה|ברכה על יין|איך מניחים תפילין|תהילים 23|הדלקת נרות|קדיש|גיבוי נתונים', aiCardBtn: 'שאל את העוזר',
+    calTitle: 'לוח וזמנים', calPrev: 'יום קודם', calNext: 'יום הבא', calToday: 'היום בלוח', calParsha: 'פרשת השבוע', calParshaWeek: 'הפרשה בשבת הקרובה', calShabbat: 'כניסת ויציאת שבת וחג', calCandle: 'הדלקת נרות', calMinBefore: 'דק׳ לפני השקיעה', calHavdalah: 'צאת השבת / החג', calTzeit: 'צאת הכוכבים 8.5°', calRT: 'לפי רבנו תם (72 דק׳)', calZmanim: 'זמני היום', zAlot: 'עלות השחר', zSunrise: 'הנץ החמה', zShmaMGA: 'סוף זמן ק״ש (מג״א)', zShma: 'סוף זמן ק״ש (גר״א)', zTfila: 'סוף זמן תפילה (גר״א)', zChatzot: 'חצות היום', zMinchaG: 'מנחה גדולה', zMinchaK: 'מנחה קטנה', zPlag: 'פלג המנחה', zSunset: 'שקיעה', zTzeit: 'צאת הכוכבים', calNote: 'הזמנים מחושבים באפליקציה לפי המיקום שבחרת, בשיטת הגר״א והמג״א. יש מנהגים ושיטות שונות — לשאלה מעשית יש לשאול רב.', calUpcoming: 'הקרוב בלוח', calTomorrow: 'מחר', calInDays: 'בעוד {0} ימים', calLocation: 'מיקום', calIsrael: 'ישראל', calAbroad: 'חו״ל', calMyLoc: 'המיקום שלי', calUseGps: 'השתמש במיקום שלי', calGpsNote: 'המיקום נשאר על המכשיר בלבד ולא נשלח לשום מקום.', calGpsErr: 'לא הצלחתי לקבל מיקום. אפשר לבחור עיר מהרשימה.', calCandleSet: 'הדלקת נרות — דקות לפני השקיעה', calDefault: 'ברירת מחדל', calCredit: 'לוח החגים והפרשות: Hebcal.com. זמני היום מחושבים באפליקציה.', calCardBtn: 'לוח וזמנים',
     contTitle: 'להמשיך מאיפה שעצרתי', continue: 'המשך',
     nusach: 'נוסח', nusachAshkenaz: 'אשכנז', nusachSefard: 'ספרד', nusachEdot: 'עדות המזרח',
     startHere: 'להתחיל מכאן', allSections: 'כל הקטעים', inPrep: 'בהכנה', demoSection: 'קטע הדגמה (בדיקת תצוגה)',
@@ -210,6 +211,7 @@ const LANG = {
     todayTehillim: "Today's Psalms", chapters: 'chapters', openTehillim: 'Open Psalms',
     beginnerTitle: 'Start here', beginnerBody: 'A short, calm path: what to put on, what to say, and how to pray — step by step.', beginnerBtn: 'Beginner path',
     aiTitle: 'Assistant', aiHello: 'Type what you are looking for — e.g. "show me Mincha", "blessing on wine" or "Psalm 23" — and I will take you to the right place in the app.', aiNote: 'I am a navigation helper only: I search inside the app and do not compose or rule on halacha. For halachic questions, ask a rabbi.', aiPh: 'What are you looking for?', aiSend: 'Search', aiFound: 'I found these — pick one:', aiNone: 'No match found. Try another word, or pick a place to start:', aiHalacha: 'Note: I do not rule on halacha. You can read the sources found, and for a practical question, ask a rabbi.', aiLoading: 'Searching…', aiTSiddur: 'Siddur', aiTPart: 'Prayer part', aiTGuide: 'Guide', aiTMitz: 'Mitzvah', aiTTeh: 'Psalms', aiTScreen: 'Screen', aiExamples: 'Show me Mincha|Blessing on wine|How to put on tefillin|Psalm 23|Shabbat candles|Kaddish|Backup my data', aiCardBtn: 'Ask the assistant',
+    calTitle: 'Calendar & times', calPrev: 'Previous day', calNext: 'Next day', calToday: 'On the calendar', calParsha: 'Torah portion', calParshaWeek: 'Portion this Shabbat', calShabbat: 'Shabbat & holiday times', calCandle: 'Candle lighting', calMinBefore: 'min before sunset', calHavdalah: 'End of Shabbat / holiday', calTzeit: 'nightfall 8.5°', calRT: "Rabbeinu Tam (72 min)", calZmanim: 'Daily times', zAlot: 'Dawn (alot)', zSunrise: 'Sunrise', zShmaMGA: 'Latest Shema (MGA)', zShma: 'Latest Shema (GRA)', zTfila: 'Latest morning prayer (GRA)', zChatzot: 'Midday (chatzot)', zMinchaG: 'Earliest Mincha', zMinchaK: 'Mincha ketana', zPlag: 'Plag HaMincha', zSunset: 'Sunset', zTzeit: 'Nightfall', calNote: 'Times are calculated in the app for your chosen location (GRA and MGA methods). Customs and opinions differ — for a practical question, ask a rabbi.', calUpcoming: 'Coming up', calTomorrow: 'Tomorrow', calInDays: 'In {0} days', calLocation: 'Location', calIsrael: 'Israel', calAbroad: 'Abroad', calMyLoc: 'My location', calUseGps: 'Use my location', calGpsNote: 'Your location stays on this device and is not sent anywhere.', calGpsErr: 'Could not get your location. Pick a city from the list.', calCandleSet: 'Candle lighting — minutes before sunset', calDefault: 'Default', calCredit: 'Holiday and Torah portion calendar: Hebcal.com. Daily times are calculated in the app.', calCardBtn: 'Calendar & times',
     contTitle: 'Continue where I stopped', continue: 'Continue',
     nusach: 'Nusach', nusachAshkenaz: 'Ashkenaz', nusachSefard: 'Sefard', nusachEdot: 'Edot HaMizrach',
     startHere: 'Start here', allSections: 'All sections', inPrep: 'In preparation', demoSection: 'Demo section (display check)',
@@ -258,7 +260,7 @@ function T(k) {
 }
 
 /* ───── מצב שמור ───── */
-const DEF = { v: 1, user: '', lang: 'he', theme: 'gold', mode: 'dark', nusach: 'ashkenaz', audience: '', fs: 20, showEn: false,
+const DEF = { city: 'jerusalem', candle: 0, gps: null, v: 1, user: '', lang: 'he', theme: 'gold', mode: 'dark', nusach: 'ashkenaz', audience: '', fs: 20, showEn: false,
   onboarded: false, marks: {}, tehDays: {}, last: null, lastBackup: 0 };
 let S = (function () {
   try { const r = JSON.parse(store.get('state') || 'null'); return Object.assign({}, DEF, r || {}); } catch (e) { return Object.assign({}, DEF); }
@@ -349,7 +351,7 @@ function mState(id) { const m = S.marks[id]; if (!m) return ''; if (m.na) return
 const R = { screen: 'home', params: {}, mf: 'all', rdBack: 'home' };
 const SCREENS = {};
 const NAV = [['home', 'home', 'home'], ['siddur', 'book', 'siddur'], ['tehillim', 'list', 'tehillim'], ['mitzvot', 'grid', 'mitzvot'], ['more', 'more', 'more']];
-const TOPNAV = { assistant: 'home', home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', settings: 'more', sources: 'more', about: 'more' };
+const TOPNAV = { calendar: 'home', assistant: 'home', home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', settings: 'more', sources: 'more', about: 'more' };
 function go(name, params) { R.screen = name; R.params = params || {}; render(); $('#view').scrollTop = 0; }
 function render() {
   ttsKill();
@@ -424,6 +426,8 @@ const nuName = function (id) { return { ashkenaz: T('nusachAshkenaz'), sefard: T
 SCREENS.home = function () {
   const st = stats(), pct = Math.min(1, st.learned / 613), C = 2 * Math.PI * 36, now = new Date(), th = tehToday(now);
   let h = '<div class="card"><h2>' + esc(S.user ? T('helloNamed', S.user) : T('hello')) + '</h2><p>' + esc(hebDate(now)) + '</p></div>';
+  if (D.cal) { const lc = calLoc(), ci = calInfo(today(), lc); h = h.replace('</p></div>', '</p>' + (ci.parsha ? '<p class="mu sm">' + esc(T('calParsha')) + ': ' + esc(ci.parsha) + '</p>' : '') + (ci.ev.length ? '<p class="sm"><b>' + esc(ci.ev.map(function (e) { return ci.name(e); }).join(' · ')) + '</b></p>' : '') + (ci.candle ? '<p class="sm">' + esc(T('calCandle')) + ': <b>' + esc(calFmt(ci.candle, lc.tz, true)) + '</b></p>' : '') + (ci.havdalah ? '<p class="sm">' + esc(T('calHavdalah')) + ': <b>' + esc(calFmt(ci.havdalah, lc.tz)) + '</b></p>' : '') + '</div>'); }
+  h += '<button class="item" data-act="cal" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('list') + '</span><span class="t"><b>' + esc(T('calCardBtn')) + '</b><span class="mu sm">' + esc(T('calZmanim')) + ' · ' + esc(T('calUpcoming')) + '</span></span></button>';
   if (S.audience === 'new') h += '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="guides">' + esc(T('beginnerBtn')) + '</button></div>';
   h += '<button class="item" data-act="ai" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('info') + '</span><span class="t"><b>' + esc(T('aiCardBtn')) + '</b><span class="mu sm">' + esc(T('aiPh')) + '</span></span></button>';
   h += '<div class="big">' +
@@ -724,7 +728,7 @@ function openMitzvah(id) {
 SCREENS.more = function () {
   setTitle(T('more'));
   const row = function (to, ico, key) { return '<button class="item" data-act="go" data-to="' + to + '"><span style="color:var(--ac);display:grid;width:26px">' + ic(ico) + '</span><span class="t"><b>' + esc(T(key)) + '</b></span></button>'; };
-  return '<div class="list">' + row('assistant', 'info', 'aiTitle') + row('guides', 'scroll', 'guides') + row('settings', 'gear', 'settings') + row('sources', 'book', 'sources') + row('about', 'info', 'about') + '</div>';
+  return '<div class="list">' + row('calendar', 'list', 'calTitle') + row('assistant', 'info', 'aiTitle') + row('guides', 'scroll', 'guides') + row('settings', 'gear', 'settings') + row('sources', 'book', 'sources') + row('about', 'info', 'about') + '</div>';
 };
 
 SCREENS.settings = function () {
@@ -797,6 +801,7 @@ const AI_SYN = [
   ['ראש חודש', 'rosh chodesh', 'hallel', 'הלל'],
   ['מועדים', 'חג', 'חגים', 'festival', 'festivals', 'holiday', 'holidays', 'סוכות', 'חנוכה', 'פסח', 'שבועות', 'sukkot', 'chanukah', 'hanukkah'],
   ['תהילים', 'תהלים', 'psalm', 'psalms', 'tehillim', 'tehilim'],
+  ['זמנים', 'זמני היום', 'zmanim', 'times', 'לוח שנה', 'calendar', 'תאריך עברי', 'פרשת השבוע', 'פרשה', 'parsha', 'parashat'],
   ['מצוה', 'מצווה', 'מצוות', 'מצות', 'mitzvah', 'mitzvot', 'commandment', 'commandments'],
   ['אשרי', 'ashrei', 'ashre'],
   ['עלינו', 'aleinu', 'alenu'],
@@ -840,7 +845,8 @@ function aiEntry(type, he, en, kw, act, extra) {
 }
 function aiBaseBuild() {
   if (AI.base) return AI.base; const E = [];
-  const scr = [['siddur', 'סידור', 'Siddur', 'תפילות תפילה prayers prayer book'], ['tehillim', 'תהילים', 'Psalms', 'תהלים psalms tehillim'], ['mitzvot', 'לוח המצוות', 'Mitzvot board', 'תריג תרי"ג 613 מצוות לוח סימון mitzvot'], ['guides', 'מדריכים למתחיל', 'Beginner guides', 'מדריך מתחיל מתחילים guide guides beginner'], ['settings', 'הגדרות', 'Settings', 'נוסח שפה גודל גופן גיבוי שחזור language nusach font backup restore reset'], ['sources', 'מקורות ורישיונות', 'Sources & licenses', 'מקורות רישיונות sources licenses credits'], ['about', 'אודות', 'About', 'גרסה אפליקציה version about']];
+  const scr = [['siddur', 'סידור', 'Siddur', 'תפילות תפילה prayers prayer book'], ['tehillim', 'תהילים', 'Psalms', 'תהלים psalms tehillim'], ['mitzvot', 'לוח המצוות', 'Mitzvot board', 'תריג תרי"ג 613 מצוות לוח סימון mitzvot'], ['calendar', 'לוח וזמנים', 'Calendar & times', 'לוח שנה זמנים זמני היום שקיעה זריחה הדלקת נרות פרשת השבוע פרשה חגים תאריך עברי מתי שבת מתי יוצאת שבת צאת השבת הבדלה זמן תפילה סוף זמן קריאת שמע calendar zmanim times sunset sunrise parsha parashat holidays hebrew date candle lighting'],
+    ['guides', 'מדריכים למתחיל', 'Beginner guides', 'מדריך מתחיל מתחילים guide guides beginner'], ['settings', 'הגדרות', 'Settings', 'נוסח שפה גודל גופן גיבוי שחזור language nusach font backup restore reset'], ['sources', 'מקורות ורישיונות', 'Sources & licenses', 'מקורות רישיונות sources licenses credits'], ['about', 'אודות', 'About', 'גרסה אפליקציה version about']];
   scr.forEach(function (s) { E.push(aiEntry('screen', s[1], s[2], s[3], { k: 'go', to: s[0] })); });
   (D.guides || []).forEach(function (g) { if (!g.ready) return; E.push(aiEntry('guide', g.he, g.en, AI_KW[g.id] || '', { k: 'guide', id: g.id })); });
   const nm = (D.mitz && D.mitz.map) || {};
@@ -974,7 +980,127 @@ SCREENS.assistant = function () {
     '<form class="aiform" id="aiForm" autocomplete="off"><input type="text" id="aiQ" placeholder="' + esc(T('aiPh')) + '" enterkeyhint="search" maxlength="120"><button class="btn pri" type="submit">' + esc(T('aiSend')) + '</button></form>';
 };
 
+
+/* ───── זמני היום: אלגוריתם NOAA (מיקום אסטרונומי של השמש) — חישוב מקומי בלי אינטרנט ───── */
+const ZM = {
+  rad: function (d) { return d * Math.PI / 180; }, deg: function (r) { return r * 180 / Math.PI; },
+  jd: function (y, m, d) { if (m <= 2) { y -= 1; m += 12; } const A = Math.floor(y / 100), B = 2 - A + Math.floor(A / 4); return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5; },
+  cent: function (jd) { return (jd - 2451545) / 36525; },
+  sun: function (t) {
+    const r = ZM.rad, L0 = (280.46646 + t * (36000.76983 + 0.0003032 * t)) % 360, M = 357.52911 + t * (35999.05029 - 0.0001537 * t), e = 0.016708634 - t * (0.000042037 + 0.0000001267 * t);
+    const C = Math.sin(r(M)) * (1.914602 - t * (0.004817 + 0.000014 * t)) + Math.sin(r(2 * M)) * (0.019993 - 0.000101 * t) + Math.sin(r(3 * M)) * 0.000289;
+    const tl = L0 + C, om = 125.04 - 1934.136 * t, lam = tl - 0.00569 - 0.00478 * Math.sin(r(om));
+    const eps0 = 23 + (26 + (21.448 - t * (46.815 + t * (0.00059 - t * 0.001813))) / 60) / 60, eps = eps0 + 0.00256 * Math.cos(r(om));
+    const dec = ZM.deg(Math.asin(Math.sin(r(eps)) * Math.sin(r(lam))));
+    const y = Math.pow(Math.tan(r(eps / 2)), 2);
+    const eq = 4 * ZM.deg(y * Math.sin(2 * r(L0)) - 2 * e * Math.sin(r(M)) + 4 * e * y * Math.sin(r(M)) * Math.cos(2 * r(L0)) - 0.5 * y * y * Math.sin(4 * r(L0)) - 1.25 * e * e * Math.sin(2 * r(M)));
+    return { dec: dec, eq: eq };
+  },
+  /* דקות UTC מתחילת היום; rise=true זריחה/עלות, false שקיעה/צאת; zen = זווית זנית במעלות */
+  event: function (jd0, lat, lon, zen, rise) {
+    const r = ZM.rad; let tm = 720 - 4 * lon;
+    for (let i = 0; i < 3; i++) {
+      const s = ZM.sun(ZM.cent(jd0 + tm / 1440)), c = (Math.cos(r(zen)) / (Math.cos(r(lat)) * Math.cos(r(s.dec)))) - Math.tan(r(lat)) * Math.tan(r(s.dec));
+      if (c > 1 || c < -1) return null;
+      let ha = ZM.deg(Math.acos(c)); if (!rise) ha = -ha;
+      tm = 720 - 4 * (lon + ha) - s.eq;
+    }
+    return tm;
+  },
+  noon: function (jd0, lat, lon) { let tm = 720 - 4 * lon; for (let i = 0; i < 3; i++) tm = 720 - 4 * lon - ZM.sun(ZM.cent(jd0 + tm / 1440)).eq; return tm; },
+  /* מחזיר אובייקט זמנים (ms epoch) ליום אזרחי y-m-d (m=1..12) */
+  day: function (y, m, d, lat, lon) {
+    const jd0 = ZM.jd(y, m, d), base = Date.UTC(y, m - 1, d), ms = function (x) { return x == null ? null : base + Math.round(x * 60000 / 1000) * 1000; };
+    const sr = ZM.event(jd0, lat, lon, 90.833, true), ss = ZM.event(jd0, lat, lon, 90.833, false);
+    const al = ZM.event(jd0, lat, lon, 106.1, true), tz = ZM.event(jd0, lat, lon, 98.5, false), noon = ZM.noon(jd0, lat, lon);
+    const o = { sunrise: ms(sr), sunset: ms(ss), alot: ms(al), tzeit: ms(tz), noon: ms(noon) };
+    if (sr != null && ss != null) {
+      const h = (ss - sr) / 12; o.shma = ms(sr + 3 * h); o.tfila = ms(sr + 4 * h); o.chatzot = ms(sr + 6 * h); o.minchaG = ms(sr + 6.5 * h); o.minchaK = ms(sr + 9.5 * h); o.plag = ms(sr + 10.75 * h);
+      const a72 = sr - 72, t72 = ss + 72, hm = (t72 - a72) / 12; o.shmaMGA = ms(a72 + 3 * hm); o.tfilaMGA = ms(a72 + 4 * hm);
+    }
+    return o;
+  }
+};
+
+/* ───── לוח וזמנים: תאריך עברי, פרשה, חגים (נתוני Hebcal שנשמרו באפליקציה) וזמני היום (חישוב מקומי) ───── */
+const CITIES = [
+  ['jerusalem', 'ירושלים', 'Jerusalem', 31.76904, 35.21633, 'Asia/Jerusalem', 1, 40], ['telaviv', 'תל אביב', 'Tel Aviv', 32.08088, 34.78057, 'Asia/Jerusalem', 1, 20], ['haifa', 'חיפה', 'Haifa', 32.81303, 34.99928, 'Asia/Jerusalem', 1, 30],
+  ['beersheva', 'באר שבע', 'Beer Sheva', 31.25181, 34.7913, 'Asia/Jerusalem', 1, 20], ['eilat', 'אילת', 'Eilat', 29.55805, 34.94821, 'Asia/Jerusalem', 1, 20], ['tiberias', 'טבריה', 'Tiberias', 32.79396, 35.53152, 'Asia/Jerusalem', 1, 20],
+  ['safed', 'צפת', 'Safed', 32.9646, 35.496, 'Asia/Jerusalem', 1, 20], ['netanya', 'נתניה', 'Netanya', 32.3215, 34.8532, 'Asia/Jerusalem', 1, 20], ['ashdod', 'אשדוד', 'Ashdod', 31.79213, 34.64966, 'Asia/Jerusalem', 1, 20],
+  ['ashkelon', 'אשקלון', 'Ashkelon', 31.6688, 34.5743, 'Asia/Jerusalem', 1, 20], ['petahtikva', 'פתח תקווה', 'Petah Tikva', 32.0888, 34.88666, 'Asia/Jerusalem', 1, 20], ['rishon', 'ראשון לציון', 'Rishon LeZion', 31.973, 34.7925, 'Asia/Jerusalem', 1, 20],
+  ['bneibrak', 'בני ברק', 'Bnei Brak', 32.0807, 34.8338, 'Asia/Jerusalem', 1, 20], ['modiin', 'מודיעין', "Modi'in", 31.8969, 35.0104, 'Asia/Jerusalem', 1, 20], ['rehovot', 'רחובות', 'Rehovot', 31.8928, 34.8113, 'Asia/Jerusalem', 1, 20],
+  ['bethshemesh', 'בית שמש', 'Beit Shemesh', 31.7469, 34.9881, 'Asia/Jerusalem', 1, 20], ['herzliya', 'הרצליה', 'Herzliya', 32.16627, 34.82536, 'Asia/Jerusalem', 1, 20], ['kfarsaba', 'כפר סבא', 'Kfar Saba', 32.175, 34.9066, 'Asia/Jerusalem', 1, 20],
+  ['newyork', 'ניו יורק', 'New York', 40.71427, -74.00597, 'America/New_York', 0, 18], ['losangeles', 'לוס אנג׳לס', 'Los Angeles', 34.05223, -118.24368, 'America/Los_Angeles', 0, 18], ['miami', 'מיאמי', 'Miami', 25.77427, -80.19366, 'America/New_York', 0, 18],
+  ['chicago', 'שיקגו', 'Chicago', 41.85003, -87.65005, 'America/Chicago', 0, 18], ['toronto', 'טורונטו', 'Toronto', 43.70643, -79.39864, 'America/Toronto', 0, 18], ['montreal', 'מונטריאול', 'Montreal', 45.50884, -73.58781, 'America/Toronto', 0, 18],
+  ['london', 'לונדון', 'London', 51.50853, -0.12574, 'Europe/London', 0, 18], ['paris', 'פריז', 'Paris', 48.85341, 2.3488, 'Europe/Paris', 0, 18], ['moscow', 'מוסקבה', 'Moscow', 55.75204, 37.61781, 'Europe/Moscow', 0, 18],
+  ['buenosaires', 'בואנוס איירס', 'Buenos Aires', -34.61315, -58.37723, 'America/Argentina/Buenos_Aires', 0, 18], ['melbourne', 'מלבורן', 'Melbourne', -37.814, 144.96332, 'Australia/Melbourne', 0, 18], ['sydney', 'סידני', 'Sydney', -33.86785, 151.20732, 'Australia/Sydney', 0, 18],
+  ['johannesburg', 'יוהנסבורג', 'Johannesburg', -26.20227, 28.04363, 'Africa/Johannesburg', 0, 18]
+].map(function (c) { return { id: c[0], he: c[1], en: c[2], lat: c[3], lon: c[4], tz: c[5], il: !!c[6], cd: c[7] }; });
+function calLoc() {
+  if (S.city === 'gps' && S.gps) { const g = S.gps; return { id: 'gps', he: 'המיקום שלי', en: 'My location', lat: g.lat, lon: g.lon, tz: g.tz, il: g.lat > 29.3 && g.lat < 33.5 && g.lon > 34.2 && g.lon < 35.95, cd: 0 }; }
+  return CITIES.find(function (c) { return c.id === S.city; }) || CITIES[0];
+}
+function calParts(ms, tz) {
+  const o = {}; new Intl.DateTimeFormat('en-GB', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date(ms)).forEach(function (p) { o[p.type] = p.value; });
+  return o;
+}
+function calFmt(ms, tz, floor) {
+  if (ms == null) return '—'; const t = floor ? Math.floor(ms / 60000) * 60000 : Math.round(ms / 60000) * 60000, p = calParts(t, tz); return (p.hour === '24' ? '00' : p.hour) + ':' + p.minute;
+}
+function calAddDays(ds, n) { const a = ds.split('-').map(Number), d = new Date(Date.UTC(a[0], a[1] - 1, a[2] + n)); return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()); }
+function calDow(ds) { const a = ds.split('-').map(Number); return new Date(Date.UTC(a[0], a[1] - 1, a[2])).getUTCDay(); }
+function calLoad() { if (D.cal) return Promise.resolve(D.cal); return loadJson('data/calendar.json').then(function (j) { D.cal = j; return j; }).catch(function () { D.cal = { il: [], dia: [] }; return D.cal; }); }
+function calEvents(ds, loc) {
+  const L = (D.cal && (loc.il ? D.cal.il : D.cal.dia)) || []; return L.filter(function (e) { return e.d === ds; });
+}
+function calSaturdayAfter(ds) { return calAddDays(ds, (6 - calDow(ds) + 7) % 7); }
+function calInfo(ds, loc) {
+  const ev = calEvents(ds, loc), tom = calEvents(calAddDays(ds, 1), loc), dow = calDow(ds), a = ds.split('-').map(Number);
+  const z = ZM.day(a[0], a[1], a[2], loc.lat, loc.lon), off = S.candle || loc.cd || 18, he = S.lang === 'he';
+  const isYT = ev.some(function (e) { return e.y; }), tomYT = tom.some(function (e) { return e.y; });
+  const info = { ds: ds, z: z, ev: ev.filter(function (e) { return e.c !== 'parashat'; }), loc: loc, off: off, dow: dow };
+  if (dow === 5 || tomYT) info.candle = z.sunset == null ? null : z.sunset - off * 60000;
+  if (dow === 6 || (isYT && !tomYT && dow !== 5)) info.havdalah = z.tzeit;
+  info.shabbatEve = dow === 5; info.yt = isYT;
+  const sat = calSaturdayAfter(ds), par = calEvents(sat, loc).find(function (e) { return e.c === 'parashat'; }); info.parsha = par ? (he ? par.h : par.t) : '';
+  info.parshaDate = sat; info.name = function (e) { return he ? e.h : e.t; };
+  return info;
+}
+function calNext(ds, loc, n) {
+  const L = (D.cal && (loc.il ? D.cal.il : D.cal.dia)) || [], out = [];
+  for (let i = 0; i < L.length && out.length < n; i++) { const e = L[i]; if (e.d > ds && (e.c === 'holiday' || e.c === 'roshchodesh') && e.s !== 'shabbat') { const key = (e.t || '').split(':')[0], last = out[out.length - 1]; if (last && (last.t || '').split(':')[0] === key) continue; out.push(e); } }
+  return out;
+}
+function calDays(from, to) { const a = from.split('-').map(Number), b = to.split('-').map(Number); return Math.round((Date.UTC(b[0], b[1] - 1, b[2]) - Date.UTC(a[0], a[1] - 1, a[2])) / 864e5); }
+function calHebStr(ds) { const a = ds.split('-').map(Number); return hebDate(new Date(a[0], a[1] - 1, a[2], 12)); }
+SCREENS.calendar = function () {
+  setTitle(T('calTitle')); const loc = calLoc(), he = S.lang === 'he';
+  if (!D.cal) { calLoad().then(function () { if (R.screen === 'calendar') render(); }); return '<div class="ph">' + esc(T('aiLoading')) + '</div>'; }
+  const ds = R.calDate || today(), I = calInfo(ds, loc), tz = loc.tz, tm = function (ms) { return calFmt(ms, tz); };
+  let h = '<div class="card"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><button class="btn" data-act="calDay" data-d="-1" aria-label="' + esc(T('calPrev')) + '">' + (he ? '›' : '‹') + '</button><div style="text-align:center"><b>' + esc(calHebStr(ds)) + '</b><div class="mu sm">' + esc(ds.split('-').reverse().join('/')) + (ds === today() ? ' · ' + esc(T('today')) : '') + '</div></div><button class="btn" data-act="calDay" data-d="1" aria-label="' + esc(T('calNext')) + '">' + (he ? '‹' : '›') + '</button></div>' + (ds !== today() ? '<button class="btn blk" style="margin-top:10px" data-act="calToday">' + esc(T('today')) + '</button>' : '') + '</div>';
+  const names = I.ev.filter(function (e) { return e.c !== 'mevarchim' || true; }).map(function (e) { return I.name(e); });
+  if (names.length || I.parsha) h += '<div class="card"><h2>' + esc(T('calToday')) + '</h2>' + names.map(function (n) { return '<p><b>' + esc(n) + '</b></p>'; }).join('') + (I.parsha ? '<p class="' + (names.length ? 'mu sm' : '') + '">' + esc(I.dow === 6 ? T('calParsha') : T('calParshaWeek')) + ': <b>' + esc(I.parsha) + '</b></p>' : '') + '</div>';
+  if (I.candle || I.havdalah) h += '<div class="card"><h2>' + esc(T('calShabbat')) + '</h2>' + (I.candle ? '<p>' + esc(T('calCandle')) + ': <b style="font-size:20px">' + esc(calFmt(I.candle, tz, true)) + '</b> <span class="mu sm">(' + I.off + ' ' + esc(T('calMinBefore')) + ')</span></p>' : '') + (I.havdalah ? '<p>' + esc(T('calHavdalah')) + ': <b style="font-size:20px">' + esc(tm(I.havdalah)) + '</b> <span class="mu sm">(' + esc(T('calTzeit')) + ')</span></p><p class="mu sm">' + esc(T('calRT')) + ': ' + esc(tm(I.z.sunset + 72 * 60000)) + '</p>' : '') + '</div>';
+  const Z = I.z, row = function (k, v) { return '<p style="display:flex;justify-content:space-between;gap:12px;margin:7px 0"><span>' + esc(T(k)) + '</span><b dir="ltr">' + esc(tm(v)) + '</b></p>'; };
+  h += '<div class="card"><h2>' + esc(T('calZmanim')) + '</h2>' + row('zAlot', Z.alot) + row('zSunrise', Z.sunrise) + row('zShmaMGA', Z.shmaMGA) + row('zShma', Z.shma) + row('zTfila', Z.tfila) + row('zChatzot', Z.chatzot) + row('zMinchaG', Z.minchaG) + row('zMinchaK', Z.minchaK) + row('zPlag', Z.plag) + row('zSunset', Z.sunset) + row('zTzeit', Z.tzeit) + '<p class="mu sm" style="margin-top:10px">' + esc(T('calNote')) + '</p></div>';
+  const nx = calNext(ds, loc, 6);
+  if (nx.length) h += '<div class="card"><h2>' + esc(T('calUpcoming')) + '</h2>' + nx.map(function (e) { const dd = calDays(today(), e.d); return '<button class="item" data-act="calGo" data-d="' + e.d + '"><span class="t"><b>' + esc(he ? e.h : e.t) + '</b><span class="mu sm">' + esc(calHebStr(e.d)) + '</span></span><span class="tag">' + (dd === 0 ? esc(T('today')) : dd === 1 ? esc(T('calTomorrow')) : dd > 0 ? esc(T('calInDays', dd)) : '') + '</span></button>'; }).join('') + '</div>';
+  h += '<div class="card"><h2>' + esc(T('calLocation')) + '</h2><select id="calCity" aria-label="' + esc(T('calLocation')) + '">' + (S.city === 'gps' && S.gps ? '<option value="gps" selected>' + esc(T('calMyLoc')) + '</option>' : '') + '<optgroup label="' + esc(T('calIsrael')) + '">' + CITIES.filter(function (c) { return c.il; }).map(function (c) { return '<option value="' + c.id + '"' + (S.city === c.id ? ' selected' : '') + '>' + esc(he ? c.he : c.en) + '</option>'; }).join('') + '</optgroup><optgroup label="' + esc(T('calAbroad')) + '">' + CITIES.filter(function (c) { return !c.il; }).map(function (c) { return '<option value="' + c.id + '"' + (S.city === c.id ? ' selected' : '') + '>' + esc(he ? c.he : c.en) + '</option>'; }).join('') + '</optgroup></select>' +
+    '<button class="btn blk" style="margin-top:10px" data-act="calGps">' + esc(T('calUseGps')) + '</button><p class="mu sm" style="margin-top:8px">' + esc(T('calGpsNote')) + '</p>' +
+    '<label class="f" for="calOff">' + esc(T('calCandleSet')) + '</label><select id="calOff">' + [[0, T('calDefault') + ' (' + (loc.cd || 18) + ')'], [18, '18'], [20, '20'], [30, '30'], [40, '40']].map(function (x) { return '<option value="' + x[0] + '"' + ((S.candle || 0) === x[0] ? ' selected' : '') + '>' + esc(x[1]) + '</option>'; }).join('') + '</select></div>';
+  h += '<p class="mu sm" style="text-align:center">' + esc(T('calCredit')) + '</p>';
+  return h;
+};
+
 const ACT = {
+  calDay: function (el) { R.calDate = calAddDays(R.calDate || today(), +el.dataset.d); render(); },
+  calToday: function () { R.calDate = null; render(); },
+  calGo: function (el) { R.calDate = el.dataset.d; render(); $('#view').scrollTop = 0; },
+  calGps: function () {
+    if (!navigator.geolocation) { toast(T('calGpsErr')); return; }
+    navigator.geolocation.getCurrentPosition(function (p) { let tz = 'UTC'; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) {} S.gps = { lat: p.coords.latitude, lon: p.coords.longitude, tz: tz }; S.city = 'gps'; save(); render(); }, function () { toast(T('calGpsErr')); }, { timeout: 15000, maximumAge: 600000 });
+  },
+  cal: function () { go('calendar'); },
   ai: function () { go('assistant'); },
   aiGo: function (el) { aiRun(AI.acts[+el.dataset.i]); },
   aiChip: function (el) { aiAsk(el.dataset.q); },
@@ -1048,6 +1174,8 @@ document.addEventListener('change', function (e) {
   const id = e.target.id;
   if (id === 'fLang') { S.lang = e.target.value; save(); apply(); render(); }
   else if (id === 'fNus') { S.nusach = e.target.value; save(); }
+  else if (id === 'calCity') { S.city = e.target.value; save(); render(); }
+  else if (id === 'calOff') { S.candle = +e.target.value; save(); render(); }
   else if (id === 'fImp') importBackup(e.target);
   else if (id === 'ttsRate') { ttsSet('rate', +e.target.value); }
   else if (id === 'ttsSkip') { ttsSet('skipRub', e.target.checked); }
@@ -1105,6 +1233,7 @@ function init() {
   const q = new URLSearchParams(location.search), go0 = q.get('go');
   if (go0 && SCREENS[go0] && go0 !== 'reader') { R.screen = go0; history.replaceState({ g: 1 }, '', location.pathname); }
   loadCore().then(function () { render(); wizard(); });
+  calLoad().then(function () { if (R.screen === 'home' || R.screen === 'calendar') render(); });
   render();
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost') && !/[?&]nosw/.test(location.search)) {
     navigator.serviceWorker.register('sw.js').catch(function () {});
