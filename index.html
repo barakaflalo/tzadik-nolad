@@ -156,7 +156,7 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.27.0';
+const VERSION = '0.28.0';
 const DATA_V  = '25';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
@@ -295,7 +295,7 @@ function T(k) {
 
 /* ───── מצב שמור ───── */
 const DEF = { city: 'jerusalem', candle: 0, gps: null, v: 1, user: '', lang: 'he', theme: 'gold', mode: 'dark', nusach: 'ashkenaz', audience: '', fs: 20, showEn: false,
-  onboarded: false, marks: {}, bm: {}, tehDays: {}, last: null, lastBackup: 0 };
+  onboarded: false, plan: null, marks: {}, bm: {}, tehDays: {}, last: null, lastBackup: 0 };
 let S = (function () {
   try { const r = JSON.parse(store.get('state') || 'null'); return Object.assign({}, DEF, r || {}); } catch (e) { return Object.assign({}, DEF); }
 })();
@@ -476,24 +476,95 @@ function apply() {
 const nuName = function (id) { return { ashkenaz: T('nusachAshkenaz'), sefard: T('nusachSefard'), edot: T('nusachEdot') }[id] || id; };
 
 /* ───── מסכים ───── */
+
+/* ───── התוכנית שלי: המשתמש בוחר בעצמו מה לעשות היום/השבוע; העיגול מראה כמה מזה הושלם ───── */
+function P(he, en) { return S.lang === 'he' ? he : en; }
+function planKey(per) { const d = new Date(); if (per === 'week') d.setDate(d.getDate() - d.getDay()); return today(d); }
+function planFix() {
+  const p = S.plan; if (!p) return null; const k = planKey(p.per);
+  if (p.key !== k) { p.key = k; p.items.forEach(function (it) { delete it.x; }); save(); }
+  return p;
+}
+function planDone(it) { const p = S.plan; return it.x === p.key || (it.k === 'teh' && Object.keys(S.tehDays).some(function (d) { return d >= p.key; })); }
+function planHas(k, id, nu) { return !!(S.plan && S.plan.items.some(function (x) { return x.k === k && x.id === id && (x.nu || '') === (nu || ''); })); }
+function planAdd(it) {
+  if (!S.plan) S.plan = { per: 'day', key: planKey('day'), items: [] };
+  planFix();
+  if (planHas(it.k, it.id, it.nu)) { toast(P('כבר בתוכנית שלך', 'Already in your plan')); return false; }
+  if (S.plan.items.length >= 30) { toast(P('התוכנית מלאה (30 פריטים)', 'Plan is full (30 items)')); return false; }
+  S.plan.items.push(it); save(); toast(P('נוסף לתוכנית שלך ✓', 'Added to your plan ✓')); return true;
+}
+function planOpenItem(it) {
+  if (it.k === 'mz') openMitzvah(it.id);
+  else if (it.k === 'sec') openSection(it.nu, it.id);
+  else if (it.k === 'guide') ACT.guide({ dataset: { id: it.id } });
+  else if (it.k === 'teh') go('tehillim');
+}
+function planCard() {
+  const p = planFix(), st = stats();
+  if (!p || !p.items.length) return '';
+  const n = p.items.length, dn = p.items.filter(planDone).length, C = 2 * Math.PI * 36, pct = dn / n;
+  let h = '<div class="card"><h2>' + esc(P('התוכנית שלי', 'My plan')) + ' · ' + esc(p.per === 'week' ? P('השבוע', 'this week') : P('היום', 'today')) + '</h2>' +
+    '<div class="ring"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="36" fill="none" stroke="var(--bd)" stroke-width="9"/><circle cx="46" cy="46" r="36" fill="none" stroke="var(--ac)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (pct * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 46 46)"/></svg>' +
+    '<div><div class="num">' + dn + '/' + n + '</div><div class="mu sm">' + esc(dn === n ? P('השלמת את התוכנית — יישר כוח!', 'Plan complete — well done!') : P('הושלמו מהתוכנית', 'completed')) + '</div>' +
+    '<div class="sm" style="margin-top:6px">' + esc(T('learned')) + ': <b>' + st.learned + '</b>/613 · ' + esc(T('done')) + ': <b>' + st.done + '</b> · ' + st.streak + ' ' + esc(T('streak')) + '</div></div></div>' +
+    '<div class="list" style="margin-top:12px">';
+  p.items.forEach(function (it, i) {
+    const d = planDone(it);
+    h += '<div class="item" style="gap:10px"><button class="btn" data-act="planTick" data-i="' + i + '" role="checkbox" aria-checked="' + (d ? 'true' : 'false') + '" aria-label="' + esc(P('סמן כהושלם', 'Mark done')) + '" style="min-width:44px">' + (d ? '✓' : '○') + '</button>' +
+      '<button class="t" data-act="planOpen" data-i="' + i + '" style="all:unset;flex:1;cursor:pointer;text-align:start' + (d ? ';opacity:.6;text-decoration:line-through' : '') + '"><b>' + esc(it.t || it.id) + '</b></button></div>';
+  });
+  return h + '</div><button class="btn blk" data-act="planManage" style="margin-top:10px">' + esc(P('ערוך את התוכנית', 'Edit my plan')) + '</button></div>';
+}
+function planManage() {
+  const sug = function () {
+    const g = function (id) { const x = (D.guides || []).find(function (y) { return y.id === id && y.ready; }); return x ? { k: 'guide', id: id, t: S.lang === 'he' ? x.he : x.en } : null; };
+    return [{ k: 'teh', id: 'today', t: P('תהילים היום', 'Today\'s Psalms') },
+      { k: 'sec', nu: S.nusach, id: 'shacharit', t: P('שחרית', 'Shacharit') + ' · ' + nuName(S.nusach) }, g('morning'), g('shema'), g('bentsch')].filter(Boolean);
+  };
+  const body = function () {
+    const p = planFix() || { per: 'day', items: [] };
+    let h = '<h3 style="margin-bottom:6px">' + esc(P('התוכנית שלי', 'My plan')) + '</h3><p class="mu sm" style="margin:0 0 8px">' + esc(P('בוחרים בעצמנו מה לעשות — בלי לחץ. אפשר להוסיף גם מכל מצווה, מדריך וחלק בסידור בלחיצה על "הוסף לתוכנית".', 'You choose what to do — no pressure. You can also add from any mitzvah, guide or siddur section with "Add to plan".')) + '</p>' +
+      '<div class="chips"><button class="chip ' + (p.per === 'day' ? 'on' : '') + '" data-act="planPer" data-p="day">' + esc(P('להיום', 'Today')) + '</button><button class="chip ' + (p.per === 'week' ? 'on' : '') + '" data-act="planPer" data-p="week">' + esc(P('לשבוע', 'This week')) + '</button></div>';
+    if (p.items.length) { h += '<div class="gh">' + esc(P('בתוכנית שלי', 'In my plan')) + '</div><div class="list">'; p.items.forEach(function (it, i) { h += '<div class="item" style="gap:10px"><span class="t"><b>' + esc(it.t || it.id) + '</b></span><button class="btn" data-act="planRm" data-i="' + i + '" aria-label="' + esc(P('הסר', 'Remove')) + '">✕</button></div>'; }); h += '</div>'; }
+    h += '<div class="gh">' + esc(P('הצעות להתחלה', 'Ideas to start')) + '</div><div class="list">';
+    sug().forEach(function (x, i) { const has = planHas(x.k, x.id, x.nu); h += '<button class="item" data-act="planSug" data-i="' + i + '"' + (has ? ' disabled style="opacity:.5"' : '') + '><span class="t"><b>' + esc(x.t) + '</b></span><span class="tag">' + esc(has ? P('בתוכנית', 'added') : '+') + '</span></button>'; });
+    h += '</div><div class="gh">' + esc(P('או בוחרים בעצמנו', 'Or pick your own')) + '</div><div class="mbtns"><button class="btn" data-act="planGo" data-to="mitzvot">' + esc(T('mitzvot')) + '</button><button class="btn" data-act="planGo" data-to="siddur">' + esc(T('siddur')) + '</button><button class="btn" data-act="planGo" data-to="guides">' + esc(T('guides')) + '</button></div>';
+    return h + '<div class="mbtns" style="margin-top:12px"><button class="btn pri" data-act="planClose">' + esc(P('סיום', 'Done')) + '</button></div>';
+  };
+  let mod; const redraw = function () { $('.modal', mod.ov).innerHTML = body(); if (R.screen === 'home') render(); };
+  mod = openModal(body(), {
+    planPer: function (el) { if (!S.plan) S.plan = { per: 'day', key: '', items: [] }; S.plan.per = el.dataset.p; S.plan.key = ''; planFix(); save(); redraw(); },
+    planRm: function (el) { S.plan.items.splice(+el.dataset.i, 1); save(); redraw(); },
+    planSug: function (el) { if (planAdd(sug()[+el.dataset.i])) redraw(); },
+    planGo: function (el) { const to = el.dataset.to; mod.close(); go(to); },
+    planClose: function () { mod.close(); }
+  });
+}
+
 SCREENS.home = function () {
   const st = stats(), pct = Math.min(1, st.learned / 613), C = 2 * Math.PI * 36, now = new Date(), th = tehToday(now);
   let h = '<div class="card hero"><img src="art/guide-welcome-01.svg" alt="" width="84" height="84" onerror="this.remove()"><div><h2>' + esc(S.user ? T('helloNamed', S.user) : T('hello')) + '</h2><p>' + esc(hebHome(now)) + '</p></div></div>';
   if (D.cal) { const lc = calLoc(), ci = calInfo(today(), lc); h = h.replace('</p></div>', '</p>' + (ci.parsha ? '<p class="mu sm">' + esc(T('calParsha')) + ': ' + esc(ci.parsha) + '</p>' : '') + (ci.ev.length ? '<p class="sm"><b>' + esc(ci.ev.map(function (e) { return ci.name(e); }).join(' · ')) + '</b></p>' : '') + (ci.candle ? '<p class="sm">' + esc(T('calCandle')) + ': <b>' + esc(calFmt(ci.candle, lc.tz, true)) + '</b></p>' : '') + (ci.candleLate ? '<p class="sm">' + esc(T('calCandleLate')) + ': <b>' + esc(calFmt(ci.candleLate, lc.tz)) + '</b></p>' : '') + (ci.havdalah ? '<p class="sm">' + esc(T('calHavdalah')) + ': <b>' + esc(calFmt(ci.havdalah, lc.tz)) + '</b></p>' : '') + '</div>'); }
+  const pc = planCard();
+  if (pc) h += pc; else {
+    h += '<div class="card"><h2>' + esc(T('progress')) + '</h2><div class="ring"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="36" fill="none" stroke="var(--bd)" stroke-width="9"/><circle cx="46" cy="46" r="36" fill="none" stroke="var(--ac)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (pct * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 46 46)"/></svg>' +
+    '<div><div class="num">' + st.learned + '</div><div class="mu sm">' + esc(T('learned')) + ' · ' + esc(T('of613')) + '</div><div class="sm" style="margin-top:6px">' + esc(T('done')) + ': <b>' + st.done + '</b> · ' + st.streak + ' ' + esc(T('streak')) + '</div></div></div></div>';
+  h = h.replace(/<\/div><\/div><\/div>$/, '</div></div><button class="btn blk" data-act="planManage" style="margin-top:10px">' + esc(P('בנה לעצמך תוכנית', 'Build my own plan')) + '</button></div>'); }
   h += '<button class="item" data-act="cal" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('calendar') + '</span><span class="t"><b>' + esc(T('calCardBtn')) + '</b><span class="mu sm">' + esc(T('calZmanim')) + ' · ' + esc(T('calUpcoming')) + '</span></span></button>';
   if (D.cal && D.tor) { const pi = torFind(calInfo(today(), calLoc()).parshaHe); if (pi >= 0) h += '<button class="item" data-act="torOpen" data-i="' + pi + '" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('parsha') + '</span><span class="t"><b>' + esc(T('torTitle')) + ': ' + esc(S.lang === 'he' ? D.tor.parashot[pi].he : D.tor.parashot[pi].en) + '</b><span class="mu sm">' + esc(T('torOpen')) + '</span></span></button>'; }
   if (D.hal) h += '<button class="item" data-act="go" data-to="halacha" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('halacha') + '</span><span class="t"><b>' + esc(T('halTitle')) + '</b><span class="mu sm">' + esc(S.lang === 'he' ? 'הלכות יומיומיות, סימן אחר סימן' : 'Daily halacha, siman by siman') + '</span></span></button>';
   if (S.audience === 'new') h += '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="path">' + esc(T('pathBtn')) + '</button><button class="btn blk" data-act="go" data-to="guides" style="margin-top:8px">' + esc(T('beginnerBtn')) + '</button></div>';
   h += '<button class="item" data-act="ai" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('assistant') + '</span><span class="t"><b>' + esc(T('aiCardBtn')) + '</b><span class="mu sm">' + esc(T('aiPh')) + '</span></span></button>';
-  h += '<div class="big">' +
-    '<button data-act="go" data-to="siddur">' + ic('siddur') + esc(T('siddur')) + '</button>' +
-    '<button data-act="go" data-to="tehillim">' + ic('tehillim') + esc(T('tehillim')) + '</button>' +
-    '<button data-act="go" data-to="mitzvot">' + ic('mitzvot') + esc(T('mitzvot')) + '</button>' +
-    '<button data-act="go" data-to="guides">' + ic('guides') + esc(T('guides')) + '</button></div>';
-  h += '<div class="card"><h2>' + esc(T('progress')) + '</h2><div class="ring"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="36" fill="none" stroke="var(--bd)" stroke-width="9"/><circle cx="46" cy="46" r="36" fill="none" stroke="var(--ac)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (pct * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 46 46)"/></svg>' +
-    '<div><div class="num">' + st.learned + '</div><div class="mu sm">' + esc(T('learned')) + ' · ' + esc(T('of613')) + '</div><div class="sm" style="margin-top:6px">' + esc(T('done')) + ': <b>' + st.done + '</b> · ' + st.streak + ' ' + esc(T('streak')) + '</div></div></div></div>';
-  h += '<div class="card"><h2>' + esc(T('todayTehillim')) + '</h2><p>' + esc(th.label) + ' <span class="mu sm">(' + esc(T('chapters')) + ')</span></p><button class="btn blk" data-act="go" data-to="tehillim">' + esc(T('openTehillim')) + '</button></div>';
-  if (S.last && S.last.kind === 'siddur') h += '<div class="card"><h2>' + esc(T('contTitle')) + '</h2><p>' + esc(S.last.title) + '</p><button class="btn blk" data-act="cont">' + esc(T('continue')) + '</button></div>';
+  const rw = function (act, ico, title, sub, attrs) { return '<button class="item" data-act="' + act + '"' + (attrs || '') + ' style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ico + '</span><span class="t"><b>' + esc(title) + '</b>' + (sub ? '<span class="mu sm">' + esc(sub) + '</span>' : '') + '</span></button>'; };
+  const he = S.lang === 'he';
+  let top = '';
+  top += rw('go', ic('siddur'), T('siddur'), he ? 'שחרית, מנחה, ערבית, שבת ומועדים' : 'Shacharit, Mincha, Maariv, Shabbat and festivals', ' data-to="siddur"');
+  top += rw('go', ic('tehillim'), T('tehillim'), T('todayTehillim') + ': ' + th.label + ' (' + T('chapters') + ')', ' data-to="tehillim"');
+  top += rw('go', ic('mitzvot'), T('mitzvot'), st.learned + ' ' + T('learned') + ' · ' + T('of613'), ' data-to="mitzvot"');
+  top += rw('go', ic('guides'), T('guides'), he ? 'תפילין, ציצית, ברכות ועוד — צעד אחר צעד' : 'Tefillin, tzitzit, blessings and more — step by step', ' data-to="guides"');
+  if (S.last && S.last.kind === 'siddur') top = rw('cont', ic('siddur'), T('contTitle'), S.last.title) + top;
+  h = h.replace(/<button class="item" data-act="cal"/, function (m) { return top + m; });
   h += '<p class="mu sm" style="text-align:center">' + esc(T('disclaimer')) + '</p>';
   return h;
 };
@@ -513,7 +584,7 @@ SCREENS.siddur = function () {
 SCREENS.reader = function (p) {
   /* p: {kind, title, path?, ph?} — path = קובץ נתונים; ללא קובץ → הודעת "בהכנה" כנה */
   const canTts = !!(p.path || p.guide) && ttsSupported();
-  let h = '<div class="row" style="margin-bottom:12px"><button class="btn" data-act="fs" data-d="-2" aria-label="' + esc(T('fsDown')) + '">A−</button><button class="btn" data-act="fs" data-d="2" aria-label="' + esc(T('fsUp')) + '">A+</button><button class="btn" data-act="toggleEn" aria-pressed="' + (S.showEn ? 'true' : 'false') + '">' + esc(T('showEn')) + '</button>' +
+  let h = '<div class="row" style="margin-bottom:12px"><button class="btn" data-act="fs" data-d="-2" aria-label="' + esc(T('fsDown')) + '">A−</button><button class="btn" data-act="fs" data-d="2" aria-label="' + esc(T('fsUp')) + '">A+</button><button class="btn" data-act="toggleEn" aria-pressed="' + (S.showEn ? 'true' : 'false') + '">' + esc(T('showEn')) + '</button>' + ((p.kind === 'siddur' || (p.kind === 'guide' && p.guide)) ? '<button class="btn" data-act="planAddRd">★ ' + esc(P('הוסף לתוכנית', 'Add to plan')) + '</button>' : '') +
     (canTts ? '<button class="btn" data-act="ttsToggle" aria-pressed="false" id="ttsOpenBtn">' + ic('speaker').replace('<svg', '<svg width="20" height="20"') + esc(T('ttsOpen')) + '</button>' : '') + '</div>';
   if (canTts) {
     const c = ttsCfg();
@@ -914,13 +985,14 @@ function openMitzvah(id) {
       '<div class="mbtns"><button class="btn" data-act="mL" aria-pressed="' + (mm.l ? 'true' : 'false') + '">' + esc(T('iLearned')) + '</button>' +
       '<button class="btn" data-act="mD">' + esc(T('iDoneToday')) + '</button>' +
       (mm.d && mm.d.length ? '<p class="mu sm" style="margin:2px 0">' + esc(T('doneCount', mm.d.length, l2)) + '</p><button class="btn" data-act="mU">' + esc(T('undoDone')) + '</button>' : '') +
-      '<button class="btn" data-act="mN" aria-pressed="' + (mm.na ? 'true' : 'false') + '">' + esc(T('iNa')) + '</button></div>';
+      '<button class="btn" data-act="mN" aria-pressed="' + (mm.na ? 'true' : 'false') + '">' + esc(T('iNa')) + '</button><button class="btn" data-act="mP">★ ' + esc(P('הוסף לתוכנית', 'Add to plan')) + '</button></div>';
   };
   const redraw = function (mod) { $('.modal', mod.ov).innerHTML = body(); if (R.screen === 'mitzvot') { const y = $('#view').scrollTop; const q = ($('#mSearch') || {}).value || ''; render(); const e = $('#mSearch'); if (e && q) { e.value = q; mSearchRun(); } $('#view').scrollTop = y; } if (R.screen === 'home') render(); };
   const mod0 = openModal(body(), {
     mL: function (el, e, mod) { const x = mk(id); if (x.l) delete x.l; else x.l = today(); save(); redraw(mod); },
     mD: function (el, e, mod) { const x = mk(id); x.d = x.d || []; const t = today(); if (x.d.indexOf(t) < 0) x.d.push(t); if (!x.l) x.l = t; delete x.na; save(); toast('✓'); redraw(mod); },
     mU: function (el, e, mod) { const x = mk(id); if (x.d && x.d.length) x.d.pop(); save(); redraw(mod); },
+    mP: function () { planAdd({ k: 'mz', id: id, t: title }); },
     mN: function (el, e, mod) { const x = mk(id); if (x.na) delete x.na; else x.na = true; save(); redraw(mod); }
   });
   D.chk = D.chk || {};
@@ -1347,6 +1419,10 @@ const ACT = {
   aiGo: function (el) { aiRun(AI.acts[+el.dataset.i]); },
   aiChip: function (el) { aiAsk(el.dataset.q); },
   go: function (el) { go(el.dataset.to); },
+  planManage: function () { planManage(); },
+  planTick: function (el) { const p = planFix(), it = p && p.items[+el.dataset.i]; if (!it) return; if (it.x === p.key) delete it.x; else it.x = p.key; save(); render(); },
+  planOpen: function (el) { const p = S.plan, it = p && p.items[+el.dataset.i]; if (it) planOpenItem(it); },
+  planAddRd: function () { const q = R.params || {}; if (q.kind === 'siddur') planAdd({ k: 'sec', nu: q.nu, id: q.id, t: q.title }); else if (q.kind === 'guide' && q.guide) planAdd({ k: 'guide', id: q.guide, t: q.title }); },
   nav: function (el) { go(el.dataset.to); },
   bm: function (el) {
     const p = R.params || {}; if (p.kind !== 'siddur') return;
@@ -1481,6 +1557,16 @@ function cleanState(raw) {
     if (Array.isArray(m.d)) c.d = m.d.filter(function (x) { return typeof x === 'string' && x.length <= 12; }).slice(-400);
     if (Object.keys(c).length) o.marks[id] = c;
   });
+  if (isO(raw.plan) && Array.isArray(raw.plan.items)) {
+    const its = []; raw.plan.items.slice(0, 30).forEach(function (x) {
+      if (!isO(x) || ['mz', 'sec', 'guide', 'teh'].indexOf(x.k) < 0) return;
+      const id = String(x.id || '').slice(0, 40), nu = String(x.nu || '').slice(0, 20);
+      if (!/^[A-Za-z0-9_-]{1,40}$/.test(id)) return; if (nu && !/^[a-z]{2,12}$/.test(nu)) return;
+      const it = { k: x.k, id: id, t: String(x.t || '').slice(0, 100) }; if (nu) it.nu = nu;
+      if (typeof x.x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x.x)) it.x = x.x; its.push(it);
+    });
+    o.plan = { per: raw.plan.per === 'week' ? 'week' : 'day', key: typeof raw.plan.key === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw.plan.key) ? raw.plan.key : '', items: its };
+  }
   o.tehDays = {}; if (isO(raw.tehDays)) Object.keys(raw.tehDays).forEach(function (d) { if (/^\d{4}-\d{2}-\d{2}$/.test(d) && raw.tehDays[d]) o.tehDays[d] = 1; });
   if (isO(raw.tts)) { o.tts = {}; if (typeof raw.tts.rate === 'number' && raw.tts.rate >= 0.3 && raw.tts.rate <= 2.5) o.tts.rate = raw.tts.rate; ['noNik', 'skipRub'].forEach(function (k) { if (typeof raw.tts[k] === 'boolean') o.tts[k] = raw.tts[k]; }); }
   if (isO(raw.path)) { o.path = {}; Object.keys(raw.path).forEach(function (k) { if (/^d\d{1,2}$/.test(k) && typeof raw.path[k] === 'string') o.path[k] = raw.path[k].slice(0, 12); }); }
