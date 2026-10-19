@@ -156,7 +156,7 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.28.0';
+const VERSION = '0.29.0';
 const DATA_V  = '25';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
@@ -284,6 +284,310 @@ const LANG = {
     srcRambam: 'Rambam’s Sefer HaMitzvot — numbering (positive 1–248, negative 1–365). Full text will come from Sefer HaChinukh.',
     srcTeh: 'The 30-day Psalms division is the customary one, by day of the Hebrew month. For questions of custom, ask a rabbi.',
     open: 'Open', whatsNext: "What's next", tabHome: 'Home'
+  },
+  es: {
+    appName: "Tzadik Nolad",
+    home: "Inicio",
+    siddur: "Sidur",
+    tehillim: "Salmos",
+    mitzvot: "Mitzvot",
+    more: "Más",
+    guides: "Guías",
+    settings: "Ajustes",
+    sources: "Fuentes y licencias",
+    about: "Acerca de",
+    back: "Volver",
+    yes: "Sí",
+    no: "Cancelar",
+    ok: "Aceptar",
+    hello: "Hola",
+    helloNamed: "Hola, {0}",
+    today: "Hoy",
+    saveFail: "No se pudo guardar: el almacenamiento del dispositivo está lleno",
+    progress: "Mi progreso",
+    learned: "Aprendidas",
+    done: "Cumplidas",
+    streak: "días seguidos",
+    of613: "de 613",
+    todayTehillim: "Salmos de hoy",
+    chapters: "capítulos",
+    openTehillim: "Abrir los Salmos",
+    repBtn: "¿Encontraste un error? Infórmalo",
+    repNote: "No se envía nada automáticamente: se prepara un correo para que lo revises y lo envíes.",
+    repPart: "¿Qué parte?",
+    repWhat: "¿Qué está mal?",
+    repMail: "Abrir correo",
+    repCopy: "Copiar",
+    repCopied: "Informe copiado",
+    repManual: "Selecciona y copia manualmente",
+    fsDown: "Texto más pequeño",
+    fsUp: "Texto más grande",
+    hebAfter: "Después del atardecer: la fecha hebrea ya avanzó",
+    tefTitle: "Ilustraciones de los tefilín",
+    tefNote: "Basado en una hoja de instrucciones que circula. Redibujado con IA y no revisado por un rabino: no te apoyes en él para la halajá. Los textos de las ilustraciones están en hebreo.",
+    tefHand: "Tefilín de la mano",
+    tefHead: "Tefilín de la cabeza",
+    tefLast: "Cómo terminar el tefilín de la mano",
+    tefAllWays: "Válido para todas las formas de colocarlo",
+    tefSepNote: "La hoja original muestra también una segunda alternativa que no se incluye aquí.",
+    tefBtn: "Ilustraciones paso a paso",
+    bmTitle: "Mis marcadores",
+    bmAdd: "Agregar marcador",
+    bmDel: "Quitar marcador",
+    bmAdded: "Marcador agregado",
+    bmRemoved: "Marcador quitado",
+    bmFull: "Hasta 200 marcadores",
+    bmEmpty: "Aún no hay marcadores. En el sidur, cada parte tiene un botón de marcador.",
+    bmHint: "Toca un marcador para abrir esa parte.",
+    artNote: "Ilustración solamente: no es una instrucción halájica",
+    beginnerTitle: "Empieza aquí",
+    beginnerBody: "Un camino breve y tranquilo: qué ponerse, qué decir y cómo orar, paso a paso.",
+    beginnerBtn: "Camino para principiantes",
+    pathTitle: "Camino de 7 días para principiantes",
+    pathIntro: "Una semana de pasos pequeños. Cada día enlaza con guías y mitzvot que ya están en la aplicación. Tómate más tiempo si quieres: sin presión.",
+    pathDay: "Día {0}",
+    pathDone: "Terminé este día",
+    pathUndo: "Deshacer",
+    pathProg: "{0} de 7 días completados",
+    pathGuides: "Guías",
+    pathMitz: "Mitzvot para aprender",
+    pathBtn: "Camino de 7 días",
+    torTitle: "Porción semanal",
+    torIntro: "Lee la porción semanal de la Torá en hebreo vocalizado con traducción al inglés, dividida en aliyot.",
+    torThis: "Este próximo Shabat",
+    torOpen: "Leer la porción",
+    torAll: "Todas las porciones",
+    torSrc: "Los Cinco Libros de Moisés — Sefaria. Hebreo vocalizado (dominio público); inglés: Metsudah Chumash (CC-BY).",
+    torAliyah: "Aliá {0}",
+    torBooks: ["Génesis", "Éxodo", "Levítico", "Números", "Deuteronomio"],
+    aiTTor: "Parashá",
+    halTitle: "Kitzur Shulján Aruj",
+    halIntro: "El código clásico de la ley judía del rabino Shlomo Ganzfried: 221 capítulos sobre la vida diaria, desde levantarse por la mañana, pasando por la oración, Shabat y las fiestas, hasta el duelo. Es para estudio; ante una duda práctica, consulta a un rabino.",
+    halSearch: "Buscar un capítulo (p. ej. Shabat, tzitzit, bendiciones)…",
+    halSimanNone: "No se encontró ningún capítulo",
+    halSimanWord: "Capítulo",
+    halSrc: "Kitzur Shulján Aruj — Sefaria. Hebreo vocalizado en dominio público; inglés: rabino Avrohom Davis, Metsudah (CC-BY). Aún no está completamente revisado.",
+    aiTHal: "Halajá",
+    aiTitle: "Asistente",
+    aiHello: "Escribe lo que buscas, por ejemplo \"muéstrame Minjá\", \"bendición del vino\" o \"Salmo 23\", y te llevaré al lugar correcto de la aplicación.",
+    aiNote: "Soy solo un asistente de navegación: busco dentro de la aplicación y no redacto ni dictamino halajá. Para preguntas de halajá, consulta a un rabino.",
+    aiPh: "¿Qué buscas?",
+    aiSend: "Buscar",
+    aiFound: "Encontré esto; elige uno:",
+    aiNone: "No encontré coincidencias. Prueba otra palabra o elige dónde empezar:",
+    aiHalacha: "Nota: no dictamino halajá. Puedes leer las fuentes encontradas y, para una pregunta práctica, consultar a un rabino.",
+    aiLoading: "Buscando…",
+    aiTSiddur: "Sidur",
+    aiTPart: "Parte de la oración",
+    aiTGuide: "Guía",
+    aiTMitz: "Mitzvá",
+    aiTTeh: "Salmos",
+    aiTScreen: "Pantalla",
+    aiExamples: "Muéstrame Minjá|Bendición del vino|Cómo ponerse los tefilín|Salmo 23|Velas de Shabat|Kadish|Respaldar mis datos",
+    aiCardBtn: "Preguntar al asistente",
+    calCandleLate: "Encendido de velas (después de que anochece)",
+    calCandleLateNote: "Cuando la fiesta comienza el sábado por la noche o después del primer día de una fiesta, las velas se encienden solo después de que anochece, de una llama ya existente. Consulta a un rabino para los detalles.",
+    calTitle: "Calendario y horarios",
+    calPrev: "Día anterior",
+    calNext: "Día siguiente",
+    calToday: "En el calendario",
+    calParsha: "Porción de la Torá",
+    calParshaWeek: "Porción de este Shabat",
+    calShabbat: "Horarios de Shabat y fiestas",
+    calCandle: "Encendido de velas",
+    calMinBefore: "min antes del atardecer",
+    calHavdalah: "Fin de Shabat / fiesta",
+    calTzeit: "anochecer 8,5°",
+    calRT: "Rabenu Tam (72 min)",
+    calZmanim: "Horarios del día",
+    zAlot: "Amanecer (alot)",
+    zSunrise: "Salida del sol",
+    zShmaMGA: "Fin del plazo del Shemá (MGA)",
+    zShma: "Fin del plazo del Shemá (GRA)",
+    zTfila: "Fin del plazo de la oración de la mañana (GRA)",
+    zChatzot: "Mediodía (jatzot)",
+    zMinchaG: "Minjá guedolá (más temprano)",
+    zMinchaK: "Minjá ketaná",
+    zPlag: "Plag HaMinjá",
+    zSunset: "Atardecer",
+    zTzeit: "Anochecer",
+    calNote: "Los horarios se calculan en la aplicación para la ubicación que elijas (métodos GRA y MGA). Las costumbres y opiniones varían; ante una duda práctica, consulta a un rabino.",
+    calUpcoming: "Próximamente",
+    calTomorrow: "Mañana",
+    calInDays: "En {0} días",
+    calLocation: "Ubicación",
+    calIsrael: "Israel",
+    calAbroad: "Fuera de Israel",
+    calMyLoc: "Mi ubicación",
+    calUseGps: "Usar mi ubicación",
+    calGpsNote: "Tu ubicación se queda en este dispositivo y no se envía a ningún lado.",
+    calGpsErr: "No se pudo obtener tu ubicación. Elige una ciudad de la lista.",
+    calCandleSet: "Encendido de velas: minutos antes del atardecer",
+    calDefault: "Predeterminado",
+    calCredit: "Calendario de fiestas y porciones de la Torá: Hebcal.com. Los horarios diarios se calculan en la aplicación.",
+    calCardBtn: "Calendario y horarios",
+    contTitle: "Continuar donde me quedé",
+    continue: "Continuar",
+    nusach: "Nusaj",
+    nusachAshkenaz: "Ashkenaz",
+    nusachSefard: "Sefarad",
+    nusachEdot: "Edot HaMizraj",
+    startHere: "Empieza aquí",
+    allSections: "Todas las secciones",
+    inPrep: "En preparación",
+    demoSection: "Sección de prueba (verificación de pantalla)",
+    nusachNote: "¿No sabes cuál es tu nusaj? Puedes cambiarlo cuando quieras. Para dudas sobre costumbres, consulta a un rabino.",
+    fontSize: "Tamaño del texto",
+    showEn: "Mostrar traducción al inglés",
+    loading: "Cargando…",
+    phSiddur: "El texto de “{0}” aún no está cargado. Vendrá de una fuente verificada (Sefaria), con el nombre de su versión y su licencia, no de la memoria de una IA.",
+    phTehillim: "El texto de los Salmos aún no está cargado. Vendrá de una fuente verificada (Sefaria).",
+    phGuide: "Esta guía está en preparación. Se escribirá a partir de una fuente halájica verificada, con su fuente y estado de verificación, no de la memoria de una IA.",
+    ttsOpen: "Leer en voz alta",
+    ttsPlay: "Reproducir",
+    ttsPause: "Pausa",
+    ttsStop: "Detener",
+    ttsSpeed: "Velocidad",
+    ttsFrom: "Desde la parte",
+    ttsTo: "Hasta la parte",
+    ttsSkipRub: "Omitir las instrucciones",
+    ttsNoNik: "Leer sin vocales",
+    ttsHint: "También puedes tocar un párrafo para empezar a leer desde ahí.",
+    ttsNoVoice: "No se encontró una voz en hebreo en este dispositivo. Instálala en los ajustes del teléfono: Administración general → Idioma → Texto a voz (o Google TTS) → instalar datos de voz en hebreo.",
+    ttsErr: "La lectura se detuvo por un problema con la voz del dispositivo.",
+    ttsDone: "Lectura terminada",
+    ttsUnsupported: "Este dispositivo no admite la lectura en voz alta",
+    guideNote: "Las instrucciones prácticas (qué hacer, cuándo bendecir) aparecen en cursiva dentro del texto, como en el sidur. Las guías se arman a partir del propio sidur, no de memoria. Ante cualquier duda, consulta a un rabino.",
+    stReview: "No revisado a fondo",
+    partReview: "Este texto proviene de una fuente aún no revisada a fondo (puede tener imprecisiones). Verifícalo en un sidur o con un rabino.",
+    mSearchPh: "Buscar una mitzvá (p. ej. Shabat, interés, tefilín)…",
+    mNone: "No se encontraron mitzvot",
+    mSrc: "Lista de mitzvot: Rambam, comienzo de la Mishné Torá.",
+    chWhat: "Qué es la mitzvá",
+    chWhy: "El motivo (raíz de la mitzvá)",
+    chWhen: "Cuándo y a quién se aplica",
+    chSrc: "Explicación del Sefer HaJinuj (sección {0}); inglés del rabino Francis Nataf vía Sefaria, CC0. Texto clásico de estudio; para decisiones prácticas, consulta a un rabino.",
+    chSrc2: "Explicación del Sefer HaJinuj (secciones {0}); inglés del rabino Francis Nataf vía Sefaria, CC0. Texto clásico de estudio; para decisiones prácticas, consulta a un rabino.",
+    chNone: "Esta mitzvá no tiene una sección correspondiente en el Sefer HaJinuj de Sefaria. Se agregará más adelante.",
+    chLoading: "Cargando la explicación…",
+    chA: "En todo lugar y en todo tiempo",
+    chT: "Mientras exista el Templo",
+    chL: "En la Tierra de Israel",
+    chGA: "Hombres y mujeres",
+    chGM: "Hombres",
+    chGK: "Sacerdotes (cohanim)",
+    chTodayNo: "Según el libro: no se practica hoy",
+    chTodayYes: "Según el libro: también se practica hoy",
+    jumpTo: "Ir a una parte…",
+    partMissing: "Esta parte aún no está cargada: no existe una versión con licencia clara. No se escribe de memoria.",
+    todayLabel: "Capítulos de hoy (ciclo de 30 días)",
+    readToday: "Lo leí hoy",
+    readTodayDone: "Registrado ✓",
+    allPsalms: "Los 150 capítulos",
+    tehNote: "Según el día del mes hebreo. Después del atardecer cambia el día hebreo; la aplicación calcula por la medianoche.",
+    mitzvotTitle: "Tablero de las 613 mitzvot",
+    aseh: "Positivas",
+    lota: "Negativas",
+    fAll: "Todas",
+    fLearned: "Aprendidas",
+    fDone: "Cumplidas",
+    fTodo: "Aún no aprendidas",
+    fNa: "No aplican",
+    mitzvotNote: "Cualquiera puede estudiar las 613. El cumplimiento aplica solo a las mitzvot que te corresponden (por ejemplo, las del Templo o las de los sacerdotes no aplican hoy). “No aplica” no cuenta en tu contra.",
+    mGeneric: "{0} mitzvá n.º {1}",
+    mGenericBody: "Los detalles de esta mitzvá (fuente, explicación, cómo cumplirla) se completarán a partir del Sefer HaJinuj en Sefaria.",
+    stDemo: "Prueba: sin verificar",
+    stPending: "Contenido en preparación",
+    stVerified: "Verificado",
+    iLearned: "La aprendí",
+    iDoneToday: "La cumplí hoy",
+    iNa: "No me aplica",
+    undoDone: "Deshacer la última",
+    doneCount: "Cumplida {0} veces · última: {1}",
+    guidesTitle: "Guías",
+    g_tefillin: "Cómo ponerse los tefilín",
+    g_tzitzit: "Talit y tzitzit",
+    g_shema: "Recitar el Shemá",
+    g_bentsch: "Bendición después de comer",
+    g_brachot: "Qué bendición para cada cosa",
+    g_mezuzah: "Mezuzá",
+    g_candles: "Velas de Shabat",
+    g_pray: "Cómo orar, paso a paso",
+    settingsUser: "Nombre (aparece en los respaldos y al compartir)",
+    settingsLang: "Idioma",
+    settingsTheme: "Tema de color",
+    settingsMode: "Modo de pantalla",
+    dark: "Noche",
+    light: "Día",
+    offTitle: "Usar sin internet",
+    offNote: "Comprueba que todo el contenido esté guardado en este dispositivo y pueda abrirse sin conexión.",
+    offCheck: "Comprobar ahora",
+    offOk: "Listo para usar sin conexión ({0} de {1} archivos guardados)",
+    offPart: "Faltan algunos archivos por guardar ({0} de {1}). Conéctate a internet, recarga y vuelve a comprobar.",
+    offNone: "La aplicación aún no está guardada para uso sin conexión. Ábrela una vez con internet y vuelve a comprobar.",
+    memCandle: "Vela en memoria",
+    memDed: "Dedicado a la memoria de",
+    memName: "Dan Gehst, de bendita memoria",
+    memSon: "hijo de Yoni Asher y Sara",
+    memDate: "Falleció el 8 de Tevet de 5785",
+    memForever: "Siempre estarás en nuestros corazones",
+    memTnz: "Que su alma esté ligada en el vínculo de la vida",
+    settingsNusach: "Nusaj predeterminado",
+    settingsBackup: "Respaldo y restauración",
+    export: "Exportar respaldo",
+    import: "Restaurar desde un archivo",
+    resetAll: "Borrar todos los datos",
+    guideFb: "Otro nusaj",
+    guideFbNote: "Todavía no hay texto en el nusaj {0} para esta parte, por eso se muestra otro nusaj. Si tu costumbre es distinta, consulta a un rabino.",
+    exported: "Respaldo guardado",
+    importBad: "Este archivo no parece un respaldo de la aplicación",
+    importAsk: "Restaurar reemplaza todos los datos actuales. ¿Continuar?",
+    imported: "Datos restaurados",
+    importFail: "La restauración falló; no se cambió nada y tus datos anteriores están intactos",
+    resetAsk1: "¿Borrar todos los datos de este dispositivo? No se pueden recuperar sin un archivo de respaldo.",
+    resetAsk2: "¿Seguro? Última oportunidad.",
+    resetDone: "Todo borrado",
+    persist: "Almacenamiento persistente",
+    persistYes: "Concedido: el navegador no lo borrará por su cuenta",
+    persistNo: "No concedido: exporta un respaldo de vez en cuando",
+    audNew: "Estoy empezando",
+    audKnown: "Ya conozco lo básico",
+    onbTitle: "Bienvenido",
+    onbBody: "Sidur, Salmos, guías y el tablero de las 613 mitzvot: gratis, sin anuncios, funciona sin conexión. Todo se queda en tu dispositivo.",
+    onbWho: "¿En qué punto del camino estás?",
+    onbNusachT: "¿Con qué nusaj oras?",
+    onbNameT: "¿Cómo te llamamos?",
+    onbNameHint: "Opcional",
+    next: "Siguiente",
+    start: "Comenzar",
+    skip: "Omitir",
+    disclaimer: "Esta aplicación es para estudio y acompañamiento, no reemplaza el dictamen de un rabino. Para preguntas de halajá o de costumbre, consulta a un rabino.",
+    aboutVer: "Versión",
+    aboutDev: "Desarrollador",
+    aboutPlat: "Plataforma",
+    aboutStore: "Almacenamiento",
+    aboutLic: "Licencia",
+    storeVal: "Solo en este dispositivo",
+    free: "Gratis · sin anuncios · sin suscripción",
+    openStore: "Tienda AppNest",
+    share: "Compartir la aplicación",
+    feedback: "Enviar comentarios",
+    privacy: "Política de privacidad",
+    copied: "Enlace copiado",
+    srcIntro: "Todos los textos de esta aplicación se cargaron de Sefaria, una biblioteca abierta de textos judíos:",
+    srcChanges: "Cambios hechos a los textos: se quitaron las etiquetas de formato y las notas al pie, el texto se dividió en segmentos, las instrucciones se marcaron aparte y (solo en el audio) el Nombre Divino se lee “Adonai”. El contenido en sí no se modificó.",
+    srcHeb: "Hebreo",
+    srcEng: "Inglés",
+    srcLic: "Esta aplicación es totalmente gratuita, sin anuncios y sin fines de lucro. Licencias: CC-BY y CC-BY-SA: uso libre con atribución (SA: compartir igual); CC-BY-NC: solo uso no comercial; CC0 y dominio público: libres.",
+    srcTitle: "Fuentes y licencias",
+    srcNote: "Cada texto lleva el nombre de su versión y el tipo de licencia. Por ahora esto es un esqueleto: todavía no se ha cargado texto litúrgico real.",
+    srcSefaria: "Sefaria: textos de oración (Ashkenaz, Sefarad, Edot HaMizraj), Salmos, Sefer HaJinuj. Cada versión tiene su propia licencia (CC0 / CC-BY / dominio público / CC-BY-NC…). Esta aplicación es gratuita y sin fines comerciales.",
+    srcHebcal: "Hebcal: fecha y horarios hebreos (planificado; CC-BY 4.0 para los datos de la API).",
+    srcRambam: "Sefer HaMitzvot del Rambam: numeración (positivas 1–248, negativas 1–365). El texto completo vendrá del Sefer HaJinuj.",
+    srcTeh: "La división de los Salmos en 30 días es la acostumbrada, según el día del mes hebreo. Para dudas sobre costumbres, consulta a un rabino.",
+    open: "Abrir",
+    whatsNext: "Qué sigue",
+    tabHome: "Inicio"
   }
 };
 function T(k) {
@@ -336,7 +640,7 @@ function hnum(n) {
   return s.length > 1 ? s.slice(0, -1) + '״' + s.slice(-1) : s + '׳';
 }
 function hebDate(d) {
-  try { return new Intl.DateTimeFormat(S.lang === 'he' ? 'he-u-ca-hebrew' : 'en-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d); }
+  try { return new Intl.DateTimeFormat((S.lang === 'he' ? 'he' : S.lang === 'es' ? 'es' : 'en') + '-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d); }
   catch (e) { return d.toLocaleDateString(); }
 }
 function hebHome(now) {
@@ -478,7 +782,8 @@ const nuName = function (id) { return { ashkenaz: T('nusachAshkenaz'), sefard: T
 /* ───── מסכים ───── */
 
 /* ───── התוכנית שלי: המשתמש בוחר בעצמו מה לעשות היום/השבוע; העיגול מראה כמה מזה הושלם ───── */
-function P(he, en) { return S.lang === 'he' ? he : en; }
+const ES_P = {"Already in your plan": "Ya está en tu plan", "Plan is full (30 items)": "El plan está lleno (30 elementos)", "Added to your plan ✓": "Agregado a tu plan ✓", "My plan": "Mi plan", "this week": "esta semana", "today": "hoy", "Plan complete — well done!": "¡Completaste tu plan! ¡Bien hecho!", "completed": "completado", "Mark done": "Marcar como hecho", "Edit my plan": "Editar mi plan", "Today's Psalms": "Salmos de hoy", "Shacharit": "Shajarit", "You choose what to do — no pressure. You can also add from any mitzvah, guide or siddur section with \"Add to plan\".": "Tú eliges qué hacer, sin presión. También puedes agregar desde cualquier mitzvá, guía o parte del sidur con \"Agregar al plan\".", "Today": "Para hoy", "This week": "Para la semana", "In my plan": "En mi plan", "Remove": "Quitar", "Ideas to start": "Ideas para empezar", "added": "agregado", "Or pick your own": "O elige tú mismo", "Done": "Listo", "Build my own plan": "Crea tu propio plan", "Add to plan": "Agregar al plan", "Shacharit, Mincha, Maariv, Shabbat and festivals": "Shajarit, Minjá, Maariv, Shabat y fiestas", "Tefillin, tzitzit, blessings and more — step by step": "Tefilín, tzitzit, bendiciones y más, paso a paso"};
+function P(he, en) { return S.lang === 'he' ? he : (S.lang === 'es' && ES_P[en]) || en; }
 function planKey(per) { const d = new Date(); if (per === 'week') d.setDate(d.getDate() - d.getDay()); return today(d); }
 function planFix() {
   const p = S.plan; if (!p) return null; const k = planKey(p.per);
@@ -559,10 +864,10 @@ SCREENS.home = function () {
   const rw = function (act, ico, title, sub, attrs) { return '<button class="item" data-act="' + act + '"' + (attrs || '') + ' style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ico + '</span><span class="t"><b>' + esc(title) + '</b>' + (sub ? '<span class="mu sm">' + esc(sub) + '</span>' : '') + '</span></button>'; };
   const he = S.lang === 'he';
   let top = '';
-  top += rw('go', ic('siddur'), T('siddur'), he ? 'שחרית, מנחה, ערבית, שבת ומועדים' : 'Shacharit, Mincha, Maariv, Shabbat and festivals', ' data-to="siddur"');
+  top += rw('go', ic('siddur'), T('siddur'), P('שחרית, מנחה, ערבית, שבת ומועדים', 'Shacharit, Mincha, Maariv, Shabbat and festivals'), ' data-to="siddur"');
   top += rw('go', ic('tehillim'), T('tehillim'), T('todayTehillim') + ': ' + th.label + ' (' + T('chapters') + ')', ' data-to="tehillim"');
   top += rw('go', ic('mitzvot'), T('mitzvot'), st.learned + ' ' + T('learned') + ' · ' + T('of613'), ' data-to="mitzvot"');
-  top += rw('go', ic('guides'), T('guides'), he ? 'תפילין, ציצית, ברכות ועוד — צעד אחר צעד' : 'Tefillin, tzitzit, blessings and more — step by step', ' data-to="guides"');
+  top += rw('go', ic('guides'), T('guides'), P('תפילין, ציצית, ברכות ועוד — צעד אחר צעד', 'Tefillin, tzitzit, blessings and more — step by step'), ' data-to="guides"');
   if (S.last && S.last.kind === 'siddur') top = rw('cont', ic('siddur'), T('contTitle'), S.last.title) + top;
   h = h.replace(/<button class="item" data-act="cal"/, function (m) { return top + m; });
   h += '<p class="mu sm" style="text-align:center">' + esc(T('disclaimer')) + '</p>';
@@ -1012,7 +1317,7 @@ SCREENS.settings = function () {
   let persist = '';
   R.after = function () { if (navigator.storage && navigator.storage.persisted) navigator.storage.persisted().then(function (p) { const e = $('#persistTxt'); if (e) e.textContent = p ? T('persistYes') : T('persistNo'); }); };
   return '<div class="card"><label class="f" for="fUser">' + esc(T('settingsUser')) + '</label><input type="text" id="fUser" value="' + esc(S.user) + '" maxlength="40" autocomplete="off">' +
-    '<label class="f" for="fLang">' + esc(T('settingsLang')) + '</label><select id="fLang">' + opt('he', 'עברית', S.lang) + opt('en', 'English', S.lang) + '</select>' +
+    '<label class="f" for="fLang">' + esc(T('settingsLang')) + '</label><select id="fLang">' + opt('he', 'עברית', S.lang) + opt('en', 'English', S.lang) + opt('es', 'Español', S.lang) + '</select>' +
     '<label class="f">' + esc(T('settingsTheme')) + '</label><div class="dots">' + themes.map(function (t) { return '<button class="dot ' + (S.theme === t ? 'on' : '') + '" style="background:' + cols[t] + '" data-act="setTheme" data-t="' + t + '" aria-label="' + t + '"></button>'; }).join('') + '</div>' +
     '<label class="f">' + esc(T('settingsMode')) + '</label><div class="row"><button class="btn" data-act="setMode" data-m="dark" aria-pressed="' + (S.mode === 'dark') + '">' + esc(T('dark')) + '</button><button class="btn" data-act="setMode" data-m="light" aria-pressed="' + (S.mode === 'light') + '">' + esc(T('light')) + '</button></div>' +
     '<label class="f" for="fNus">' + esc(T('settingsNusach')) + '</label><select id="fNus">' + ['ashkenaz', 'sefard', 'edot'].map(function (n) { return opt(n, nuName(n), S.nusach); }).join('') + '</select>' +
@@ -1081,33 +1386,33 @@ function openReader(o, back) { R.rdBack = R.screen === 'assistant' ? 'assistant'
 /* ───── העוזר המקומי: חיפוש וניווט בלבד (בלי שרת, בלי מפתח, בלי בינה חיצונית; לא פוסק הלכה) ───── */
 const AI = { idx: {}, msgs: [], acts: [], base: null, df: null, busy: false };
 const AI_SYN = [
-  ['שחרית', 'בוקר', 'shacharit', 'shaharit', 'morning', 'shacharis'],
-  ['מנחה', 'minchah', 'mincha', 'afternoon', 'minha'],
-  ['ערבית', 'מעריב', 'arvit', 'maariv', 'evening', 'night'],
-  ['עמידה', 'שמונה עשרה', 'שמונה-עשרה', 'שמונהעשרה', 'amidah', 'amida', 'shemoneh esrei'],
-  ['שמע', 'קריאת שמע', 'shema', 'shma'],
-  ['קדיש', 'kaddish', 'kadish'],
-  ['תפילין', 'תפלין', 'tefillin', 'tefilin', 'tfilin', 'phylacteries'],
-  ['ציצית', 'טלית', 'tzitzit', 'tzitzis', 'tallit', 'talit'],
-  ['ברכת המזון', 'בנטשר', 'benching', 'bentsch', 'birkat hamazon', 'grace after meals', 'בהמז', 'ברכון'],
-  ['נרות', 'הדלקת נרות', 'candles', 'candle', 'הדלקה'],
-  ['קידוש', 'הבדלה', 'kiddush', 'havdalah', 'havdala'],
-  ['שבת', 'shabbat', 'shabbos', 'sabbath', 'שבתות'],
-  ['ראש חודש', 'rosh chodesh', 'hallel', 'הלל'],
-  ['מועדים', 'חג', 'חגים', 'festival', 'festivals', 'holiday', 'holidays', 'סוכות', 'חנוכה', 'פסח', 'שבועות', 'sukkot', 'chanukah', 'hanukkah'],
-  ['תהילים', 'תהלים', 'psalm', 'psalms', 'tehillim', 'tehilim'],
-  ['זמנים', 'זמני היום', 'zmanim', 'times', 'לוח שנה', 'calendar', 'תאריך עברי', 'פרשת השבוע', 'פרשה', 'parsha', 'parashat'],
-  ['מצוה', 'מצווה', 'מצוות', 'מצות', 'mitzvah', 'mitzvot', 'commandment', 'commandments'],
-  ['אשרי', 'ashrei', 'ashre'],
-  ['עלינו', 'aleinu', 'alenu'],
-  ['דרך', 'נסיעה', 'טיול', 'travel', 'journey', 'trip', 'tefillat haderech', 'תפילת הדרך'],
-  ['מודה אני', 'modeh ani', 'התעוררות', 'קימה', 'wake', 'waking'],
-  ['אשר יצר', 'asher yatzar', 'שירותים', 'toilet', 'bathroom'],
-  ['נטילת ידיים', 'netilat yadayim', 'לשטוף ידיים', 'wash hands', 'washing hands', 'handwashing'],
-  ['הגדרות', 'settings', 'שפה', 'language', 'גודל', 'ערכת נושא', 'theme'],
-  ['גיבוי', 'backup', 'ייצוא', 'export', 'שחזור', 'restore'],
-  ['מקורות', 'רישיונות', 'sources', 'licenses', 'license', 'credits', 'זכויות יוצרים'],
-  ['אודות', 'about', 'גרסה', 'version']
+  ['שחרית', 'בוקר', 'shacharit', 'shaharit', 'morning', 'shacharis', 'shajarit', 'manana', 'oracion de la manana'],
+  ['מנחה', 'minchah', 'mincha', 'afternoon', 'minha', 'minja', 'tarde'],
+  ['ערבית', 'מעריב', 'arvit', 'maariv', 'evening', 'night', 'noche'],
+  ['עמידה', 'שמונה עשרה', 'שמונה-עשרה', 'שמונהעשרה', 'amidah', 'amida', 'shemoneh esrei', 'amida', 'oracion de pie'],
+  ['שמע', 'קריאת שמע', 'shema', 'shma', 'shema', 'escucha israel'],
+  ['קדיש', 'kaddish', 'kadish', 'kadish', 'kadis'],
+  ['תפילין', 'תפלין', 'tefillin', 'tefilin', 'tfilin', 'phylacteries', 'tefilin', 'filacterias'],
+  ['ציצית', 'טלית', 'tzitzit', 'tzitzis', 'tallit', 'talit', 'talit', 'tzitzit', 'chal de oracion'],
+  ['ברכת המזון', 'בנטשר', 'benching', 'bentsch', 'birkat hamazon', 'grace after meals', 'בהמז', 'ברכון', 'bendicion despues de comer', 'birkat hamazon'],
+  ['נרות', 'הדלקת נרות', 'candles', 'candle', 'הדלקה', 'velas', 'encender velas'],
+  ['קידוש', 'הבדלה', 'kiddush', 'havdalah', 'havdala', 'kidush', 'havdala', 'vino'],
+  ['שבת', 'shabbat', 'shabbos', 'sabbath', 'שבתות', 'shabat', 'sabado'],
+  ['ראש חודש', 'rosh chodesh', 'hallel', 'הלל', 'rosh jodesh', 'luna nueva'],
+  ['מועדים', 'חג', 'חגים', 'festival', 'festivals', 'holiday', 'holidays', 'סוכות', 'חנוכה', 'פסח', 'שבועות', 'sukkot', 'chanukah', 'hanukkah', 'fiestas', 'fiesta', 'januca', 'pesaj', 'sucot', 'shavuot'],
+  ['תהילים', 'תהלים', 'psalm', 'psalms', 'tehillim', 'tehilim', 'salmos', 'salmo'],
+  ['זמנים', 'זמני היום', 'zmanim', 'times', 'לוח שנה', 'calendar', 'תאריך עברי', 'פרשת השבוע', 'פרשה', 'parsha', 'parashat', 'horarios', 'calendario', 'porcion semanal', 'parasha'],
+  ['מצוה', 'מצווה', 'מצוות', 'מצות', 'mitzvah', 'mitzvot', 'commandment', 'commandments', 'mitzva', 'mandamientos', 'precepto'],
+  ['אשרי', 'ashrei', 'ashre', 'ashrei'],
+  ['עלינו', 'aleinu', 'alenu', 'alenu'],
+  ['דרך', 'נסיעה', 'טיול', 'travel', 'journey', 'trip', 'tefillat haderech', 'תפילת הדרך', 'viaje', 'oracion del camino'],
+  ['מודה אני', 'modeh ani', 'התעוררות', 'קימה', 'wake', 'waking', 'despertar', 'al levantarse'],
+  ['אשר יצר', 'asher yatzar', 'שירותים', 'toilet', 'bathroom', 'bano', 'asher yatzar'],
+  ['נטילת ידיים', 'netilat yadayim', 'לשטוף ידיים', 'wash hands', 'washing hands', 'handwashing', 'lavado de manos', 'lavarse las manos'],
+  ['הגדרות', 'settings', 'שפה', 'language', 'גודל', 'ערכת נושא', 'theme', 'ajustes', 'idioma', 'configuracion'],
+  ['גיבוי', 'backup', 'ייצוא', 'export', 'שחזור', 'restore', 'respaldo', 'copia de seguridad', 'restaurar'],
+  ['מקורות', 'רישיונות', 'sources', 'licenses', 'license', 'credits', 'זכויות יוצרים', 'fuentes', 'licencias'],
+  ['אודות', 'about', 'גרסה', 'version', 'acerca de', 'version']
 ];
 const AI_STOP = ['תראה', 'הראה', 'לי', 'אני', 'רוצה', 'צריך', 'צריכה', 'איפה', 'יש', 'לך', 'את', 'מה', 'איך', 'פתח', 'תפתח', 'בבקשה', 'לראות', 'לקרוא', 'להתפלל', 'התפלל', 'לומר', 'ללמוד', 'למצוא', 'חפש', 'show', 'me', 'open', 'i', 'want', 'to', 'the', 'of', 'a', 'an', 'please', 'find', 'where', 'is', 'how', 'do', 'need', 'my', 'for', 'and', 'on', 'in', 'על', 'של', 'עם', 'או', 'גם', 'אם', 'זה', 'הזה', 'הזאת', 'לגבי', 'about'];
 const AI_KW = {
@@ -1124,7 +1429,7 @@ const AI_KW = {
   shema: 'שמע ישראל shema yisrael'
 };
 function aiNorm(t) {
-  return String(t || '').toLowerCase().replace(/[֑-ׇ]/g, '').replace(/[׳״"'`’“”‘]/g, '').replace(/[־\-_\/.,;:!?()\[\]{}|·›«»…—–*+=#@~^<>]/g, ' ')
+  return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[֑-ׇ]/g, '').replace(/[׳״"'`’“”‘]/g, '').replace(/[־\-_\/.,;:!?()\[\]{}|·›«»…—–*+=#@~^<>]/g, ' ')
     .replace(/ך/g, 'כ').replace(/ם/g, 'מ').replace(/ן/g, 'נ').replace(/ף/g, 'פ').replace(/ץ/g, 'צ').replace(/\s+/g, ' ').trim();
 }
 function aiWords(t) { const n = aiNorm(t); return n ? n.split(' ') : []; }
@@ -1539,7 +1844,7 @@ function cleanState(raw) {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
   const o = Object.assign({}, DEF), isO = function (x) { return x && typeof x === 'object' && !Array.isArray(x); };
   const str = function (k, ok, max) { if (typeof raw[k] === 'string' && (!ok || ok.indexOf(raw[k]) > -1)) o[k] = raw[k].slice(0, max || 60); };
-  str('city', null, 40); str('lang', ['he', 'en']); str('theme', ['gold', 'blue', 'green', 'purple', 'red']); str('mode', ['dark', 'light', 'auto']);
+  str('city', null, 40); str('lang', ['he', 'en', 'es']); str('theme', ['gold', 'blue', 'green', 'purple', 'red']); str('mode', ['dark', 'light', 'auto']);
   str('nusach', ['ashkenaz', 'sefard', 'edot']); str('audience', ['', 'new', 'known']); str('user', null, 40);
   if (typeof raw.candle === 'number' && raw.candle >= 0 && raw.candle <= 90) o.candle = raw.candle;
   if (typeof raw.fs === 'number' && raw.fs >= 12 && raw.fs <= 60) o.fs = raw.fs;
@@ -1600,7 +1905,8 @@ function wizard() {
   const draw = function () {
     const dots = '<div class="steps">' + [0, 1, 2].map(function (i) { return '<i class="' + (i === step ? 'on' : '') + '"></i>'; }).join('') + '</div>';
     let h = '';
-    if (step === 0) h = '<h2>' + esc(T('onbTitle')) + '</h2><p>' + esc(T('onbBody')) + '</p><p class="mu sm">' + esc(T('disclaimer')) + '</p><h3>' + esc(T('onbWho')) + '</h3>' +
+    const lg = '<div class="chips" style="margin-bottom:12px">' + [['he', 'עברית'], ['en', 'English'], ['es', 'Español']].map(function (x) { return '<button class="chip ' + (S.lang === x[0] ? 'on' : '') + '" data-w="lang" data-v="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>';
+    if (step === 0) h = lg + '<h2>' + esc(T('onbTitle')) + '</h2><p>' + esc(T('onbBody')) + '</p><p class="mu sm">' + esc(T('disclaimer')) + '</p><h3>' + esc(T('onbWho')) + '</h3>' +
       '<button class="opt ' + (S.audience === 'new' ? 'on' : '') + '" data-w="aud" data-v="new">' + esc(T('audNew')) + '</button><button class="opt ' + (S.audience === 'known' ? 'on' : '') + '" data-w="aud" data-v="known">' + esc(T('audKnown')) + '</button>';
     else if (step === 1) h = '<h2>' + esc(T('onbNusachT')) + '</h2>' + ['ashkenaz', 'sefard', 'edot'].map(function (n) { return '<button class="opt ' + (S.nusach === n ? 'on' : '') + '" data-w="nus" data-v="' + n + '">' + esc(nuName(n)) + '</button>'; }).join('') + '<p class="mu sm">' + esc(T('nusachNote')) + '</p>';
     else h = '<h2>' + esc(T('onbNameT')) + '</h2><input type="text" id="wName" value="' + esc(S.user) + '" maxlength="40" placeholder="' + esc(T('onbNameHint')) + '" autocomplete="off">';
@@ -1609,7 +1915,8 @@ function wizard() {
   const finish = function () { const n = $('#wName', w); if (n) S.user = n.value.slice(0, 40); S.onboarded = true; save(); w.remove(); render(); };
   w.addEventListener('click', function (e) {
     const b = e.target.closest('[data-w]'); if (!b) return; const k = b.dataset.w;
-    if (k === 'aud') { S.audience = b.dataset.v; save(); draw(); }
+    if (k === 'lang') { S.lang = b.dataset.v; save(); apply(); draw(); }
+    else if (k === 'aud') { S.audience = b.dataset.v; save(); draw(); }
     else if (k === 'nus') { S.nusach = b.dataset.v; save(); draw(); }
     else if (k === 'next') { if (step === 2) finish(); else { step++; draw(); } }
     else if (k === 'skip') finish();
