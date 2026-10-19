@@ -100,7 +100,12 @@ input[type=range]{width:100%;accent-color:var(--ac)}
 .aim.a{background:var(--card);border:1px solid var(--bd)}.aim.a p{margin:0 0 8px}.aim.a .item{margin-top:6px}
 .aiform{display:flex;gap:8px;position:sticky;bottom:0;padding:10px 0;background:var(--bg)}.aiform input{flex:1;min-width:0}
 .grp{font-family:var(--ui);font-size:14px;color:var(--mu);margin:26px 0 4px;letter-spacing:.3px}
-.pt{font-family:var(--ui);font-size:17px;color:var(--ac);margin:18px 0 8px;scroll-margin-top:8px}
+.pt{font-family:var(--ui);font-size:17px;color:var(--ac);margin:18px 0 8px;scroll-margin-top:8px;display:flex;align-items:center;gap:8px}
+.pt span{flex:1}
+.bmk{flex:none;width:40px;height:40px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--mu,#999);display:grid;place-items:center;cursor:pointer}
+.bmk svg{width:22px;height:22px}
+.bmk.on{color:var(--ac);border-color:var(--ac)}
+.bmk.on svg path{fill:currentColor;fill-opacity:.25}
 .jump{margin-bottom:12px}
 .tts{position:sticky;top:-14px;z-index:5;background:var(--card);border:1px solid var(--ac);border-radius:14px;padding:10px;margin:0 0 14px;font-family:var(--ui)}
 .tts .row{margin-bottom:8px}
@@ -151,8 +156,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.24.0';
-const DATA_V  = '23';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.26.0';
+const DATA_V  = '24';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -177,6 +182,7 @@ const LANG = {
     repBtn: 'מצאת טעות? דווח', repNote: 'שום דבר לא נשלח אוטומטית: יוכן מייל שתוכל לבדוק ולשלוח בעצמך.', repPart: 'באיזה חלק?', repWhat: 'מה הטעות?', repMail: 'פתח מייל', repCopy: 'העתק', repCopied: 'הדיווח הועתק', repManual: 'סמן והעתק ידנית',
     fsDown: 'הקטן גופן', fsUp: 'הגדל גופן', hebAfter: 'אחרי השקיעה — התאריך העברי כבר התקדם',
     tefTitle: 'איורי הנחת תפילין', tefNote: 'מבוסס על דף הדרכה מופץ (״לזיכוי הרבים״). האיורים צוירו מחדש בבינה מלאכותית ולא נבדקו על ידי רב — אין להסתמך עליהם להלכה.', tefHand: 'הנחת תפילין של יד', tefHead: 'הנחת תפילין של ראש', tefLast: 'המשך הנחת תפילין של יד', tefAllWays: 'מתאים לכל דרכי ההנחה', tefSepNote: 'בדף המקור מופיעה גם חלופה שנייה (נוסח ב׳) שאינה מצויה כאן.', tefBtn: 'איורי הנחה שלב אחר שלב',
+    bmTitle: 'הסימניות שלי', bmAdd: 'הוסף סימנייה', bmDel: 'הסר סימנייה', bmAdded: 'הסימנייה נוספה', bmRemoved: 'הסימנייה הוסרה', bmFull: 'אפשר לשמור עד 200 סימניות', bmEmpty: 'עוד אין סימניות. בסידור, ליד כל חלק יש כפתור סימנייה.', bmHint: 'הקשה על סימנייה פותחת את החלק בסידור.',
     artNote: 'איור להמחשה בלבד — לא הוראה הלכתית', beginnerTitle: 'מתחילים מכאן', beginnerBody: 'מסלול קצר ורגוע: מה מניחים, מה מברכים, ואיך מתפללים — צעד אחרי צעד.', beginnerBtn: 'למסלול למתחילים', pathTitle: 'מסלול 7 ימים למתחיל', pathIntro: 'שבוע של צעדים קטנים. כל יום מקשר למדריך ולמצוות שכבר באפליקציה. אפשר לקחת יותר זמן — אין לחץ.', pathDay: 'יום {0}', pathDone: 'סיימתי את היום', pathUndo: 'ביטול סימון', pathProg: '{0} מתוך 7 ימים הושלמו', pathGuides: 'מדריכים', pathMitz: 'מצוות ללמוד', pathBtn: 'מסלול 7 ימים', torTitle: 'פרשת השבוע', torIntro: 'קריאת פרשת השבוע בעברית מנוקדת, עם תרגום לאנגלית. הפרשה מחולקת לעליות.', torThis: 'הפרשה של השבת הקרובה', torOpen: 'קרא את הפרשה', torAll: 'כל הפרשות', torSrc: 'חמישה חומשי תורה — Sefaria. עברית מנוקדת (נחלת הכלל); תרגום לאנגלית: חומש מצודה (CC-BY).', torAliyah: 'עלייה {0}', torBooks: ['בראשית', 'שמות', 'ויקרא', 'במדבר', 'דברים'], aiTTor: 'פרשה', halTitle: 'קיצור שולחן ערוך', halIntro: 'ספר ההלכה הקלאסי של רבי שלמה גנצפריד, 221 סימנים על חיי היום־יום: מהשכמה בבוקר, דרך תפילה, שבת וחגים ועד דיני אבלות. לשימוש ללימוד; בשאלה מעשית — שואלים רב.', halSearch: 'חיפוש סימן (למשל: שבת, ציצית, ברכות)…', halSimanNone: 'לא נמצא סימן', halSimanWord: 'סימן', halSrc: 'קיצור שולחן ערוך — Sefaria. עברית מנוקדת בנחלת הכלל; תרגום לאנגלית: הרב אברהם דייויס, מצודה (CC-BY). טרם נבדק לעומק.', aiTHal: 'הלכה',
     aiTitle: 'העוזר', aiHello: 'כתבו מה אתם מחפשים — למשל "תראה לי מנחה", "ברכה על יין" או "תהילים 23" — ואני אוביל אתכם למקום הנכון באפליקציה.', aiNote: 'אני עוזר ניווט בלבד: מחפש בתוך האפליקציה ולא מחבר תשובות הלכתיות ולא פוסק. בשאלות הלכה — לשאול רב.', aiPh: 'מה לחפש?', aiSend: 'חפש', aiFound: 'מצאתי את אלה — בחרו:', aiNone: 'לא מצאתי התאמה. נסו מילה אחרת, או בחרו מקום להתחיל:', aiHalacha: 'שימו לב: אני לא פוסק הלכה. אפשר לעיין במקורות שנמצאו, ובשאלה מעשית — לשאול רב.', aiLoading: 'מחפש…', aiTSiddur: 'סידור', aiTPart: 'קטע בתפילה', aiTGuide: 'מדריך', aiTMitz: 'מצווה', aiTTeh: 'תהילים', aiTScreen: 'מסך', aiExamples: 'תראה לי מנחה|ברכה על יין|איך מניחים תפילין|תהילים 23|הדלקת נרות|קדיש|גיבוי נתונים', aiCardBtn: 'שאל את העוזר',
     calCandleLate: 'הדלקת נרות (אחרי צאת הכוכבים)', calCandleLateNote: 'כשהחג נכנס במוצאי שבת או ביום טוב — מדליקים רק אחרי צאת הכוכבים, מאש שהודלקה מבעוד יום. לפרטים — לשאול רב.',
@@ -232,6 +238,7 @@ const LANG = {
     repBtn: 'Found a mistake? Report', repNote: 'Nothing is sent automatically: an email is prepared for you to review and send.', repPart: 'Which part?', repWhat: 'What is wrong?', repMail: 'Open email', repCopy: 'Copy', repCopied: 'Report copied', repManual: 'Select and copy manually',
     fsDown: 'Smaller text', fsUp: 'Larger text', hebAfter: 'After sunset — the Hebrew date has already advanced',
     tefTitle: 'Tefillin illustrations', tefNote: 'Based on a circulated instruction sheet. Redrawn with AI and not reviewed by a rabbi — do not rely on it for halacha. Captions are in Hebrew.', tefHand: 'Hand tefillin', tefHead: 'Head tefillin', tefLast: 'Finishing the hand tefillin', tefAllWays: 'Suitable for all ways of placing', tefSepNote: 'The source sheet also shows a second alternative that is not included here.', tefBtn: 'Step-by-step illustrations',
+    bmTitle: 'My bookmarks', bmAdd: 'Add bookmark', bmDel: 'Remove bookmark', bmAdded: 'Bookmark added', bmRemoved: 'Bookmark removed', bmFull: 'Up to 200 bookmarks', bmEmpty: 'No bookmarks yet. In the siddur, each part has a bookmark button.', bmHint: 'Tap a bookmark to open that part.',
     artNote: 'Illustration only — not halachic instruction', beginnerTitle: 'Start here', beginnerBody: 'A short, calm path: what to put on, what to say, and how to pray — step by step.', beginnerBtn: 'Beginner path', pathTitle: '7-day beginner path', pathIntro: 'A week of small steps. Each day links to guides and mitzvot already in the app. Take longer if you like — no pressure.', pathDay: 'Day {0}', pathDone: 'I finished this day', pathUndo: 'Undo', pathProg: '{0} of 7 days completed', pathGuides: 'Guides', pathMitz: 'Mitzvot to learn', pathBtn: '7-day path', torTitle: 'Weekly portion', torIntro: 'Read the weekly Torah portion in vocalized Hebrew with an English translation, divided into aliyot.', torThis: 'This coming Shabbat', torOpen: 'Read the portion', torAll: 'All portions', torSrc: 'The Five Books of Moses — Sefaria. Vocalized Hebrew (public domain); English: Metsudah Chumash (CC-BY).', torAliyah: 'Aliyah {0}', torBooks: ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy'], aiTTor: 'Parasha', halTitle: 'Kitzur Shulchan Arukh', halIntro: 'The classic code of Jewish law by Rabbi Shlomo Ganzfried: 221 chapters on daily life — from rising in the morning through prayer, Shabbat and holidays to mourning. For study; for a practical question, ask a rabbi.', halSearch: 'Search a chapter (e.g. Shabbat, tzitzit, blessings)…', halSimanNone: 'No chapter found', halSimanWord: 'Chapter', halSrc: 'Kitzur Shulchan Arukh — Sefaria. Vocalized Hebrew in the public domain; English: Rabbi Avrohom Davis, Metsudah (CC-BY). Not yet fully reviewed.', aiTHal: 'Halacha',
     aiTitle: 'Assistant', aiHello: 'Type what you are looking for — e.g. "show me Mincha", "blessing on wine" or "Psalm 23" — and I will take you to the right place in the app.', aiNote: 'I am a navigation helper only: I search inside the app and do not compose or rule on halacha. For halachic questions, ask a rabbi.', aiPh: 'What are you looking for?', aiSend: 'Search', aiFound: 'I found these — pick one:', aiNone: 'No match found. Try another word, or pick a place to start:', aiHalacha: 'Note: I do not rule on halacha. You can read the sources found, and for a practical question, ask a rabbi.', aiLoading: 'Searching…', aiTSiddur: 'Siddur', aiTPart: 'Prayer part', aiTGuide: 'Guide', aiTMitz: 'Mitzvah', aiTTeh: 'Psalms', aiTScreen: 'Screen', aiExamples: 'Show me Mincha|Blessing on wine|How to put on tefillin|Psalm 23|Shabbat candles|Kaddish|Backup my data', aiCardBtn: 'Ask the assistant',
     calCandleLate: 'Candle lighting (after nightfall)', calCandleLateNote: 'When the holiday begins on Saturday night or after a first day of a holiday, candles are lit only after nightfall, from an existing flame. Ask a rabbi for details.',
@@ -288,7 +295,7 @@ function T(k) {
 
 /* ───── מצב שמור ───── */
 const DEF = { city: 'jerusalem', candle: 0, gps: null, v: 1, user: '', lang: 'he', theme: 'gold', mode: 'dark', nusach: 'ashkenaz', audience: '', fs: 20, showEn: false,
-  onboarded: false, marks: {}, tehDays: {}, last: null, lastBackup: 0 };
+  onboarded: false, marks: {}, bm: {}, tehDays: {}, last: null, lastBackup: 0 };
 let S = (function () {
   try { const r = JSON.parse(store.get('state') || 'null'); return Object.assign({}, DEF, r || {}); } catch (e) { return Object.assign({}, DEF); }
 })();
@@ -390,7 +397,7 @@ function mState(id) { const m = S.marks[id]; if (!m) return ''; if (m.na) return
 const R = { screen: 'home', params: {}, mf: 'all', rdBack: 'home' };
 const SCREENS = {};
 const NAV = [['home', 'home', 'home'], ['siddur', 'siddur', 'siddur'], ['tehillim', 'tehillim', 'tehillim'], ['mitzvot', 'mitzvot', 'mitzvot'], ['more', 'more', 'more']];
-const TOPNAV = { parsha: 'more', halacha: 'more', path: 'home', calendar: 'home', assistant: 'home', home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', tefillinArt: 'more', settings: 'more', sources: 'more', about: 'more' };
+const TOPNAV = { parsha: 'more', halacha: 'more', path: 'home', calendar: 'home', assistant: 'home', home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', bookmarks: 'more', tefillinArt: 'more', settings: 'more', sources: 'more', about: 'more' };
 function go(name, params) { R.screen = name; R.params = params || {}; render(); $('#view').scrollTop = 0; }
 function render() {
   ttsKill();
@@ -545,6 +552,15 @@ const TEF = {
   },
   trId: { ashkenaz: 'ash', sefard: 'sef', edot: 'sep' }
 };
+SCREENS.bookmarks = function () {
+  setTitle(T('bmTitle'));
+  const l = Object.keys(S.bm || {}).map(function (k) { return [k, S.bm[k]]; }).sort(function (a, b) { return (b[1].t || 0) - (a[1].t || 0); });
+  if (!l.length) return '<div class="card"><p class="mu">' + esc(T('bmEmpty')) + '</p><button class="btn pri blk" data-act="go" data-to="siddur">' + esc(T('siddur')) + '</button></div>';
+  return '<p class="mu sm">' + esc(T('bmHint')) + '</p><div class="list">' + l.map(function (e) {
+    const b = e[1];
+    return '<div class="item" style="padding:0"><button class="item" style="border:0;background:none;flex:1" data-act="bmOpen" data-nu="' + esc(b.nu) + '" data-id="' + esc(b.id) + '" data-p="' + b.p + '"><span style="color:var(--ac);display:grid;width:26px">' + ic('bookmark') + '</span><span class="t"><b>' + esc(b.label) + '</b><span class="mu sm">' + esc(b.sec) + '</span></span></button><button class="bmk" data-act="bmRm" data-k="' + esc(e[0]) + '" aria-label="' + esc(T('bmDel')) + '" style="margin-inline-end:8px">✕</button></div>';
+  }).join('') + '</div>';
+};
 SCREENS.tefillinArt = function () {
   setTitle(T('tefTitle'));
   const tr = (R.params && R.params.tr) || TEF.trId[S.nusach] || 'ash';
@@ -680,9 +696,10 @@ function fillService(box, j) {
     const title = (pt.sub ? (he ? pt.sub.he : pt.sub.en) + ' · ' : '') + (he ? pt.he : pt.en);
     TL.push({ p: i, label: (g ? g + ' · ' : '') + title });
     opts += '<option value="p' + i + '">' + esc((g ? g + ' · ' : '') + title) + '</option>';
-    h += '<div class="pt" id="p' + i + '">' + esc(title) + '</div>';
+    const bmOk = R.params && R.params.kind === 'siddur' && R.params.nu && R.params.id, bk = bmOk ? R.params.nu + '/' + R.params.id + '/' + i : '', on = bmOk && S.bm && S.bm[bk];
+    h += '<div class="pt" id="p' + i + '"><span>' + esc(title) + '</span>' + (bmOk ? '<button class="bmk' + (on ? ' on' : '') + '" data-act="bm" data-p="' + i + '" aria-pressed="' + (on ? 'true' : 'false') + '" aria-label="' + esc(T(on ? 'bmDel' : 'bmAdd')) + '">' + ic('bookmark') + '</button>' : '') + '</div>';
     if (pt.status === 'pending' || !pt.segments.length) { h += '<p class="mu" style="font-family:var(--ui);font-size:15px"><span class="tag warn">' + esc(T('inPrep')) + '</span> ' + esc(T('partMissing')) + (pt.note ? ' ' + esc(pt.note) : '') + '</p>'; return; }
-    if (pt.status === 'review') h += '<p class="mu" style="font-family:var(--ui);font-size:14px"><span class="tag warn">' + esc(T('stReview')) + '</span> ' + esc(T('partReview')) + '</p>';
+    if (pt.status === 'review') h += '<p class="mu" style="font-family:var(--ui);font-size:14px"><span class="tag warn">' + esc(T('stReview')) + '</span> ' + esc(T('partReview')) + (pt.note ? ' ' + esc(pt.note) : '') + '</p>';
     pt.segments.forEach(function (sg) {
       if (sg.rubric) { h += '<p class="seg rb rub" id="u' + tuAdd(sg.he, true, i) + '" data-u="' + (TU.length - 1) + '">' + esc(sg.he) + '</p>'; return; }
       h += '<p class="seg" id="u' + tuAdd(sg.he, false, i) + '" data-u="' + (TU.length - 1) + '">' + rubHtml(sg.he) + '</p>' + (S.showEn && sg.en ? '<p class="en" dir="ltr" style="white-space:pre-line">' + esc(sg.en) + '</p>' : '');
@@ -912,7 +929,7 @@ function openMitzvah(id) {
 SCREENS.more = function () {
   setTitle(T('more'));
   const row = function (to, ico, key) { return '<button class="item" data-act="go" data-to="' + to + '"><span style="color:var(--ac);display:grid;width:26px">' + ic(ico) + '</span><span class="t"><b>' + esc(T(key)) + '</b></span></button>'; };
-  return '<div class="list">' + row('calendar', 'calendar', 'calTitle') + row('assistant', 'assistant', 'aiTitle') + row('guides', 'guides', 'guides') + (D.tor ? row('parsha', 'parsha', 'torTitle') : '') + row('halacha', 'halacha', 'halTitle') + row('settings', 'settings', 'settings') + row('sources', 'book', 'sources') + row('about', 'about', 'about') + '</div>';
+  return '<div class="list">' + row('calendar', 'calendar', 'calTitle') + row('assistant', 'assistant', 'aiTitle') + row('bookmarks', 'bookmark', 'bmTitle') + row('guides', 'guides', 'guides') + (D.tor ? row('parsha', 'parsha', 'torTitle') : '') + row('halacha', 'halacha', 'halTitle') + row('settings', 'settings', 'settings') + row('sources', 'book', 'sources') + row('about', 'about', 'about') + '</div>';
 };
 
 SCREENS.settings = function () {
@@ -1328,6 +1345,18 @@ const ACT = {
   aiChip: function (el) { aiAsk(el.dataset.q); },
   go: function (el) { go(el.dataset.to); },
   nav: function (el) { go(el.dataset.to); },
+  bm: function (el) {
+    const p = R.params || {}; if (p.kind !== 'siddur') return;
+    const i = +el.dataset.p, k = p.nu + '/' + p.id + '/' + i; S.bm = S.bm || {};
+    if (S.bm[k]) { delete S.bm[k]; toast(T('bmRemoved')); }
+    else {
+      if (Object.keys(S.bm).length >= 200) { toast(T('bmFull')); return; }
+      const t = document.querySelector('#p' + i + ' span'); S.bm[k] = { nu: p.nu, id: p.id, p: i, sec: String(R.title || '').slice(0, 120), label: String(t ? t.textContent : '').slice(0, 120), t: Date.now() }; toast(T('bmAdded'));
+    }
+    save(); const on = !!S.bm[k]; el.classList.toggle('on', on); el.setAttribute('aria-pressed', on ? 'true' : 'false'); el.setAttribute('aria-label', T(on ? 'bmDel' : 'bmAdd'));
+  },
+  bmOpen: function (el) { openSection(el.dataset.nu, el.dataset.id, 'p' + el.dataset.p); },
+  bmRm: function (el) { delete S.bm[el.dataset.k]; save(); render(); },
   tefTr: function (el) { go('tefillinArt', { tr: el.dataset.tr }); },
   tefArt: function () { R.tefBack = { p: R.params, t: R.title, b: R.rdBack }; go('tefillinArt'); },
   back: function () { if (R.screen === 'tefillinArt' && R.tefBack) { const b = R.tefBack; R.rdBack = b.b; R.title = b.t; go('reader', b.p); return; } go(R.screen === 'reader' ? (R.rdBack || 'home') : 'home'); },
@@ -1438,6 +1467,11 @@ function cleanState(raw) {
   ['showEn', 'onboarded'].forEach(function (k) { if (typeof raw[k] === 'boolean') o[k] = raw[k]; });
   if (typeof raw.lastBackup === 'number') o.lastBackup = raw.lastBackup;
   if (isO(raw.gps) && isFinite(raw.gps.lat) && isFinite(raw.gps.lon)) o.gps = { lat: +raw.gps.lat, lon: +raw.gps.lon, tz: typeof raw.gps.tz === 'string' ? raw.gps.tz.slice(0, 60) : 'UTC' };
+  o.bm = {}; if (isO(raw.bm)) Object.keys(raw.bm).slice(0, 200).forEach(function (k) {
+    const b = raw.bm[k]; if (!isO(b) || !/^[a-z0-9_-]{1,30}\/[A-Za-z0-9_-]{1,60}\/\d{1,3}$/.test(k)) return;
+    if (typeof b.nu !== 'string' || typeof b.id !== 'string' || !(b.p >= 0 && b.p < 1000)) return;
+    o.bm[k] = { nu: b.nu.slice(0, 30), id: b.id.slice(0, 60), p: Math.floor(b.p), sec: String(b.sec || '').slice(0, 120), label: String(b.label || '').slice(0, 120), t: typeof b.t === 'number' ? b.t : 0 };
+  });
   o.marks = {}; if (isO(raw.marks)) Object.keys(raw.marks).forEach(function (id) {
     const m = raw.marks[id]; if (!isO(m) || id.length > 20) return; const c = {};
     if (m.l) c.l = (typeof m.l === 'string' || typeof m.l === 'number') ? m.l : 1; if (m.na) c.na = 1;
