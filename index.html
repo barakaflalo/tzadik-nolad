@@ -156,8 +156,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.26.0';
-const DATA_V  = '24';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.27.0';
+const DATA_V  = '25';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -482,6 +482,7 @@ SCREENS.home = function () {
   if (D.cal) { const lc = calLoc(), ci = calInfo(today(), lc); h = h.replace('</p></div>', '</p>' + (ci.parsha ? '<p class="mu sm">' + esc(T('calParsha')) + ': ' + esc(ci.parsha) + '</p>' : '') + (ci.ev.length ? '<p class="sm"><b>' + esc(ci.ev.map(function (e) { return ci.name(e); }).join(' · ')) + '</b></p>' : '') + (ci.candle ? '<p class="sm">' + esc(T('calCandle')) + ': <b>' + esc(calFmt(ci.candle, lc.tz, true)) + '</b></p>' : '') + (ci.candleLate ? '<p class="sm">' + esc(T('calCandleLate')) + ': <b>' + esc(calFmt(ci.candleLate, lc.tz)) + '</b></p>' : '') + (ci.havdalah ? '<p class="sm">' + esc(T('calHavdalah')) + ': <b>' + esc(calFmt(ci.havdalah, lc.tz)) + '</b></p>' : '') + '</div>'); }
   h += '<button class="item" data-act="cal" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('calendar') + '</span><span class="t"><b>' + esc(T('calCardBtn')) + '</b><span class="mu sm">' + esc(T('calZmanim')) + ' · ' + esc(T('calUpcoming')) + '</span></span></button>';
   if (D.cal && D.tor) { const pi = torFind(calInfo(today(), calLoc()).parshaHe); if (pi >= 0) h += '<button class="item" data-act="torOpen" data-i="' + pi + '" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('parsha') + '</span><span class="t"><b>' + esc(T('torTitle')) + ': ' + esc(S.lang === 'he' ? D.tor.parashot[pi].he : D.tor.parashot[pi].en) + '</b><span class="mu sm">' + esc(T('torOpen')) + '</span></span></button>'; }
+  if (D.hal) h += '<button class="item" data-act="go" data-to="halacha" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('halacha') + '</span><span class="t"><b>' + esc(T('halTitle')) + '</b><span class="mu sm">' + esc(S.lang === 'he' ? 'הלכות יומיומיות, סימן אחר סימן' : 'Daily halacha, siman by siman') + '</span></span></button>';
   if (S.audience === 'new') h += '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="path">' + esc(T('pathBtn')) + '</button><button class="btn blk" data-act="go" data-to="guides" style="margin-top:8px">' + esc(T('beginnerBtn')) + '</button></div>';
   h += '<button class="item" data-act="ai" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('assistant') + '</span><span class="t"><b>' + esc(T('aiCardBtn')) + '</b><span class="mu sm">' + esc(T('aiPh')) + '</span></span></button>';
   h += '<div class="big">' +
@@ -959,6 +960,8 @@ const SOURCES = [
     ['Miqra according to the Masorah', 'he', 'CC-BY-SA'], ['THE JPS TANAKH: Gender-Sensitive Edition', 'en', 'CC-BY-NC']] },
   { h: 'נוסח ספרד ועדות המזרח, שבת ומועדים', e: 'Sefard and Edot HaMizrach, Shabbat and festivals', items: [
     ['Torat Emet 357', 'he', 'Public Domain'], ['Sefaria Community Translation', 'en', 'CC0']] },
+  { h: 'ספרד ועדות המזרח: תפילות נוספות, ל״ג בעומר, יוצרות, קריאת התורה, תיקון חצות, משניות — מסומנות "לא נבדק לעומק"', e: 'Sefard and Edot HaMizrach: additional prayers, Lag BaOmer, Yotzerot, Torah readings, Midnight rite, Mishnayot — marked “not fully reviewed”', items: [
+    ['Torat Emet 357', 'he', 'Public Domain'], ['The Metsudah siddur, 1981', 'he', 'CC-BY'], ['Shaliehsaboo Edition', 'he', 'CC0']] },
   { h: 'פרקי אבות', e: 'Pirkei Avot', items: [
     ['Torat Emet 357', 'he', 'Public Domain'], ['Mishnah Yomit by Dr. Joshua Kulp', 'en', 'CC-BY']] },
   { h: 'הגדה של פסח', e: 'Pesach Haggadah', items: [
