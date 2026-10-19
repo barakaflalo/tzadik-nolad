@@ -138,8 +138,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.14.0';
-const DATA_V  = '14';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.15.0';
+const DATA_V  = '15';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -801,6 +801,12 @@ const SOURCES = [
     ['Daat Siddur Ashkenaz', 'he', 'Public Domain'], ['Sefaria Community Translation', 'en', 'CC0']] },
   { h: 'תהילים', e: 'Psalms', items: [
     ['Miqra according to the Masorah', 'he', 'CC-BY-SA'], ['THE JPS TANAKH: Gender-Sensitive Edition', 'en', 'CC-BY-NC']] },
+  { h: 'נוסח ספרד ועדות המזרח, שבת ומועדים', e: 'Sefard and Edot HaMizrach, Shabbat and festivals', items: [
+    ['Torat Emet 357', 'he', 'Public Domain'], ['Sefaria Community Translation', 'en', 'CC0']] },
+  { h: 'פרקי אבות', e: 'Pirkei Avot', items: [
+    ['Torat Emet 357', 'he', 'Public Domain'], ['Mishnah Yomit by Dr. Joshua Kulp', 'en', 'CC-BY']] },
+  { h: 'הגדה של פסח', e: 'Pesach Haggadah', items: [
+    ['Pesach Haggadah', 'he', 'Public Domain'], ['Sefaria Edition', 'en', 'CC0']] },
   { h: 'הסברי המצוות — ספר החינוך', e: 'Mitzvah explanations — Sefer HaChinukh', items: [
     ['Sefer HaChinukh — Vocalized Edition', 'he', 'CC0'], ['Sefer HaChinukh, translated by R. Francis Nataf, Sefaria 2018', 'en', 'CC0']] },
   { h: 'לוח שנה, פרשות וחגים', e: 'Calendar, parashot and holidays', items: [
@@ -979,7 +985,7 @@ function aiSearch(q, entries) {
 function aiAnswer(q) {
   const he = S.lang === 'he', qn = aiNorm(q); const out = { text: '', opts: [] }; AI.acts = AI.acts || [];
   const add = function (label, tag, act) { AI.acts.push(act); out.opts.push({ label: label, tag: tag, i: AI.acts.length - 1 }); };
-  const tm = qn.match(/(^| )(תהילימ|תהלימ|psalm|psalms|tehillim|פרק)\s*(\d{1,3}|[א-ת]{1,4})( |$)/);
+  const tm = qn.match(/(^| )(תהילימ|תהלימ|psalm|psalms|tehillim|פרק)(?:\s+|(?=\d))(\d{1,3}|[א-ת]{1,4})( |$)/);
   if (tm) { const n = /^\d+$/.test(tm[3]) ? +tm[3] : aiGem(tm[3]); if (n >= 1 && n <= 150) { out.text = T('aiFound'); add(T('tehillim') + ' ' + (he ? hnum(n) : n), T('aiTTeh'), { k: 'tehCh', n: n }); return Promise.resolve(out); } }
   if (/(תהילימ|תהלימ|psalms|tehillim)/.test(qn) && /(היום|today|יומי|daily)/.test(qn)) { out.text = T('aiFound'); add(T('openTehillim'), T('aiTTeh'), { k: 'go', to: 'tehillim' }); return Promise.resolve(out); }
   const nu = aiNusachFrom(q);

@@ -26,8 +26,8 @@ CacheStorage.prototype.match=function(){return sm.apply(this,arguments).then(cle
    - רק שורש האפליקציה נשמר כ-"./" (לא כל דף כ-index.html).
    - קבצי נתונים עם ?v= ואותה כתובת בדיוק ברשימת CORE (בלי ignoreSearch).
    - מעלים VERSION ו-DATA_V יחד, ביחד עם index.html. */
-const VERSION = 'tznolad-v14';
-const DATA_V = '14';           // חייב להיות זהה ל-DATA_V ב-index.html
+const VERSION = 'tznolad-v15';
+const DATA_V = '15';           // חייב להיות זהה ל-DATA_V ב-index.html
 const CORE = [
   './',
   'manifest.json',
@@ -60,6 +60,12 @@ const CORE = [
   'data/siddur/edot/festivals.json?v=' + DATA_V,
   'data/calendar.json?v=' + DATA_V,
   'data/path.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/pirkei-avot.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/haggadah.json?v=' + DATA_V,
+  'data/siddur/sefard/pirkei-avot.json?v=' + DATA_V,
+  'data/siddur/sefard/haggadah.json?v=' + DATA_V,
+  'data/siddur/edot/pirkei-avot.json?v=' + DATA_V,
+  'data/siddur/edot/haggadah.json?v=' + DATA_V,
   'data/chinukh/he.json?v=' + DATA_V,
   'data/chinukh/en.json?v=' + DATA_V,
   'data/guides/index.json?v=' + DATA_V,

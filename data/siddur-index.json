@@ -54,6 +54,18 @@
      "en": "Kaddish",
      "ready": true,
      "core": true
+    },
+    {
+     "id": "pirkei-avot",
+     "he": "פרקי אבות",
+     "en": "Pirkei Avot",
+     "ready": true
+    },
+    {
+     "id": "haggadah",
+     "he": "הגדה של פסח",
+     "en": "Pesach Haggadah",
+     "ready": true
     }
    ]
   },
@@ -125,12 +137,14 @@
     {
      "id": "pirkei-avot",
      "he": "פרקי אבות",
-     "en": "Pirkei Avot"
+     "en": "Pirkei Avot",
+     "ready": true
     },
     {
      "id": "haggadah",
      "he": "הגדה של פסח",
-     "en": "Pesach Haggadah"
+     "en": "Pesach Haggadah",
+     "ready": true
     },
     {
      "id": "yotzerot",
@@ -213,6 +227,18 @@
      "id": "mishna-shabbat",
      "he": "לימוד משנה לשבת",
      "en": "Mishna Study for Shabbat"
+    },
+    {
+     "id": "pirkei-avot",
+     "he": "פרקי אבות",
+     "en": "Pirkei Avot",
+     "ready": true
+    },
+    {
+     "id": "haggadah",
+     "he": "הגדה של פסח",
+     "en": "Pesach Haggadah",
+     "ready": true
     }
    ]
   }
