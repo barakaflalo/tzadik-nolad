@@ -85,6 +85,15 @@ input[type=range]{width:100%;accent-color:var(--ac)}
 .grp{font-family:var(--ui);font-size:14px;color:var(--mu);margin:26px 0 4px;letter-spacing:.3px}
 .pt{font-family:var(--ui);font-size:17px;color:var(--ac);margin:18px 0 8px;scroll-margin-top:8px}
 .jump{margin-bottom:12px}
+.tts{position:sticky;top:-14px;z-index:5;background:var(--card);border:1px solid var(--ac);border-radius:14px;padding:10px;margin:0 0 14px;font-family:var(--ui)}
+.tts .row{margin-bottom:8px}
+.tts select{min-height:40px;font-size:15px;padding:4px 8px}
+.tts label.c{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mu);min-height:34px}
+.tts label.c input{width:20px;height:20px;accent-color:var(--ac)}
+.tts .ib{width:50px;height:50px}
+.tts .hint{font-size:12.5px;color:var(--mu);margin:4px 0 0}
+.tts .msg{font-size:13px;color:var(--warn);margin:6px 0 0}
+.seg.tts-on{background:rgba(212,175,55,.16);background:color-mix(in srgb,var(--ac) 18%,transparent);border-radius:8px;box-shadow:0 0 0 6px color-mix(in srgb,var(--ac) 18%,transparent)}
 .ph{border:1px dashed var(--ac);border-radius:14px;padding:16px;line-height:1.7;font-family:var(--ui);font-size:16px}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:flex-end;justify-content:center;z-index:60;opacity:0;transition:opacity .15s}
 .modal-overlay.open{opacity:1}
@@ -125,7 +134,7 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.3.0';
+const VERSION = '0.4.0';
 const DATA_V  = '3';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
@@ -157,6 +166,8 @@ const LANG = {
     phSiddur: 'הנוסח של «{0}» עוד לא נטען לאפליקציה. הוא יגיע ממקור מאומת (ספריא), עם שם הגרסה והרישיון שלה — לא מהזיכרון של בינה.',
     phTehillim: 'נוסח התהילים עוד לא נטען. הוא יגיע ממקור מאומת (ספריא).',
     phGuide: 'המדריך הזה בהכנה. הוא ייכתב ממקור הלכתי מאומת, עם סימון מקור וסטטוס אימות — ולא מהזיכרון של בינה.',
+    ttsOpen: 'הקראה', ttsPlay: 'הפעל', ttsPause: 'השהה', ttsStop: 'עצור', ttsSpeed: 'מהירות', ttsFrom: 'מהחלק', ttsTo: 'עד החלק', ttsSkipRub: 'דלג על הוראות', ttsNoNik: 'הקרא בלי ניקוד',
+    ttsHint: 'אפשר גם להקיש על פסקה כדי להתחיל להקריא משם.', ttsNoVoice: 'לא נמצא קול עברי במכשיר. אפשר להתקין בהגדרות הטלפון: ניהול כללי ← שפה ← טקסט לדיבור (או Google TTS) ← התקנת נתוני קול עברית.', ttsErr: 'ההקראה נעצרה בגלל תקלה בקול של המכשיר.', ttsDone: 'ההקראה הסתיימה', ttsUnsupported: 'המכשיר הזה לא תומך בהקראה',
     jumpTo: 'קפוץ לחלק בתפילה…', partMissing: 'החלק הזה עוד לא נטען — אין לו עדיין גרסה ברישיון ברור. לא נכתב מהזיכרון.',
     todayLabel: 'פרקי היום (חלוקה ל-30 יום)', readToday: 'קראתי היום', readTodayDone: 'נרשם ✓', allPsalms: 'כל 150 הפרקים',
     tehNote: 'החלוקה לפי יום בחודש העברי. אחרי השקיעה היום העברי מתחלף — האפליקציה מחשבת לפי חצות.',
@@ -198,6 +209,8 @@ const LANG = {
     phSiddur: 'The text of “{0}” is not loaded yet. It will come from a verified source (Sefaria), with its version name and license — not from an AI’s memory.',
     phTehillim: 'The Psalms text is not loaded yet. It will come from a verified source (Sefaria).',
     phGuide: 'This guide is in preparation. It will be written from a verified halachic source, with a source and verification status — not from an AI’s memory.',
+    ttsOpen: 'Read aloud', ttsPlay: 'Play', ttsPause: 'Pause', ttsStop: 'Stop', ttsSpeed: 'Speed', ttsFrom: 'From part', ttsTo: 'To part', ttsSkipRub: 'Skip instructions', ttsNoNik: 'Read without vowel marks',
+    ttsHint: 'You can also tap a paragraph to start reading from there.', ttsNoVoice: 'No Hebrew voice found on this device. Install one in phone settings: General management → Language → Text-to-speech (or Google TTS) → install Hebrew voice data.', ttsErr: 'Reading stopped because of a problem with the device voice.', ttsDone: 'Finished reading', ttsUnsupported: 'This device does not support read-aloud',
     jumpTo: 'Jump to a part…', partMissing: 'This part is not loaded yet — no clearly licensed version exists. It is not written from memory.',
     todayLabel: "Today's chapters (30-day cycle)", readToday: 'I read today', readTodayDone: 'Recorded ✓', allPsalms: 'All 150 chapters',
     tehNote: 'By day of the Hebrew month. After sunset the Hebrew day changes — the app calculates by midnight.',
@@ -259,6 +272,10 @@ const ICON = {
   sun: 'M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6L4.2 4.2M19.8 19.8l-1.4-1.4M18.4 5.6l1.4-1.4M4.2 19.8l1.4-1.4M12 7a5 5 0 100 10 5 5 0 000-10z',
   moon: 'M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z',
   scroll: 'M7 3h11a2 2 0 012 2v12a3 3 0 01-3 3H6a3 3 0 01-3-3v-1h4V5a2 2 0 012-2zM10 8h6M10 12h6',
+  play: 'M7 4l12 8-12 8z',
+  pause: 'M8 5v14M16 5v14',
+  stop: 'M6 6h12v12H6z',
+  speaker: 'M4 9v6h4l5 4V5L8 9H4zM16 8a5 5 0 010 8M19 5a9 9 0 010 14',
   gear: 'M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1-2 3.4-.2-.1a1.7 1.7 0 00-1.8.1 1.7 1.7 0 00-1 1.5V22h-4v-.2a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8-.1l-.2.1-2-3.4.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H2v-4h.2a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1 2-3.4.2.1a1.7 1.7 0 001.8-.1 1.7 1.7 0 001-1.5V2h4v.2a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8.1l.2-.1 2 3.4-.1.1a1.7 1.7 0 00-.3 1.8 1.7 1.7 0 001.5 1H22v4h-.2a1.7 1.7 0 00-1.4 1z'
 };
 function ic(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + ICON[n] + '"/></svg>'; }
@@ -322,6 +339,7 @@ const NAV = [['home', 'home', 'home'], ['siddur', 'book', 'siddur'], ['tehillim'
 const TOPNAV = { home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', settings: 'more', sources: 'more', about: 'more' };
 function go(name, params) { R.screen = name; R.params = params || {}; render(); $('#view').scrollTop = 0; }
 function render() {
+  ttsKill();
   const v = $('#view'); const fn = SCREENS[R.screen] || SCREENS.home;
   const keep = R.screen === 'reader' ? R.title : null; R.title = keep;
   const body = fn(R.params);
@@ -421,7 +439,17 @@ SCREENS.siddur = function () {
 
 SCREENS.reader = function (p) {
   /* p: {kind, title, path?, ph?} — path = קובץ נתונים; ללא קובץ → הודעת "בהכנה" כנה */
-  let h = '<div class="row" style="margin-bottom:12px"><button class="btn" data-act="fs" data-d="-2" aria-label="A-">A−</button><button class="btn" data-act="fs" data-d="2" aria-label="A+">A+</button><button class="btn" data-act="toggleEn" aria-pressed="' + (S.showEn ? 'true' : 'false') + '">' + esc(T('showEn')) + '</button></div>';
+  const canTts = !!p.path && ttsSupported();
+  let h = '<div class="row" style="margin-bottom:12px"><button class="btn" data-act="fs" data-d="-2" aria-label="A-">A−</button><button class="btn" data-act="fs" data-d="2" aria-label="A+">A+</button><button class="btn" data-act="toggleEn" aria-pressed="' + (S.showEn ? 'true' : 'false') + '">' + esc(T('showEn')) + '</button>' +
+    (canTts ? '<button class="btn" data-act="ttsToggle" aria-pressed="false" id="ttsOpenBtn">' + ic('speaker').replace('<svg', '<svg width="20" height="20"') + esc(T('ttsOpen')) + '</button>' : '') + '</div>';
+  if (canTts) {
+    const c = ttsCfg();
+    h += '<div class="tts" id="ttsBar" hidden><div class="row"><button class="ib" data-act="ttsPlay" id="ttsPlayBtn" aria-label="' + esc(T('ttsPlay')) + '"></button><button class="ib" data-act="ttsStop" aria-label="' + esc(T('ttsStop')) + '">' + ic('stop') + '</button>' +
+      '<label class="sm mu" style="flex:1">' + esc(T('ttsSpeed')) + '<select id="ttsRate">' + [0.7, 0.85, 1, 1.15, 1.3].map(function (r) { return '<option value="' + r + '"' + (c.rate === r ? ' selected' : '') + '>' + r + 'x</option>'; }).join('') + '</select></label></div>' +
+      '<div class="row"><label class="sm mu" style="flex:1">' + esc(T('ttsFrom')) + '<select id="ttsFrom"></select></label><label class="sm mu" style="flex:1">' + esc(T('ttsTo')) + '<select id="ttsTo"></select></label></div>' +
+      '<label class="c"><input type="checkbox" id="ttsSkip"' + (c.skipRub ? ' checked' : '') + '>' + esc(T('ttsSkipRub')) + '</label><label class="c"><input type="checkbox" id="ttsNoNik"' + (c.noNik ? ' checked' : '') + '>' + esc(T('ttsNoNik')) + '</label>' +
+      '<p class="hint">' + esc(T('ttsHint')) + '</p><p class="msg" id="ttsMsg" hidden></p></div>';
+  }
   h += '<div id="rdBody" class="reader"><div class="ph">' + esc(T('loading')) + '</div></div>';
   R.after = function () { fillReader(p); };
   return h;
@@ -440,39 +468,140 @@ function fillReader(p) {
   }).catch(ph);
 }
 
+/* ───── הקראה (Web Speech API — בלי מפתח, בלי שרת; הקול הוא קול המכשיר) ───── */
+let TU = [];                                   /* יחידות הקראה: {text, rub, p} לפי סדר המסך */
+const TTS = { open: false, playing: false, u: -1, c: 0, tok: 0, hi: -1, lock: null };
+function tuAdd(text, rub, p) { TU.push({ text: text, rub: rub, p: p }); return TU.length - 1; }
+function ttsSupported() { return typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined'; }
+function ttsCfg() { return Object.assign({ rate: 1, noNik: false, skipRub: true }, S.tts || {}); }
+function ttsSet(k, v) { S.tts = Object.assign(ttsCfg(), S.tts || {}); S.tts[k] = v; save(); }
+function ttsClean(t, noNik) {
+  t = t.replace(/⟦[^⟧]*⟧/g, ' ');                                           /* הוראות פנימיות לא מוקראות */
+  t = t.replace(/י[֑-ׇ]*ה[֑-ׇ]*ו[֑-ׇ]*ה[֑-ׇ]*/g, 'אֲדֹנָי'); /* שם ה׳ נאמר "אדני" — רק בשמע, התצוגה לא משתנה */
+  t = t.replace(/[֑-ֽ֯׀׃-׆]/g, '').replace(/־/g, ' ');   /* טעמים, מתג, מקף */
+  if (noNik) t = t.replace(/[ְ-ׇּׁׂ]/g, '');
+  return t.replace(/\s+/g, ' ').trim();
+}
+function ttsChunks(t) {
+  const parts = t.split(/(?<=[:׃.;!?])\s+/), out = [];
+  let buf = '';
+  parts.forEach(function (p) {
+    buf = buf ? buf + ' ' + p : p;
+    if (buf.length >= 25) { out.push(buf); buf = ''; }
+  });
+  if (buf) { if (out.length && buf.length < 25) out[out.length - 1] += ' ' + buf; else out.push(buf); }
+  const fin = [];
+  out.forEach(function (c) { while (c.length > 220) { let k = c.lastIndexOf(' ', 220); if (k < 60) k = 220; fin.push(c.slice(0, k)); c = c.slice(k).trim(); } if (c) fin.push(c); });
+  return fin;
+}
+function ttsVoice() {
+  const v = (speechSynthesis.getVoices() || []).filter(function (x) { return /^(he|iw)([-_]|$)/i.test(x.lang); });
+  return v.find(function (x) { return /he[-_]IL/i.test(x.lang); }) || v[0] || null;
+}
+function ttsMsg(t) { const m = $('#ttsMsg'); if (!m) return; m.hidden = !t; m.textContent = t || ''; }
+function ttsUi() {
+  const b = $('#ttsPlayBtn'); if (b) { b.innerHTML = ic(TTS.playing ? 'pause' : 'play'); b.setAttribute('aria-label', T(TTS.playing ? 'ttsPause' : 'ttsPlay')); }
+  const o = $('#ttsOpenBtn'); if (o) o.setAttribute('aria-pressed', TTS.open ? 'true' : 'false');
+}
+function ttsInit(list) {
+  TTS.u = -1; TTS.c = 0; TTS.playing = false; ttsUi();
+  const f = $('#ttsFrom'), t = $('#ttsTo'); if (!f || !t) return;
+  const opts = list.map(function (x) { return '<option value="' + x.p + '">' + esc(x.label) + '</option>'; }).join('');
+  f.innerHTML = opts; t.innerHTML = opts; if (list.length) { f.value = list[0].p; t.value = list[list.length - 1].p; }
+  if (TTS.pending != null) { const u = TTS.pending; TTS.pending = null; }
+}
+function ttsRange() {
+  const f = $('#ttsFrom'), e = $('#ttsTo'); let a = f ? +f.value : -1e9, z = e ? +e.value : 1e9;
+  const order = Array.prototype.map.call(f ? f.options : [], function (o) { return +o.value; });
+  if (order.indexOf(a) > order.indexOf(z)) { const x = a; a = z; z = x; }
+  let lo = -1, hi = -1;
+  TU.forEach(function (u, i) { if (order.indexOf(u.p) >= order.indexOf(a) && order.indexOf(u.p) <= order.indexOf(z)) { if (lo < 0) lo = i; hi = i; } });
+  return [lo, hi];
+}
+function ttsHighlight(i) {
+  const old = document.querySelector('.seg.tts-on'); if (old) old.classList.remove('tts-on');
+  const el = document.getElementById('u' + i); if (!el) return;
+  el.classList.add('tts-on'); const r = el.getBoundingClientRect(), v = $('#view').getBoundingClientRect();
+  if (r.top < v.top + 70 || r.bottom > v.bottom - 20) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+function ttsWake(on) {
+  try {
+    if (on && navigator.wakeLock && !TTS.lock) navigator.wakeLock.request('screen').then(function (l) { TTS.lock = l; l.addEventListener('release', function () { TTS.lock = null; }); }).catch(function () {});
+    if (!on && TTS.lock) { TTS.lock.release(); TTS.lock = null; }
+  } catch (e) {}
+}
+function ttsHalt() { TTS.tok++; TTS.playing = false; try { speechSynthesis.cancel(); } catch (e) {} ttsWake(false); }
+function ttsKill() { if (!TTS.open && !TTS.playing && TTS.u < 0) return; ttsHalt(); TTS.open = false; TTS.u = -1; TTS.c = 0; }
+function ttsPlay(start) {
+  if (!TU.length) return;
+  const rg = ttsRange(), lo = rg[0], hi = rg[1]; if (lo < 0) return;
+  let u = start != null ? start : (TTS.u >= 0 ? TTS.u : lo);
+  if (u < lo || u > hi) u = lo;
+  ttsHalt(); TTS.playing = true; TTS.hi = hi;
+  if (start != null || u !== TTS.u) TTS.c = 0;
+  TTS.u = u; const tok = ++TTS.tok; ttsMsg(''); ttsWake(true); ttsUi();
+  if (!ttsVoice()) ttsMsg(T('ttsNoVoice'));
+  setTimeout(function () { ttsStep(tok); }, 80);
+}
+function ttsStep(tok) {
+  if (tok !== TTS.tok || !TTS.playing) return;
+  const c = ttsCfg(); let ch = [];
+  while (TTS.u <= TTS.hi) {
+    const un = TU[TTS.u];
+    if (un && !(c.skipRub && un.rub)) { ch = ttsChunks(ttsClean(un.text, c.noNik)); if (ch.length) break; }
+    TTS.u++; TTS.c = 0;
+  }
+  if (TTS.u > TTS.hi) { ttsHalt(); TTS.u = -1; TTS.c = 0; ttsHighlight(-1); ttsUi(); toast(T('ttsDone')); return; }
+  if (TTS.c >= ch.length) TTS.c = 0;
+  if (TTS.c === 0) ttsHighlight(TTS.u);
+  const ut = new SpeechSynthesisUtterance(ch[TTS.c]); const v = ttsVoice();
+  ut.lang = (v && v.lang) || 'he-IL'; if (v) ut.voice = v; ut.rate = c.rate;
+  ut.onend = function () { if (tok !== TTS.tok) return; TTS.c++; if (TTS.c >= ch.length) { TTS.u++; TTS.c = 0; } ttsStep(tok); };
+  ut.onerror = function (e) { if (tok !== TTS.tok) return; if (e && (e.error === 'interrupted' || e.error === 'canceled')) return; ttsHalt(); ttsUi(); ttsMsg(T('ttsErr')); };
+  try { speechSynthesis.speak(ut); } catch (e) { ttsHalt(); ttsUi(); ttsMsg(T('ttsErr')); }
+}
+function ttsPause() { ttsHalt(); ttsUi(); }
+function ttsStopAll() { ttsHalt(); TTS.u = -1; TTS.c = 0; ttsHighlight(-1); ttsUi(); }
+if (ttsSupported()) { try { speechSynthesis.onvoiceschanged = function () { if (TTS.open && ttsVoice()) ttsMsg(''); }; } catch (e) {} }
+window.addEventListener('pagehide', function () { ttsHalt(); });
+
 function rubHtml(t) { return esc(t).replace(/⟦([^⟧]*)⟧/g, '<span class="rub">$1</span>'); }
 function fillService(box, j) {
-  const he = S.lang === 'he'; let h = '', last = '', opts = '';
+  const he = S.lang === 'he'; let h = '', last = '', opts = ''; TU = []; const TL = [];
   j.parts.forEach(function (pt, i) {
     const g = pt.group ? (he ? pt.group.he : pt.group.en) : '';
     if (g && g !== last) { h += '<div class="grp">' + esc(g) + '</div>'; last = g; } else if (!g && last) { last = ''; }
     const title = (pt.sub ? (he ? pt.sub.he : pt.sub.en) + ' · ' : '') + (he ? pt.he : pt.en);
+    TL.push({ p: i, label: (g ? g + ' · ' : '') + title });
     opts += '<option value="p' + i + '">' + esc((g ? g + ' · ' : '') + title) + '</option>';
     h += '<div class="pt" id="p' + i + '">' + esc(title) + '</div>';
     if (pt.status === 'pending' || !pt.segments.length) { h += '<p class="mu" style="font-family:var(--ui);font-size:15px"><span class="tag warn">' + esc(T('inPrep')) + '</span> ' + esc(T('partMissing')) + '</p>'; return; }
     pt.segments.forEach(function (sg) {
-      if (sg.rubric) { h += '<p class="seg rb rub">' + esc(sg.he) + '</p>'; return; }
-      h += '<p class="seg">' + rubHtml(sg.he) + '</p>' + (S.showEn && sg.en ? '<p class="en" dir="ltr" style="white-space:pre-line">' + esc(sg.en) + '</p>' : '');
+      if (sg.rubric) { h += '<p class="seg rb rub" id="u' + tuAdd(sg.he, true, i) + '" data-u="' + (TU.length - 1) + '">' + esc(sg.he) + '</p>'; return; }
+      h += '<p class="seg" id="u' + tuAdd(sg.he, false, i) + '" data-u="' + (TU.length - 1) + '">' + rubHtml(sg.he) + '</p>' + (S.showEn && sg.en ? '<p class="en" dir="ltr" style="white-space:pre-line">' + esc(sg.en) + '</p>' : '');
     });
   });
   const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
   box.innerHTML = '<select class="jump" id="jumpSel" aria-label="' + esc(T('jumpTo')) + '"><option value="">' + esc(T('jumpTo')) + '</option>' + opts + '</select>' + h + '<p class="en" style="margin-top:24px">' + vers + '</p>';
+  ttsInit(TL);
   const sel = $('#jumpSel'); if (sel) sel.addEventListener('change', function () { const e = sel.value && document.getElementById(sel.value); if (e) e.scrollIntoView({ block: 'start' }); sel.value = ''; });
 }
 function fillTehillim(box, j, p) {
   let lo = 1, hi = 999;
   if (p.part) { const r = p.part.split(':')[1].split('-'); lo = +r[0]; hi = +r[1]; }
-  let h = '';
+  let h = ''; TU = []; const TL = [];
   j.chapters.filter(function (c) { return c.n >= p.from && c.n <= p.to; }).forEach(function (c) {
+    TL.push({ p: c.n, label: T('tehillim') + ' ' + (S.lang === 'he' ? hnum(c.n) : c.n) });
     h += '<h3 style="font-family:var(--ui);color:var(--ac);margin:18px 0 8px">' + esc(T('tehillim') + ' ' + (S.lang === 'he' ? hnum(c.n) : c.n)) + '</h3>';
     c.he.forEach(function (v, i) {
       const vn = i + 1; if (vn < lo || vn > hi) return;
-      h += '<p class="seg"><span class="mu" style="font-family:var(--ui);font-size:.6em">' + esc(S.lang === 'he' ? hnum(vn) : vn) + '</span> ' + esc(v) + '</p>' +
+      h += '<p class="seg" id="u' + tuAdd(v, false, c.n) + '" data-u="' + (TU.length - 1) + '"><span class="mu" style="font-family:var(--ui);font-size:.6em">' + esc(S.lang === 'he' ? hnum(vn) : vn) + '</span> ' + esc(v) + '</p>' +
         (S.showEn && c.en[i] ? '<p class="en" dir="ltr" style="white-space:pre-line">' + esc(c.en[i]) + '</p>' : '');
     });
   });
   const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
   box.innerHTML = h + '<p class="en" style="margin-top:20px">' + vers + '</p>';
+  ttsInit(TL);
 }
 SCREENS.tehillim = function () {
   const th = tehToday(new Date()), done = !!S.tehDays[today()];
@@ -587,6 +716,12 @@ const ACT = {
   nus: function (el) { S.nusach = el.dataset.id; save(); go('siddur', { nusach: el.dataset.id }); },
   sec: function (el) { openSection(el.dataset.nu, el.dataset.id); },
   demo: function () { openReader({ kind: 'siddur', nu: 'ashkenaz', id: 'demo', title: T('demoSection'), path: 'data/siddur/ashkenaz/demo.json' }, 'siddur'); },
+  ttsToggle: function () {
+    const b = $('#ttsBar'); if (!b) return; TTS.open = b.hidden; b.hidden = !TTS.open;
+    if (!TTS.open) ttsStopAll(); else if (!ttsVoice()) ttsMsg(T('ttsNoVoice')); ttsUi();
+  },
+  ttsPlay: function () { if (TTS.playing) ttsPause(); else ttsPlay(); },
+  ttsStop: function () { ttsStopAll(); },
   fs: function (el) { S.fs = Math.max(14, Math.min(36, S.fs + (+el.dataset.d))); save(); apply(); },
   toggleEn: function () { S.showEn = !S.showEn; save(); const p = R.params; render(); },
   tehOpen: function (el) { tehReader(+el.dataset.from, +el.dataset.to, el.dataset.part || ''); },
@@ -621,6 +756,8 @@ function tehReader(from, to, part) {
 }
 document.addEventListener('click', function (e) {
   if (e.target.closest('.modal-overlay')) return;                         /* החלונות מטופלים בעצמם */
+  const sg = e.target.closest('.seg[data-u]');
+  if (sg && TTS.open && !e.target.closest('[data-act]')) { ttsPlay(+sg.dataset.u); return; }
   const el = e.target.closest('[data-act]'); if (!el) return;
   const f = ACT[el.dataset.act]; if (f) f(el, e);
 });
@@ -634,6 +771,10 @@ document.addEventListener('change', function (e) {
   if (id === 'fLang') { S.lang = e.target.value; save(); apply(); render(); }
   else if (id === 'fNus') { S.nusach = e.target.value; save(); }
   else if (id === 'fImp') importBackup(e.target);
+  else if (id === 'ttsRate') { ttsSet('rate', +e.target.value); }
+  else if (id === 'ttsSkip') { ttsSet('skipRub', e.target.checked); }
+  else if (id === 'ttsNoNik') { ttsSet('noNik', e.target.checked); }
+  else if (id === 'ttsFrom' || id === 'ttsTo') { if (TTS.playing) { TTS.u = -1; ttsPlay(); } else { TTS.u = -1; TTS.c = 0; } }
 });
 
 /* ───── גיבוי ושחזור (פורמט אחד: {app, version, exportedAt, user, data}) ───── */
