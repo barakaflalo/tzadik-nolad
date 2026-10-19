@@ -26,13 +26,31 @@ CacheStorage.prototype.match=function(){return sm.apply(this,arguments).then(cle
    - רק שורש האפליקציה נשמר כ-"./" (לא כל דף כ-index.html).
    - קבצי נתונים עם ?v= ואותה כתובת בדיוק ברשימת CORE (בלי ignoreSearch).
    - מעלים VERSION ו-DATA_V יחד, ביחד עם index.html. */
-const VERSION = 'tznolad-v24';
-const DATA_V = '22';           // חייב להיות זהה ל-DATA_V ב-index.html
+const VERSION = 'tznolad-v28';
+const DATA_V = '23';           // חייב להיות זהה ל-DATA_V ב-index.html
 const CORE = [
   './',
   'manifest.json',
   'icon-192.png',
   'icon-512.png',
+  'art/tefillin/ash-1.webp',
+  'art/tefillin/ash-10.webp',
+  'art/tefillin/ash-2.webp',
+  'art/tefillin/ash-3.webp',
+  'art/tefillin/head-4.webp',
+  'art/tefillin/head-5.webp',
+  'art/tefillin/head-6.webp',
+  'art/tefillin/head-7.webp',
+  'art/tefillin/head-8.webp',
+  'art/tefillin/head-9.webp',
+  'art/tefillin/sef-1.webp',
+  'art/tefillin/sef-10.webp',
+  'art/tefillin/sef-2.webp',
+  'art/tefillin/sef-3.webp',
+  'art/tefillin/sep-1.webp',
+  'art/tefillin/sep-10.webp',
+  'art/tefillin/sep-2.webp',
+  'art/tefillin/sep-3.webp',
   'art/guide-bentsch-01.svg',
   'art/guide-candles-01.svg',
   'art/guide-derech-01.svg',

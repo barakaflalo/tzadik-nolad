@@ -66,6 +66,11 @@ nav button.on{color:var(--ac)}
 .list{display:flex;flex-direction:column;gap:8px}
 .item{display:flex;align-items:center;gap:10px;width:100%;text-align:start;min-height:52px;padding:10px 14px;border-radius:14px;border:1px solid var(--bd);background:var(--card);cursor:pointer}
 .item .t{flex:1;min-width:0}
+.tgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.tstep{position:relative;margin:0;background:#fff8e6;color:#222;border-radius:14px;padding:10px 6px 8px;text-align:center}
+.tstep img{width:100%;height:150px;object-fit:contain}
+.tstep figcaption{font-size:14px;font-weight:700;min-height:2.4em;margin-top:4px}
+.tn{position:absolute;top:6px;inset-inline-start:6px;background:var(--ac);color:#111;border-radius:8px;min-width:24px;height:24px;display:grid;place-items:center;font-weight:800;font-size:14px}
 .gi{width:56px;height:56px;flex:none;border-radius:12px;background:#fff8e6;padding:2px}
 .gh-art{display:block;width:120px;height:120px;margin:6px auto 2px;border-radius:18px;background:#fff8e6;padding:4px}
 .item .t b{display:block;overflow-wrap:anywhere}
@@ -146,8 +151,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.20.1';
-const DATA_V  = '22';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.24.0';
+const DATA_V  = '23';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -169,6 +174,9 @@ const LANG = {
     hello: 'שלום', helloNamed: 'שלום, {0}', today: 'היום', saveFail: 'השמירה נכשלה — אין מקום פנוי במכשיר',
     progress: 'ההתקדמות שלי', learned: 'נלמדו', done: 'קויימו', streak: 'ימים ברצף', of613: 'מתוך 613',
     todayTehillim: 'תהילים היום', chapters: 'פרקים', openTehillim: 'פתח את התהילים',
+    repBtn: 'מצאת טעות? דווח', repNote: 'שום דבר לא נשלח אוטומטית: יוכן מייל שתוכל לבדוק ולשלוח בעצמך.', repPart: 'באיזה חלק?', repWhat: 'מה הטעות?', repMail: 'פתח מייל', repCopy: 'העתק', repCopied: 'הדיווח הועתק', repManual: 'סמן והעתק ידנית',
+    fsDown: 'הקטן גופן', fsUp: 'הגדל גופן', hebAfter: 'אחרי השקיעה — התאריך העברי כבר התקדם',
+    tefTitle: 'איורי הנחת תפילין', tefNote: 'מבוסס על דף הדרכה מופץ (״לזיכוי הרבים״). האיורים צוירו מחדש בבינה מלאכותית ולא נבדקו על ידי רב — אין להסתמך עליהם להלכה.', tefHand: 'הנחת תפילין של יד', tefHead: 'הנחת תפילין של ראש', tefLast: 'המשך הנחת תפילין של יד', tefAllWays: 'מתאים לכל דרכי ההנחה', tefSepNote: 'בדף המקור מופיעה גם חלופה שנייה (נוסח ב׳) שאינה מצויה כאן.', tefBtn: 'איורי הנחה שלב אחר שלב',
     artNote: 'איור להמחשה בלבד — לא הוראה הלכתית', beginnerTitle: 'מתחילים מכאן', beginnerBody: 'מסלול קצר ורגוע: מה מניחים, מה מברכים, ואיך מתפללים — צעד אחרי צעד.', beginnerBtn: 'למסלול למתחילים', pathTitle: 'מסלול 7 ימים למתחיל', pathIntro: 'שבוע של צעדים קטנים. כל יום מקשר למדריך ולמצוות שכבר באפליקציה. אפשר לקחת יותר זמן — אין לחץ.', pathDay: 'יום {0}', pathDone: 'סיימתי את היום', pathUndo: 'ביטול סימון', pathProg: '{0} מתוך 7 ימים הושלמו', pathGuides: 'מדריכים', pathMitz: 'מצוות ללמוד', pathBtn: 'מסלול 7 ימים', torTitle: 'פרשת השבוע', torIntro: 'קריאת פרשת השבוע בעברית מנוקדת, עם תרגום לאנגלית. הפרשה מחולקת לעליות.', torThis: 'הפרשה של השבת הקרובה', torOpen: 'קרא את הפרשה', torAll: 'כל הפרשות', torSrc: 'חמישה חומשי תורה — Sefaria. עברית מנוקדת (נחלת הכלל); תרגום לאנגלית: חומש מצודה (CC-BY).', torAliyah: 'עלייה {0}', torBooks: ['בראשית', 'שמות', 'ויקרא', 'במדבר', 'דברים'], aiTTor: 'פרשה', halTitle: 'קיצור שולחן ערוך', halIntro: 'ספר ההלכה הקלאסי של רבי שלמה גנצפריד, 221 סימנים על חיי היום־יום: מהשכמה בבוקר, דרך תפילה, שבת וחגים ועד דיני אבלות. לשימוש ללימוד; בשאלה מעשית — שואלים רב.', halSearch: 'חיפוש סימן (למשל: שבת, ציצית, ברכות)…', halSimanNone: 'לא נמצא סימן', halSimanWord: 'סימן', halSrc: 'קיצור שולחן ערוך — Sefaria. עברית מנוקדת בנחלת הכלל; תרגום לאנגלית: הרב אברהם דייויס, מצודה (CC-BY). טרם נבדק לעומק.', aiTHal: 'הלכה',
     aiTitle: 'העוזר', aiHello: 'כתבו מה אתם מחפשים — למשל "תראה לי מנחה", "ברכה על יין" או "תהילים 23" — ואני אוביל אתכם למקום הנכון באפליקציה.', aiNote: 'אני עוזר ניווט בלבד: מחפש בתוך האפליקציה ולא מחבר תשובות הלכתיות ולא פוסק. בשאלות הלכה — לשאול רב.', aiPh: 'מה לחפש?', aiSend: 'חפש', aiFound: 'מצאתי את אלה — בחרו:', aiNone: 'לא מצאתי התאמה. נסו מילה אחרת, או בחרו מקום להתחיל:', aiHalacha: 'שימו לב: אני לא פוסק הלכה. אפשר לעיין במקורות שנמצאו, ובשאלה מעשית — לשאול רב.', aiLoading: 'מחפש…', aiTSiddur: 'סידור', aiTPart: 'קטע בתפילה', aiTGuide: 'מדריך', aiTMitz: 'מצווה', aiTTeh: 'תהילים', aiTScreen: 'מסך', aiExamples: 'תראה לי מנחה|ברכה על יין|איך מניחים תפילין|תהילים 23|הדלקת נרות|קדיש|גיבוי נתונים', aiCardBtn: 'שאל את העוזר',
     calCandleLate: 'הדלקת נרות (אחרי צאת הכוכבים)', calCandleLateNote: 'כשהחג נכנס במוצאי שבת או ביום טוב — מדליקים רק אחרי צאת הכוכבים, מאש שהודלקה מבעוד יום. לפרטים — לשאול רב.',
@@ -221,6 +229,9 @@ const LANG = {
     hello: 'Hello', helloNamed: 'Hello, {0}', today: 'Today', saveFail: 'Saving failed — device storage is full',
     progress: 'My progress', learned: 'Learned', done: 'Performed', streak: 'day streak', of613: 'of 613',
     todayTehillim: "Today's Psalms", chapters: 'chapters', openTehillim: 'Open Psalms',
+    repBtn: 'Found a mistake? Report', repNote: 'Nothing is sent automatically: an email is prepared for you to review and send.', repPart: 'Which part?', repWhat: 'What is wrong?', repMail: 'Open email', repCopy: 'Copy', repCopied: 'Report copied', repManual: 'Select and copy manually',
+    fsDown: 'Smaller text', fsUp: 'Larger text', hebAfter: 'After sunset — the Hebrew date has already advanced',
+    tefTitle: 'Tefillin illustrations', tefNote: 'Based on a circulated instruction sheet. Redrawn with AI and not reviewed by a rabbi — do not rely on it for halacha. Captions are in Hebrew.', tefHand: 'Hand tefillin', tefHead: 'Head tefillin', tefLast: 'Finishing the hand tefillin', tefAllWays: 'Suitable for all ways of placing', tefSepNote: 'The source sheet also shows a second alternative that is not included here.', tefBtn: 'Step-by-step illustrations',
     artNote: 'Illustration only — not halachic instruction', beginnerTitle: 'Start here', beginnerBody: 'A short, calm path: what to put on, what to say, and how to pray — step by step.', beginnerBtn: 'Beginner path', pathTitle: '7-day beginner path', pathIntro: 'A week of small steps. Each day links to guides and mitzvot already in the app. Take longer if you like — no pressure.', pathDay: 'Day {0}', pathDone: 'I finished this day', pathUndo: 'Undo', pathProg: '{0} of 7 days completed', pathGuides: 'Guides', pathMitz: 'Mitzvot to learn', pathBtn: '7-day path', torTitle: 'Weekly portion', torIntro: 'Read the weekly Torah portion in vocalized Hebrew with an English translation, divided into aliyot.', torThis: 'This coming Shabbat', torOpen: 'Read the portion', torAll: 'All portions', torSrc: 'The Five Books of Moses — Sefaria. Vocalized Hebrew (public domain); English: Metsudah Chumash (CC-BY).', torAliyah: 'Aliyah {0}', torBooks: ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy'], aiTTor: 'Parasha', halTitle: 'Kitzur Shulchan Arukh', halIntro: 'The classic code of Jewish law by Rabbi Shlomo Ganzfried: 221 chapters on daily life — from rising in the morning through prayer, Shabbat and holidays to mourning. For study; for a practical question, ask a rabbi.', halSearch: 'Search a chapter (e.g. Shabbat, tzitzit, blessings)…', halSimanNone: 'No chapter found', halSimanWord: 'Chapter', halSrc: 'Kitzur Shulchan Arukh — Sefaria. Vocalized Hebrew in the public domain; English: Rabbi Avrohom Davis, Metsudah (CC-BY). Not yet fully reviewed.', aiTHal: 'Halacha',
     aiTitle: 'Assistant', aiHello: 'Type what you are looking for — e.g. "show me Mincha", "blessing on wine" or "Psalm 23" — and I will take you to the right place in the app.', aiNote: 'I am a navigation helper only: I search inside the app and do not compose or rule on halacha. For halachic questions, ask a rabbi.', aiPh: 'What are you looking for?', aiSend: 'Search', aiFound: 'I found these — pick one:', aiNone: 'No match found. Try another word, or pick a place to start:', aiHalacha: 'Note: I do not rule on halacha. You can read the sources found, and for a practical question, ask a rabbi.', aiLoading: 'Searching…', aiTSiddur: 'Siddur', aiTPart: 'Prayer part', aiTGuide: 'Guide', aiTMitz: 'Mitzvah', aiTTeh: 'Psalms', aiTScreen: 'Screen', aiExamples: 'Show me Mincha|Blessing on wine|How to put on tefillin|Psalm 23|Shabbat candles|Kaddish|Backup my data', aiCardBtn: 'Ask the assistant',
     calCandleLate: 'Candle lighting (after nightfall)', calCandleLateNote: 'When the holiday begins on Saturday night or after a first day of a holiday, candles are lit only after nightfall, from an existing flame. Ask a rabbi for details.',
@@ -321,6 +332,13 @@ function hebDate(d) {
   try { return new Intl.DateTimeFormat(S.lang === 'he' ? 'he-u-ca-hebrew' : 'en-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d); }
   catch (e) { return d.toLocaleDateString(); }
 }
+function hebHome(now) {
+  try {
+    const l = calLoc(), z = ZM.day(now.getFullYear(), now.getMonth() + 1, now.getDate(), l.lat, l.lon);
+    if (z && z.sunset != null && now.getTime() >= z.sunset) return hebDate(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12)) + ' (' + T('hebAfter') + ')';
+  } catch (e) { }
+  return hebDate(now);
+}
 function hebDay(d) { try { return parseInt(new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric' }).format(d), 10); } catch (e) { return d.getDate(); } }
 
 /* ───── נתונים ───── */
@@ -372,7 +390,7 @@ function mState(id) { const m = S.marks[id]; if (!m) return ''; if (m.na) return
 const R = { screen: 'home', params: {}, mf: 'all', rdBack: 'home' };
 const SCREENS = {};
 const NAV = [['home', 'home', 'home'], ['siddur', 'siddur', 'siddur'], ['tehillim', 'tehillim', 'tehillim'], ['mitzvot', 'mitzvot', 'mitzvot'], ['more', 'more', 'more']];
-const TOPNAV = { parsha: 'more', halacha: 'more', path: 'home', calendar: 'home', assistant: 'home', home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', settings: 'more', sources: 'more', about: 'more' };
+const TOPNAV = { parsha: 'more', halacha: 'more', path: 'home', calendar: 'home', assistant: 'home', home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', tefillinArt: 'more', settings: 'more', sources: 'more', about: 'more' };
 function go(name, params) { R.screen = name; R.params = params || {}; render(); $('#view').scrollTop = 0; }
 function render() {
   ttsKill();
@@ -394,15 +412,21 @@ const WM = { stack: [], skip: 0 };
 function openModal(html, acts) {
   const ov = document.createElement('div'); ov.className = 'modal-overlay';
   ov.innerHTML = '<div class="modal" role="dialog" aria-modal="true">' + html + '</div>';
-  const m = { ov: ov, t0: Date.now(), acts: acts || {}, close: function () { closeModal(m); } };
+  const m = { ov: ov, t0: Date.now(), prev: document.activeElement, acts: acts || {}, close: function () { closeModal(m); } };
   ov.addEventListener('click', function (e) {
     if (Date.now() - m.t0 < 450) { e.preventDefault(); e.stopPropagation(); return; }   /* קליק רפאים */
     if (e.target === ov) { m.close(); return; }
     const el = e.target.closest('[data-act]');
     if (el && ov.contains(el) && m.acts[el.dataset.act]) m.acts[el.dataset.act](el, e, m);
   }, true);
+  ov.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    const f = ov.querySelectorAll('button,a[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'); if (!f.length) return;
+    const a = f[0], z = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+  });
   document.body.appendChild(ov);
-  requestAnimationFrame(function () { ov.classList.add('open'); });
+  requestAnimationFrame(function () { ov.classList.add('open'); const md = ov.firstChild; md.setAttribute('tabindex', '-1'); const f = ov.querySelector('.mbtns button, .mbtns a, input, select, textarea'); (f || md).focus({ preventScroll: true }); });
   WM.stack.push(m); history.pushState({ m: WM.stack.length }, ''); document.body.classList.add('ov-open');
   return m;
 }
@@ -411,6 +435,7 @@ function closeModal(m, fromPop) {
   WM.stack.splice(i, 1); m.ov.remove();
   if (!WM.stack.length) document.body.classList.remove('ov-open');
   if (!fromPop) { WM.skip++; history.back(); }
+  if (m.prev && m.prev.focus && document.contains(m.prev)) { try { m.prev.focus({ preventScroll: true }); } catch (e) { } }
   if (m.onclose) m.onclose();
 }
 function appConfirm(text, o) {
@@ -446,7 +471,7 @@ const nuName = function (id) { return { ashkenaz: T('nusachAshkenaz'), sefard: T
 /* ───── מסכים ───── */
 SCREENS.home = function () {
   const st = stats(), pct = Math.min(1, st.learned / 613), C = 2 * Math.PI * 36, now = new Date(), th = tehToday(now);
-  let h = '<div class="card hero"><img src="art/guide-welcome-01.svg" alt="" width="84" height="84" onerror="this.remove()"><div><h2>' + esc(S.user ? T('helloNamed', S.user) : T('hello')) + '</h2><p>' + esc(hebDate(now)) + '</p></div></div>';
+  let h = '<div class="card hero"><img src="art/guide-welcome-01.svg" alt="" width="84" height="84" onerror="this.remove()"><div><h2>' + esc(S.user ? T('helloNamed', S.user) : T('hello')) + '</h2><p>' + esc(hebHome(now)) + '</p></div></div>';
   if (D.cal) { const lc = calLoc(), ci = calInfo(today(), lc); h = h.replace('</p></div>', '</p>' + (ci.parsha ? '<p class="mu sm">' + esc(T('calParsha')) + ': ' + esc(ci.parsha) + '</p>' : '') + (ci.ev.length ? '<p class="sm"><b>' + esc(ci.ev.map(function (e) { return ci.name(e); }).join(' · ')) + '</b></p>' : '') + (ci.candle ? '<p class="sm">' + esc(T('calCandle')) + ': <b>' + esc(calFmt(ci.candle, lc.tz, true)) + '</b></p>' : '') + (ci.candleLate ? '<p class="sm">' + esc(T('calCandleLate')) + ': <b>' + esc(calFmt(ci.candleLate, lc.tz)) + '</b></p>' : '') + (ci.havdalah ? '<p class="sm">' + esc(T('calHavdalah')) + ': <b>' + esc(calFmt(ci.havdalah, lc.tz)) + '</b></p>' : '') + '</div>'); }
   h += '<button class="item" data-act="cal" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('calendar') + '</span><span class="t"><b>' + esc(T('calCardBtn')) + '</b><span class="mu sm">' + esc(T('calZmanim')) + ' · ' + esc(T('calUpcoming')) + '</span></span></button>';
   if (D.cal && D.tor) { const pi = torFind(calInfo(today(), calLoc()).parshaHe); if (pi >= 0) h += '<button class="item" data-act="torOpen" data-i="' + pi + '" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('parsha') + '</span><span class="t"><b>' + esc(T('torTitle')) + ': ' + esc(S.lang === 'he' ? D.tor.parashot[pi].he : D.tor.parashot[pi].en) + '</b><span class="mu sm">' + esc(T('torOpen')) + '</span></span></button>'; }
@@ -480,7 +505,7 @@ SCREENS.siddur = function () {
 SCREENS.reader = function (p) {
   /* p: {kind, title, path?, ph?} — path = קובץ נתונים; ללא קובץ → הודעת "בהכנה" כנה */
   const canTts = !!(p.path || p.guide) && ttsSupported();
-  let h = '<div class="row" style="margin-bottom:12px"><button class="btn" data-act="fs" data-d="-2" aria-label="A-">A−</button><button class="btn" data-act="fs" data-d="2" aria-label="A+">A+</button><button class="btn" data-act="toggleEn" aria-pressed="' + (S.showEn ? 'true' : 'false') + '">' + esc(T('showEn')) + '</button>' +
+  let h = '<div class="row" style="margin-bottom:12px"><button class="btn" data-act="fs" data-d="-2" aria-label="' + esc(T('fsDown')) + '">A−</button><button class="btn" data-act="fs" data-d="2" aria-label="' + esc(T('fsUp')) + '">A+</button><button class="btn" data-act="toggleEn" aria-pressed="' + (S.showEn ? 'true' : 'false') + '">' + esc(T('showEn')) + '</button>' +
     (canTts ? '<button class="btn" data-act="ttsToggle" aria-pressed="false" id="ttsOpenBtn">' + ic('speaker').replace('<svg', '<svg width="20" height="20"') + esc(T('ttsOpen')) + '</button>' : '') + '</div>';
   if (canTts) {
     const c = ttsCfg();
@@ -508,10 +533,35 @@ SCREENS.reader = function (p) {
     }, { passive: true });
   });
 })();
+/* ───── איורי הנחת תפילין (טיוטה): כבוי עד אישור רב ואישור בעלי הזכויות ───── */
+const TEFILLIN_ART = true;
+const TEF = {
+  cap: {
+    1: ['מקום ההנחה בצד התחתון של הזרוע'],
+    2: { ash: 'הלולאה לצד הגוף', sef: 'הלולאה כלפי חוץ', sep: 'הלולאה כלפי חוץ' },
+    3: { ash: 'הכריכה לכיוון הגוף', sef: 'הכריכה לכיוון חוץ', sep: 'נוסח א׳' },
+    4: 'מקום ההנחה בגובה הראש', 5: 'מקום ההנחה ברוחב הראש', 6: 'מקום קשר של הראש',
+    7: 'בדיקת התפילה ברוחב הראש', 8: 'בדיקת התפילה בגובה הראש', 9: 'בדיקת הקשר בגובה העורף'
+  },
+  trId: { ashkenaz: 'ash', sefard: 'sef', edot: 'sep' }
+};
+SCREENS.tefillinArt = function () {
+  setTitle(T('tefTitle'));
+  const tr = (R.params && R.params.tr) || TEF.trId[S.nusach] || 'ash';
+  const chips = [['ash', 'ashkenaz'], ['sef', 'sefard'], ['sep', 'edot']].map(function (c) { return '<button class="chip ' + (tr === c[0] ? 'on' : '') + '" data-act="tefTr" data-tr="' + c[0] + '">' + esc(nuName(c[1])) + '</button>'; }).join('');
+  const cap = function (n) { const c = TEF.cap[n]; return typeof c === 'string' ? c : (Array.isArray(c) ? c[0] : (c ? c[tr] : '')); };
+  const st = function (n, own) { const k = own ? 'head' : tr; return '<figure class="tstep"><span class="tn">' + n + '</span><img src="art/tefillin/' + k + '-' + n + '.webp" alt="" loading="lazy"><figcaption>' + esc(cap(n) || '') + '</figcaption></figure>'; };
+  let h = '<div class="chips">' + chips + '</div><p class="mu sm"><span class="tag warn">' + esc(T('stReview')) + '</span> ' + esc(T('tefNote')) + '</p>';
+  h += '<div class="gh">' + esc(T('tefHand')) + '</div><div class="tgrid">' + st(1) + st(2) + st(3) + '</div>';
+  if (tr === 'sep') h += '<p class="mu sm">' + esc(T('tefSepNote')) + '</p>';
+  h += '<div class="gh">' + esc(T('tefHead')) + '</div><p class="mu sm">' + esc(T('tefAllWays')) + '</p><div class="tgrid">' + [4, 5, 6, 7, 8, 9].map(function (n) { return st(n, true); }).join('') + '</div>';
+  h += '<div class="gh">' + esc(T('tefLast')) + '</div><div class="tgrid">' + st(10) + '</div>';
+  return h;
+};
 function fillReader(p) {
   const box = $('#rdBody'); if (!box) return;
   const ph = function () { box.innerHTML = '<div class="ph">' + esc(p.ph || '') + '</div>'; };
-  if (p.guide) { loadGuide(p.guide).then(function (d) { if ($('#rdBody')) { fillService(box, d); if (/^[a-z]+$/.test(p.guide)) box.insertAdjacentHTML('afterbegin', gimg(p.guide, 'gh-art').replace('width="56" height="56"','width="120" height="120"') + '<p class="mu sm" style="text-align:center;margin:0 0 8px">' + esc(T('artNote')) + '</p>'); } }).catch(ph); return; }
+  if (p.guide) { loadGuide(p.guide).then(function (d) { if ($('#rdBody')) { fillService(box, d); if (TEFILLIN_ART && p.guide === 'tefillin') box.insertAdjacentHTML('afterbegin', '<button class="btn pri blk" data-act="tefArt" style="margin-bottom:10px">' + esc(T('tefBtn')) + '</button>'); if (/^[a-z]+$/.test(p.guide)) box.insertAdjacentHTML('afterbegin', gimg(p.guide, 'gh-art').replace('width="56" height="56"','width="120" height="120"') + '<p class="mu sm" style="text-align:center;margin:0 0 8px">' + esc(T('artNote')) + '</p>'); } }).catch(ph); return; }
   if (!p.path) { ph(); return; }
   loadJson(p.path).then(function (j) {
     if (!$('#rdBody')) return;
@@ -640,7 +690,8 @@ function fillService(box, j) {
     if (pt.versions && pt.status === 'review') h += '<p class="en" style="margin:-4px 0 12px">' + pt.versions.map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ') + '</p>';
   });
   const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
-  box.innerHTML = (j.gnote ? '<p class="mu" style="font-family:var(--ui);font-size:14px"><span class="tag warn">' + esc(T('guideFb')) + '</span> ' + esc(T('guideFbNote', nuName(S.nusach))) + '</p>' : '') + (j.parts.length < 2 ? '' : '<select class="jump" id="jumpSel" aria-label="' + esc(T('jumpTo')) + '"><option value="">' + esc(T('jumpTo')) + '</option>' + opts + '</select>') + h + '<p class="en" style="margin-top:24px">' + vers + '</p>';
+  box.innerHTML = (j.gnote ? '<p class="mu" style="font-family:var(--ui);font-size:14px"><span class="tag warn">' + esc(T('guideFb')) + '</span> ' + esc(T('guideFbNote', nuName(S.nusach))) + '</p>' : '') + (j.parts.length < 2 ? '' : '<select class="jump" id="jumpSel" aria-label="' + esc(T('jumpTo')) + '"><option value="">' + esc(T('jumpTo')) + '</option>' + opts + '</select>') + h + '<p class="en" style="margin-top:24px">' + vers + '</p><div style="text-align:center;margin:14px 0"><button class="btn" data-act="report">' + esc(T('repBtn')) + '</button></div>';
+  R.rep = { title: (R.params && R.params.title) || R.title || '', parts: TL, src: (j.versions || []).map(function (v) { return v.title; }).join(' | ') };
   ttsInit(TL);
   if (R.jumpPart != null) { const jp = R.jumpPart; R.jumpPart = null; setTimeout(function () { const t = document.getElementById('p' + jp); if (t) t.scrollIntoView({ block: 'start' }); }, 60); }
   const sel = $('#jumpSel'); if (sel) sel.addEventListener('change', function () { const e = sel.value && document.getElementById(sel.value); if (e) e.scrollIntoView({ block: 'start' }); sel.value = ''; });
@@ -659,7 +710,8 @@ function fillTehillim(box, j, p) {
     });
   });
   const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
-  box.innerHTML = h + '<p class="en" style="margin-top:20px">' + vers + '</p>';
+  R.rep = { title: (R.params && R.params.title) || R.title || '', parts: TL, src: (j.versions || []).map(function (v) { return v.title; }).join(' | ') };
+  box.innerHTML = h + '<p class="en" style="margin-top:20px">' + vers + '</p><div style="text-align:center;margin:14px 0"><button class="btn" data-act="report">' + esc(T('repBtn')) + '</button></div>';
   ttsInit(TL);
 }
 SCREENS.tehillim = function () {
@@ -1276,9 +1328,21 @@ const ACT = {
   aiChip: function (el) { aiAsk(el.dataset.q); },
   go: function (el) { go(el.dataset.to); },
   nav: function (el) { go(el.dataset.to); },
-  back: function () { go(R.screen === 'reader' ? (R.rdBack || 'home') : 'home'); },
+  tefTr: function (el) { go('tefillinArt', { tr: el.dataset.tr }); },
+  tefArt: function () { R.tefBack = { p: R.params, t: R.title, b: R.rdBack }; go('tefillinArt'); },
+  back: function () { if (R.screen === 'tefillinArt' && R.tefBack) { const b = R.tefBack; R.rdBack = b.b; R.title = b.t; go('reader', b.p); return; } go(R.screen === 'reader' ? (R.rdBack || 'home') : 'home'); },
   about: function () { go('about'); },
   theme: function () { S.mode = S.mode === 'dark' ? 'light' : 'dark'; save(); apply(); if (R.screen === 'settings') render(); },
+  report: function () {
+    const r = R.rep || { title: '', parts: [] };
+    const opts = r.parts.map(function (p) { return '<option value="' + p.p + '">' + esc(p.label) + '</option>'; }).join('');
+    openModal('<h2>' + esc(T('repBtn')) + '</h2><p class="mtxt sm">' + esc(T('repNote')) + '</p><label class="f" for="repPart">' + esc(T('repPart')) + '</label><select id="repPart">' + opts + '</select><label class="f" for="repTxt">' + esc(T('repWhat')) + '</label><textarea id="repTxt" rows="4" maxlength="800" style="width:100%"></textarea><div class="mbtns"><button class="btn pri" data-act="repGo">' + esc(T('repMail')) + '</button><button class="btn" data-act="repCopy">' + esc(T('repCopy')) + '</button><button class="btn" data-act="repX">' + esc(T('no')) + '</button></div>', {
+      repGo: function (el, e, m) { window.location.href = 'mailto:appnest55@gmail.com?subject=' + encodeURIComponent('דיווח על טעות — צדיק נולד ' + VERSION) + '&body=' + encodeURIComponent(repText()); },
+      repCopy: function () { const t = repText(); (navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { toast(T('repCopied')); }, function () { const a = $('#repTxt'); a.value = t; a.select(); toast(T('repManual')); }); },
+      repX: function (el, e, m) { m.close(); }
+    });
+    function repText() { const s = $('#repPart'), l = s && s.options[s.selectedIndex] ? s.options[s.selectedIndex].text : ''; return 'צדיק נולד ' + VERSION + '\n' + r.title + '\n' + l + '\n' + (r.src || '') + '\n\n' + ($('#repTxt').value || ''); }
+  },
   cont: function () { const l = S.last; if (l) openSection(l.nu, l.id, l.pos); },
   nus: function (el) { S.nusach = el.dataset.id; save(); go('siddur', { nusach: el.dataset.id }); },
   sec: function (el) { openSection(el.dataset.nu, el.dataset.id); },
