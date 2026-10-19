@@ -26,16 +26,90 @@ CacheStorage.prototype.match=function(){return sm.apply(this,arguments).then(cle
    - רק שורש האפליקציה נשמר כ-"./" (לא כל דף כ-index.html).
    - קבצי נתונים עם ?v= ואותה כתובת בדיוק ברשימת CORE (בלי ignoreSearch).
    - מעלים VERSION ו-DATA_V יחד, ביחד עם index.html. */
-const VERSION = 'tznolad-v1';
-const DATA_V = '1';           // חייב להיות זהה ל-DATA_V ב-index.html
+const VERSION = 'tznolad-v22';
+const DATA_V = '22';           // חייב להיות זהה ל-DATA_V ב-index.html
 const CORE = [
   './',
   'manifest.json',
   'icon-192.png',
   'icon-512.png',
+  'art/guide-bentsch-01.svg',
+  'art/guide-candles-01.svg',
+  'art/guide-derech-01.svg',
+  'art/guide-food-01.svg',
+  'art/guide-kiddush-01.svg',
+  'art/guide-mitzvot-01.svg',
+  'art/guide-morning-01.svg',
+  'art/guide-pray-01.svg',
+  'art/guide-shema-01.svg',
+  'art/guide-tefillin-01.svg',
+  'art/guide-tzitzit-01.svg',
+  'art/guide-welcome-01.svg',
   'data/mitzvot.json?v=' + DATA_V,
   'data/siddur-index.json?v=' + DATA_V,
-  'data/siddur/ashkenaz/demo.json?v=' + DATA_V
+  'data/siddur/ashkenaz/demo.json?v=' + DATA_V,
+  'data/tehillim/tehillim.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/shacharit.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/minchah.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/maariv.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/berachot.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/shabbat.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/festivals.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/kaddish.json?v=' + DATA_V,
+  'data/siddur/sefard/upon-arising.json?v=' + DATA_V,
+  'data/siddur/sefard/shacharit.json?v=' + DATA_V,
+  'data/siddur/sefard/mincha.json?v=' + DATA_V,
+  'data/siddur/sefard/maariv.json?v=' + DATA_V,
+  'data/siddur/sefard/berachot.json?v=' + DATA_V,
+  'data/siddur/sefard/shabbat.json?v=' + DATA_V,
+  'data/siddur/sefard/festivals.json?v=' + DATA_V,
+  'data/siddur/edot/preparatory.json?v=' + DATA_V,
+  'data/siddur/edot/shacharit.json?v=' + DATA_V,
+  'data/siddur/edot/mincha.json?v=' + DATA_V,
+  'data/siddur/edot/arvit.json?v=' + DATA_V,
+  'data/siddur/edot/assorted.json?v=' + DATA_V,
+  'data/siddur/edot/shabbat.json?v=' + DATA_V,
+  'data/siddur/edot/festivals.json?v=' + DATA_V,
+  'data/calendar.json?v=' + DATA_V,
+  'data/path.json?v=' + DATA_V,
+  'data/torah/index.json?v=' + DATA_V,
+  'data/torah/bereshit.json?v=' + DATA_V,
+  'data/torah/shemot.json?v=' + DATA_V,
+  'data/torah/vayikra.json?v=' + DATA_V,
+  'data/torah/bamidbar.json?v=' + DATA_V,
+  'data/torah/devarim.json?v=' + DATA_V,
+  'data/halacha/index.json?v=' + DATA_V,
+  'data/halacha/k01.json?v=' + DATA_V,
+  'data/halacha/k02.json?v=' + DATA_V,
+  'data/halacha/k03.json?v=' + DATA_V,
+  'data/halacha/k04.json?v=' + DATA_V,
+  'data/halacha/k05.json?v=' + DATA_V,
+  'data/halacha/k06.json?v=' + DATA_V,
+  'data/halacha/k07.json?v=' + DATA_V,
+  'data/halacha/k08.json?v=' + DATA_V,
+  'data/halacha/k09.json?v=' + DATA_V,
+  'data/halacha/k10.json?v=' + DATA_V,
+  'data/halacha/k11.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/pirkei-avot.json?v=' + DATA_V,
+  'data/siddur/ashkenaz/haggadah.json?v=' + DATA_V,
+  'data/siddur/sefard/pirkei-avot.json?v=' + DATA_V,
+  'data/siddur/sefard/haggadah.json?v=' + DATA_V,
+  'data/siddur/edot/pirkei-avot.json?v=' + DATA_V,
+  'data/siddur/edot/haggadah.json?v=' + DATA_V,
+  'data/chinukh/he.json?v=' + DATA_V,
+  'data/chinukh/en.json?v=' + DATA_V,
+  'data/guides/index.json?v=' + DATA_V,
+  'data/guides/morning.json?v=' + DATA_V,
+  'data/guides/tefillin.json?v=' + DATA_V,
+  'data/guides/tzitzit.json?v=' + DATA_V,
+  'data/guides/shema.json?v=' + DATA_V,
+  'data/guides/food.json?v=' + DATA_V,
+  'data/guides/bentsch.json?v=' + DATA_V,
+  'data/guides/mitzvot.json?v=' + DATA_V,
+  'data/guides/derech.json?v=' + DATA_V,
+  'data/guides/candles.json?v=' + DATA_V,
+  'data/guides/pray.json?v=' + DATA_V,
+  'data/guides/kiddush.json?v=' + DATA_V
 ];
 
 const OFFLINE_HTML = '<!doctype html><html lang="he" dir="rtl"><meta charset="utf-8">' +
@@ -47,11 +121,25 @@ const OFFLINE_HTML = '<!doctype html><html lang="he" dir="rtl"><meta charset="ut
 self.addEventListener('install', function (e) {
   e.waitUntil((async function () {
     const c = await caches.open(VERSION);
-    await Promise.allSettled(CORE.map(function (u) {
+    const rs = await Promise.allSettled(CORE.map(function (u) {
       return c.add(new Request(u, { cache: 'reload' }));
     }));
+    // אם חלק מהקבצים לא ירדו — ההתקנה נכשלת, הגרסה הקודמת (והמטמון שלה) נשארת, והדפדפן ינסה שוב מאוחר יותר
+    const failed = rs.filter(function (r) { return r.status === 'rejected'; }).length;
+    if (failed) { await caches.delete(VERSION); throw new Error('incomplete install: ' + failed); }
     await self.skipWaiting();
   })());
+});
+
+// דוח מצב אופליין לבקשת האפליקציה
+self.addEventListener('message', function (e) {
+  if (!e.data || e.data.type !== 'status' || !e.ports || !e.ports[0]) return;
+  (async function () {
+    const c = await caches.open(VERSION), keys = await c.keys(), have = {};
+    keys.forEach(function (k) { have[new URL(k.url).pathname + new URL(k.url).search] = 1; });
+    const missing = CORE.filter(function (u) { const a = new URL(u, self.registration.scope); return !have[a.pathname + a.search]; });
+    e.ports[0].postMessage({ version: VERSION, total: CORE.length, cached: CORE.length - missing.length, missing: missing.slice(0, 10) });
+  })().catch(function () { e.ports[0].postMessage({ error: 1 }); });
 });
 
 self.addEventListener('activate', function (e) {
