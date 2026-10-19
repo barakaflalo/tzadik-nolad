@@ -134,8 +134,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.5.0';
-const DATA_V  = '4';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.6.0';
+const DATA_V  = '5';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -169,6 +169,7 @@ const LANG = {
     ttsOpen: 'הקראה', ttsPlay: 'הפעל', ttsPause: 'השהה', ttsStop: 'עצור', ttsSpeed: 'מהירות', ttsFrom: 'מהחלק', ttsTo: 'עד החלק', ttsSkipRub: 'דלג על הוראות', ttsNoNik: 'הקרא בלי ניקוד',
     ttsHint: 'אפשר גם להקיש על פסקה כדי להתחיל להקריא משם.', ttsNoVoice: 'לא נמצא קול עברי במכשיר. אפשר להתקין בהגדרות הטלפון: ניהול כללי ← שפה ← טקסט לדיבור (או Google TTS) ← התקנת נתוני קול עברית.', ttsErr: 'ההקראה נעצרה בגלל תקלה בקול של המכשיר.', ttsDone: 'ההקראה הסתיימה', ttsUnsupported: 'המכשיר הזה לא תומך בהקראה',
     guideNote: 'ההוראות המעשיות (מה עושים ומתי מברכים) מופיעות בנטוי בתוך הנוסח, כפי שהן בסידור. המדריכים מורכבים מהסידור עצמו — לא נכתבו מהזיכרון. בשאלות — לשאול רב.', stReview: 'לא נבדק לעומק', partReview: 'הנוסח כאן ממקור שטרם נבדק לעומק (עלולות להיות אי-דיוקים). מומלץ לוודא מול סידור או רב.',
+    mSearchPh: 'חיפוש מצווה (למשל: שבת, ריבית, תפילין)…', mNone: 'לא נמצאו מצוות', mSrc: 'מקור: רשימת הרמב״ם בפתיחת משנה תורה. הסבר מפורט לכל מצווה — בהמשך (ספר החינוך).',
     jumpTo: 'קפוץ לחלק בתפילה…', partMissing: 'החלק הזה עוד לא נטען — אין לו עדיין גרסה ברישיון ברור. לא נכתב מהזיכרון.',
     todayLabel: 'פרקי היום (חלוקה ל-30 יום)', readToday: 'קראתי היום', readTodayDone: 'נרשם ✓', allPsalms: 'כל 150 הפרקים',
     tehNote: 'החלוקה לפי יום בחודש העברי. אחרי השקיעה היום העברי מתחלף — האפליקציה מחשבת לפי חצות.',
@@ -213,6 +214,7 @@ const LANG = {
     ttsOpen: 'Read aloud', ttsPlay: 'Play', ttsPause: 'Pause', ttsStop: 'Stop', ttsSpeed: 'Speed', ttsFrom: 'From part', ttsTo: 'To part', ttsSkipRub: 'Skip instructions', ttsNoNik: 'Read without vowel marks',
     ttsHint: 'You can also tap a paragraph to start reading from there.', ttsNoVoice: 'No Hebrew voice found on this device. Install one in phone settings: General management → Language → Text-to-speech (or Google TTS) → install Hebrew voice data.', ttsErr: 'Reading stopped because of a problem with the device voice.', ttsDone: 'Finished reading', ttsUnsupported: 'This device does not support read-aloud',
     guideNote: 'Practical instructions (what to do, when to bless) appear in italics inside the text, as in the siddur. Guides are assembled from the siddur itself — not written from memory. For questions, ask a rabbi.', stReview: 'Not fully reviewed', partReview: 'This text comes from a source not yet fully reviewed (may contain inaccuracies). Please verify against a siddur or a rabbi.',
+    mSearchPh: 'Search a mitzvah (e.g. Shabbat, interest, tefillin)…', mNone: 'No mitzvot found', mSrc: 'Source: the Rambam’s list at the start of Mishneh Torah. Detailed explanations per mitzvah — coming later (Sefer HaChinukh).',
     jumpTo: 'Jump to a part…', partMissing: 'This part is not loaded yet — no clearly licensed version exists. It is not written from memory.',
     todayLabel: "Today's chapters (30-day cycle)", readToday: 'I read today', readTodayDone: 'Recorded ✓', allPsalms: 'All 150 chapters',
     tehNote: 'By day of the Hebrew month. After sunset the Hebrew day changes — the app calculates by midnight.',
@@ -299,7 +301,7 @@ function dataUrl(p) { return p + '?v=' + DATA_V; }
 function loadJson(p) { return fetch(dataUrl(p)).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
 function loadCore() {
   return Promise.all([
-    loadJson('data/mitzvot.json').then(function (j) { const m = {}; (j.items || []).forEach(function (x) { m[x.id] = x; }); D.mitz = { counts: j.counts || { a: 248, l: 365 }, map: m }; }).catch(function () { D.mitz = { counts: { a: 248, l: 365 }, map: {} }; }),
+    loadJson('data/mitzvot.json').then(function (j) { const m = {}; (j.items || []).forEach(function (x) { m[x.id] = x; }); D.mitz = { counts: j.counts || { a: 248, l: 365 }, map: m, versions: j.versions || [] }; }).catch(function () { D.mitz = { counts: { a: 248, l: 365 }, map: {} }; }),
     loadJson('data/siddur-index.json').then(function (j) { D.sid = j.nusachim || []; }).catch(function () { D.sid = []; }),
     loadJson('data/guides/index.json').then(function (j) { D.guides = j.guides || []; }).catch(function () { D.guides = []; })
   ]);
@@ -652,6 +654,7 @@ SCREENS.mitzvot = function () {
   const f = R.mf, st = stats(), cnt = (D.mitz && D.mitz.counts) || { a: 248, l: 365 };
   const F = [['all', 'fAll'], ['a', 'aseh'], ['l', 'lota'], ['learned', 'fLearned'], ['done', 'fDone'], ['todo', 'fTodo'], ['na', 'fNa']];
   let h = '<div class="card"><p><b>' + st.learned + '</b> / 613 · ' + esc(T('done')) + ': <b>' + st.done + '</b></p><p class="mu sm">' + esc(T('mitzvotNote')) + '</p></div>';
+  h += '<input type="text" id="mSearch" placeholder="' + esc(T('mSearchPh')) + '" autocomplete="off" style="margin-bottom:10px"><div id="mRes" class="list" hidden></div><div id="mMain">';
   h += '<div class="chips">' + F.map(function (x) { return '<button class="chip ' + (f === x[0] ? 'on' : '') + '" data-act="mf" data-f="' + x[0] + '">' + esc(T(x[1])) + '</button>'; }).join('') + '</div>';
   const show = function (id) {
     const s = mState(id);
@@ -667,22 +670,39 @@ SCREENS.mitzvot = function () {
     for (let i = 1; i <= cnt[g[0]]; i++) { const id = g[0] + i; if (!show(id)) continue; cells += '<button class="mc ' + mState(id) + '" data-act="mz" data-id="' + id + '" aria-label="' + esc(T(g[1]) + ' ' + i) + '">' + i + '</button>'; }
     h += '<div class="gh">' + esc(T(g[1])) + ' (' + cnt[g[0]] + ')</div><div class="grid">' + (cells || '<span class="mu sm">—</span>') + '</div>';
   });
-  return h;
+  return h + '</div>';
 };
+function mNorm(t) { return String(t || '').replace(/[\u0591-\u05C7]/g, '').toLowerCase(); }
+function mSearchRun() {
+  const q = mNorm(($('#mSearch') || {}).value).trim(), res = $('#mRes'), main = $('#mMain'); if (!res || !main) return;
+  if (!q) { res.hidden = true; main.hidden = false; return; }
+  const he = S.lang === 'he', map = (D.mitz && D.mitz.map) || {}; let n = 0, h = '';
+  Object.keys(map).forEach(function (id) {
+    if (n >= 40) return; const it = map[id];
+    if (mNorm(it.he).indexOf(q) < 0 && mNorm(it.en).indexOf(q) < 0 && mNorm(it.srcHe).indexOf(q) < 0) return; n++;
+    h += '<button class="item" data-act="mz" data-id="' + esc(id) + '"><span class="t"><b>' + esc(he ? it.he : it.en) + '</b><span class="mu sm">' + esc((id[0] === 'a' ? T('aseh') : T('lota')) + ' ' + id.slice(1)) + '</span></span></button>';
+  });
+  res.innerHTML = h || '<p class="mu">' + esc(T('mNone')) + '</p>'; res.hidden = false; main.hidden = true;
+}
 function openMitzvah(id) {
-  const type = id[0] === 'a' ? T('aseh') : T('lota'), num = id.slice(1), it = (D.mitz && D.mitz.map[id]) || null, m = S.marks[id] || {};
+  const type = id[0] === 'a' ? T('aseh') : T('lota'), num = id.slice(1), it = (D.mitz && D.mitz.map[id]) || null;
+  const he = S.lang === 'he';
   const status = it ? (it.status === 'verified' ? '<span class="tag ok">' + esc(T('stVerified')) + '</span>' : '<span class="tag warn">' + esc(it.status === 'demo' ? T('stDemo') : T('stPending')) + '</span>') : '<span class="tag warn">' + esc(T('stPending')) + '</span>';
-  const title = it && it.he ? it.he : T('mGeneric', type, num);
-  const last = m.d && m.d.length ? m.d[m.d.length - 1] : '';
+  const title = it ? (he ? it.he : it.en) : T('mGeneric', type, num);
+  const sub = it ? (he ? it.en : it.he) : '';
+  const src = it ? (he ? it.srcHe : it.srcEn) : '';
   const body = function () {
     const mm = S.marks[id] || {}; const l2 = mm.d && mm.d.length ? mm.d[mm.d.length - 1] : '';
-    return '<h3>' + esc(title) + '</h3><p>' + esc(type) + ' · ' + esc(num) + ' ' + status + '</p>' + (it && it.he ? '' : '<p class="mu">' + esc(T('mGenericBody')) + '</p>') +
+    return '<h3 style="margin-bottom:2px">' + esc(title) + '</h3><p class="mu sm" style="margin:2px 0 6px">' + esc(type) + ' · ' + esc(num) + ' ' + status + '</p>' +
+      (sub ? '<p class="mu sm" dir="' + (he ? 'ltr' : 'rtl') + '" style="margin:4px 0">' + esc(sub) + '</p>' : '') +
+      (src ? '<p class="sm" style="margin:6px 0;color:var(--mu);line-height:1.6">' + esc(src) + '</p>' : '') +
+      (it ? '<p class="mu sm" style="margin:6px 0 4px">' + esc(T('mSrc')) + '</p>' : '<p class="mu">' + esc(T('mGenericBody')) + '</p>') +
       '<div class="mbtns"><button class="btn" data-act="mL" aria-pressed="' + (mm.l ? 'true' : 'false') + '">' + esc(T('iLearned')) + '</button>' +
       '<button class="btn" data-act="mD">' + esc(T('iDoneToday')) + '</button>' +
       (mm.d && mm.d.length ? '<p class="mu sm" style="margin:2px 0">' + esc(T('doneCount', mm.d.length, l2)) + '</p><button class="btn" data-act="mU">' + esc(T('undoDone')) + '</button>' : '') +
       '<button class="btn" data-act="mN" aria-pressed="' + (mm.na ? 'true' : 'false') + '">' + esc(T('iNa')) + '</button></div>';
   };
-  const redraw = function (mod) { $('.modal', mod.ov).innerHTML = body(); if (R.screen === 'mitzvot') { const y = $('#view').scrollTop; render(); $('#view').scrollTop = y; } if (R.screen === 'home') render(); };
+  const redraw = function (mod) { $('.modal', mod.ov).innerHTML = body(); if (R.screen === 'mitzvot') { const y = $('#view').scrollTop; const q = ($('#mSearch') || {}).value || ''; render(); const e = $('#mSearch'); if (e && q) { e.value = q; mSearchRun(); } $('#view').scrollTop = y; } if (R.screen === 'home') render(); };
   openModal(body(), {
     mL: function (el, e, mod) { const x = mk(id); if (x.l) delete x.l; else x.l = today(); save(); redraw(mod); },
     mD: function (el, e, mod) { const x = mk(id); x.d = x.d || []; const t = today(); if (x.d.indexOf(t) < 0) x.d.push(t); if (!x.l) x.l = t; delete x.na; save(); toast('✓'); redraw(mod); },
@@ -796,6 +816,7 @@ document.addEventListener('input', function (e) {
   const id = e.target.id;
   if (id === 'fUser') { S.user = e.target.value.slice(0, 40); save(); }
   else if (id === 'fFs') { S.fs = +e.target.value; save(); apply(); }
+  else if (id === 'mSearch') { mSearchRun(); }
 });
 document.addEventListener('change', function (e) {
   const id = e.target.id;
