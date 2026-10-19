@@ -138,8 +138,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.13.0';
-const DATA_V  = '13';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.14.0';
+const DATA_V  = '14';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -161,7 +161,7 @@ const LANG = {
     hello: 'שלום', helloNamed: 'שלום, {0}', today: 'היום', saveFail: 'השמירה נכשלה — אין מקום פנוי במכשיר',
     progress: 'ההתקדמות שלי', learned: 'נלמדו', done: 'קויימו', streak: 'ימים ברצף', of613: 'מתוך 613',
     todayTehillim: 'תהילים היום', chapters: 'פרקים', openTehillim: 'פתח את התהילים',
-    beginnerTitle: 'מתחילים מכאן', beginnerBody: 'מסלול קצר ורגוע: מה מניחים, מה מברכים, ואיך מתפללים — צעד אחרי צעד.', beginnerBtn: 'למסלול למתחילים',
+    beginnerTitle: 'מתחילים מכאן', beginnerBody: 'מסלול קצר ורגוע: מה מניחים, מה מברכים, ואיך מתפללים — צעד אחרי צעד.', beginnerBtn: 'למסלול למתחילים', pathTitle: 'מסלול 7 ימים למתחיל', pathIntro: 'שבוע של צעדים קטנים. כל יום מקשר למדריך ולמצוות שכבר באפליקציה. אפשר לקחת יותר זמן — אין לחץ.', pathDay: 'יום {0}', pathDone: 'סיימתי את היום', pathUndo: 'ביטול סימון', pathProg: '{0} מתוך 7 ימים הושלמו', pathGuides: 'מדריכים', pathMitz: 'מצוות ללמוד', pathBtn: 'מסלול 7 ימים',
     aiTitle: 'העוזר', aiHello: 'כתבו מה אתם מחפשים — למשל "תראה לי מנחה", "ברכה על יין" או "תהילים 23" — ואני אוביל אתכם למקום הנכון באפליקציה.', aiNote: 'אני עוזר ניווט בלבד: מחפש בתוך האפליקציה ולא מחבר תשובות הלכתיות ולא פוסק. בשאלות הלכה — לשאול רב.', aiPh: 'מה לחפש?', aiSend: 'חפש', aiFound: 'מצאתי את אלה — בחרו:', aiNone: 'לא מצאתי התאמה. נסו מילה אחרת, או בחרו מקום להתחיל:', aiHalacha: 'שימו לב: אני לא פוסק הלכה. אפשר לעיין במקורות שנמצאו, ובשאלה מעשית — לשאול רב.', aiLoading: 'מחפש…', aiTSiddur: 'סידור', aiTPart: 'קטע בתפילה', aiTGuide: 'מדריך', aiTMitz: 'מצווה', aiTTeh: 'תהילים', aiTScreen: 'מסך', aiExamples: 'תראה לי מנחה|ברכה על יין|איך מניחים תפילין|תהילים 23|הדלקת נרות|קדיש|גיבוי נתונים', aiCardBtn: 'שאל את העוזר',
     calTitle: 'לוח וזמנים', calPrev: 'יום קודם', calNext: 'יום הבא', calToday: 'היום בלוח', calParsha: 'פרשת השבוע', calParshaWeek: 'הפרשה בשבת הקרובה', calShabbat: 'כניסת ויציאת שבת וחג', calCandle: 'הדלקת נרות', calMinBefore: 'דק׳ לפני השקיעה', calHavdalah: 'צאת השבת / החג', calTzeit: 'צאת הכוכבים 8.5°', calRT: 'לפי רבנו תם (72 דק׳)', calZmanim: 'זמני היום', zAlot: 'עלות השחר', zSunrise: 'הנץ החמה', zShmaMGA: 'סוף זמן ק״ש (מג״א)', zShma: 'סוף זמן ק״ש (גר״א)', zTfila: 'סוף זמן תפילה (גר״א)', zChatzot: 'חצות היום', zMinchaG: 'מנחה גדולה', zMinchaK: 'מנחה קטנה', zPlag: 'פלג המנחה', zSunset: 'שקיעה', zTzeit: 'צאת הכוכבים', calNote: 'הזמנים מחושבים באפליקציה לפי המיקום שבחרת, בשיטת הגר״א והמג״א. יש מנהגים ושיטות שונות — לשאלה מעשית יש לשאול רב.', calUpcoming: 'הקרוב בלוח', calTomorrow: 'מחר', calInDays: 'בעוד {0} ימים', calLocation: 'מיקום', calIsrael: 'ישראל', calAbroad: 'חו״ל', calMyLoc: 'המיקום שלי', calUseGps: 'השתמש במיקום שלי', calGpsNote: 'המיקום נשאר על המכשיר בלבד ולא נשלח לשום מקום.', calGpsErr: 'לא הצלחתי לקבל מיקום. אפשר לבחור עיר מהרשימה.', calCandleSet: 'הדלקת נרות — דקות לפני השקיעה', calDefault: 'ברירת מחדל', calCredit: 'לוח החגים והפרשות: Hebcal.com. זמני היום מחושבים באפליקציה.', calCardBtn: 'לוח וזמנים',
     contTitle: 'להמשיך מאיפה שעצרתי', continue: 'המשך',
@@ -209,7 +209,7 @@ const LANG = {
     hello: 'Hello', helloNamed: 'Hello, {0}', today: 'Today', saveFail: 'Saving failed — device storage is full',
     progress: 'My progress', learned: 'Learned', done: 'Performed', streak: 'day streak', of613: 'of 613',
     todayTehillim: "Today's Psalms", chapters: 'chapters', openTehillim: 'Open Psalms',
-    beginnerTitle: 'Start here', beginnerBody: 'A short, calm path: what to put on, what to say, and how to pray — step by step.', beginnerBtn: 'Beginner path',
+    beginnerTitle: 'Start here', beginnerBody: 'A short, calm path: what to put on, what to say, and how to pray — step by step.', beginnerBtn: 'Beginner path', pathTitle: '7-day beginner path', pathIntro: 'A week of small steps. Each day links to guides and mitzvot already in the app. Take longer if you like — no pressure.', pathDay: 'Day {0}', pathDone: 'I finished this day', pathUndo: 'Undo', pathProg: '{0} of 7 days completed', pathGuides: 'Guides', pathMitz: 'Mitzvot to learn', pathBtn: '7-day path',
     aiTitle: 'Assistant', aiHello: 'Type what you are looking for — e.g. "show me Mincha", "blessing on wine" or "Psalm 23" — and I will take you to the right place in the app.', aiNote: 'I am a navigation helper only: I search inside the app and do not compose or rule on halacha. For halachic questions, ask a rabbi.', aiPh: 'What are you looking for?', aiSend: 'Search', aiFound: 'I found these — pick one:', aiNone: 'No match found. Try another word, or pick a place to start:', aiHalacha: 'Note: I do not rule on halacha. You can read the sources found, and for a practical question, ask a rabbi.', aiLoading: 'Searching…', aiTSiddur: 'Siddur', aiTPart: 'Prayer part', aiTGuide: 'Guide', aiTMitz: 'Mitzvah', aiTTeh: 'Psalms', aiTScreen: 'Screen', aiExamples: 'Show me Mincha|Blessing on wine|How to put on tefillin|Psalm 23|Shabbat candles|Kaddish|Backup my data', aiCardBtn: 'Ask the assistant',
     calTitle: 'Calendar & times', calPrev: 'Previous day', calNext: 'Next day', calToday: 'On the calendar', calParsha: 'Torah portion', calParshaWeek: 'Portion this Shabbat', calShabbat: 'Shabbat & holiday times', calCandle: 'Candle lighting', calMinBefore: 'min before sunset', calHavdalah: 'End of Shabbat / holiday', calTzeit: 'nightfall 8.5°', calRT: "Rabbeinu Tam (72 min)", calZmanim: 'Daily times', zAlot: 'Dawn (alot)', zSunrise: 'Sunrise', zShmaMGA: 'Latest Shema (MGA)', zShma: 'Latest Shema (GRA)', zTfila: 'Latest morning prayer (GRA)', zChatzot: 'Midday (chatzot)', zMinchaG: 'Earliest Mincha', zMinchaK: 'Mincha ketana', zPlag: 'Plag HaMincha', zSunset: 'Sunset', zTzeit: 'Nightfall', calNote: 'Times are calculated in the app for your chosen location (GRA and MGA methods). Customs and opinions differ — for a practical question, ask a rabbi.', calUpcoming: 'Coming up', calTomorrow: 'Tomorrow', calInDays: 'In {0} days', calLocation: 'Location', calIsrael: 'Israel', calAbroad: 'Abroad', calMyLoc: 'My location', calUseGps: 'Use my location', calGpsNote: 'Your location stays on this device and is not sent anywhere.', calGpsErr: 'Could not get your location. Pick a city from the list.', calCandleSet: 'Candle lighting — minutes before sunset', calDefault: 'Default', calCredit: 'Holiday and Torah portion calendar: Hebcal.com. Daily times are calculated in the app.', calCardBtn: 'Calendar & times',
     contTitle: 'Continue where I stopped', continue: 'Continue',
@@ -313,7 +313,8 @@ function loadCore() {
   return Promise.all([
     loadJson('data/mitzvot.json').then(function (j) { const m = {}; (j.items || []).forEach(function (x) { m[x.id] = x; }); D.mitz = { counts: j.counts || { a: 248, l: 365 }, map: m, versions: j.versions || [] }; }).catch(function () { D.mitz = { counts: { a: 248, l: 365 }, map: {} }; }),
     loadJson('data/siddur-index.json').then(function (j) { D.sid = j.nusachim || []; }).catch(function () { D.sid = []; }),
-    loadJson('data/guides/index.json').then(function (j) { D.guides = j.guides || []; }).catch(function () { D.guides = []; })
+    loadJson('data/guides/index.json').then(function (j) { D.guides = j.guides || []; }).catch(function () { D.guides = []; }),
+    loadJson('data/path.json').then(function (j) { D.path = j.days || []; }).catch(function () { D.path = []; })
   ]);
 }
 
@@ -351,7 +352,7 @@ function mState(id) { const m = S.marks[id]; if (!m) return ''; if (m.na) return
 const R = { screen: 'home', params: {}, mf: 'all', rdBack: 'home' };
 const SCREENS = {};
 const NAV = [['home', 'home', 'home'], ['siddur', 'book', 'siddur'], ['tehillim', 'list', 'tehillim'], ['mitzvot', 'grid', 'mitzvot'], ['more', 'more', 'more']];
-const TOPNAV = { calendar: 'home', assistant: 'home', home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', settings: 'more', sources: 'more', about: 'more' };
+const TOPNAV = { path: 'home', calendar: 'home', assistant: 'home', home: 'home', siddur: 'siddur', reader: null, tehillim: 'tehillim', mitzvot: 'mitzvot', more: 'more', guides: 'more', settings: 'more', sources: 'more', about: 'more' };
 function go(name, params) { R.screen = name; R.params = params || {}; render(); $('#view').scrollTop = 0; }
 function render() {
   ttsKill();
@@ -428,7 +429,7 @@ SCREENS.home = function () {
   let h = '<div class="card"><h2>' + esc(S.user ? T('helloNamed', S.user) : T('hello')) + '</h2><p>' + esc(hebDate(now)) + '</p></div>';
   if (D.cal) { const lc = calLoc(), ci = calInfo(today(), lc); h = h.replace('</p></div>', '</p>' + (ci.parsha ? '<p class="mu sm">' + esc(T('calParsha')) + ': ' + esc(ci.parsha) + '</p>' : '') + (ci.ev.length ? '<p class="sm"><b>' + esc(ci.ev.map(function (e) { return ci.name(e); }).join(' · ')) + '</b></p>' : '') + (ci.candle ? '<p class="sm">' + esc(T('calCandle')) + ': <b>' + esc(calFmt(ci.candle, lc.tz, true)) + '</b></p>' : '') + (ci.havdalah ? '<p class="sm">' + esc(T('calHavdalah')) + ': <b>' + esc(calFmt(ci.havdalah, lc.tz)) + '</b></p>' : '') + '</div>'); }
   h += '<button class="item" data-act="cal" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('list') + '</span><span class="t"><b>' + esc(T('calCardBtn')) + '</b><span class="mu sm">' + esc(T('calZmanim')) + ' · ' + esc(T('calUpcoming')) + '</span></span></button>';
-  if (S.audience === 'new') h += '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="guides">' + esc(T('beginnerBtn')) + '</button></div>';
+  if (S.audience === 'new') h += '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="path">' + esc(T('pathBtn')) + '</button><button class="btn blk" data-act="go" data-to="guides" style="margin-top:8px">' + esc(T('beginnerBtn')) + '</button></div>';
   h += '<button class="item" data-act="ai" style="margin-bottom:12px"><span style="color:var(--ac);display:grid;width:26px">' + ic('info') + '</span><span class="t"><b>' + esc(T('aiCardBtn')) + '</b><span class="mu sm">' + esc(T('aiPh')) + '</span></span></button>';
   h += '<div class="big">' +
     '<button data-act="go" data-to="siddur">' + ic('book') + esc(T('siddur')) + '</button>' +
@@ -637,10 +638,33 @@ SCREENS.tehillim = function () {
   return h + '</div>';
 };
 
+SCREENS.path = function () {
+  setTitle(T('pathTitle'));
+  const he = S.lang === 'he', days = D.path || [], pd = S.path || {};
+  const n = days.filter(function (d) { return pd['d' + d.d]; }).length, next = (days.find(function (d) { return !pd['d' + d.d]; }) || {}).d;
+  let h = '<div class="card"><p>' + esc(T('pathIntro')) + '</p><p><b>' + esc(T('pathProg', n)) + '</b></p></div>';
+  days.forEach(function (d) {
+    const done = !!pd['d' + d.d];
+    h += '<div class="card"' + (d.d === next ? ' style="border-color:var(--ac)"' : '') + '><h2>' + esc(T('pathDay', d.d)) + ' · ' + esc(he ? d.he : d.en) + (done ? ' ✓' : '') + '</h2><p class="mu">' + esc(he ? d.introHe : d.introEn) + '</p>';
+    h += '<div class="gh">' + esc(T('pathGuides')) + '</div><div class="list">' + d.guides.map(function (id) {
+      const g = (D.guides || []).find(function (x) { return x.id === id; }); if (!g) return '';
+      return '<button class="item" data-act="guide" data-id="' + esc(id) + '"><span class="t"><b>' + esc(he ? g.he : g.en) + '</b></span></button>';
+    }).join('') + '</div>';
+    if (d.mitzvot && d.mitzvot.length) {
+      h += '<div class="gh">' + esc(T('pathMitz')) + '</div><div class="list">' + d.mitzvot.map(function (id) {
+        const it = D.mitz && D.mitz.map[id]; if (!it) return '';
+        const l = S.marks[id] && S.marks[id].l;
+        return '<button class="item" data-act="mz" data-id="' + esc(id) + '"><span class="t"><b>' + esc(he ? it.he : it.en) + '</b></span>' + (l ? '<span class="tag ok">✓</span>' : '') + '</button>';
+      }).join('') + '</div>';
+    }
+    h += '<button class="btn blk" data-act="pathDone" data-d="' + d.d + '" style="margin-top:10px">' + esc(done ? T('pathUndo') : T('pathDone')) + '</button></div>';
+  });
+  return h;
+};
 SCREENS.guides = function () {
   setTitle(T('guidesTitle'));
   const he = S.lang === 'he';
-  return '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><p class="mu sm">' + esc(T('guideNote')) + '</p></div><div class="list">' +
+  return '<div class="card"><h2>' + esc(T('beginnerTitle')) + '</h2><p class="mu">' + esc(T('beginnerBody')) + '</p><button class="btn pri blk" data-act="go" data-to="path">' + esc(T('pathBtn')) + '</button><p class="mu sm">' + esc(T('guideNote')) + '</p></div><div class="list">' +
     (D.guides || []).map(function (g) {
       const tag = !g.ready ? '<span class="tag warn">' + esc(T('inPrep')) + '</span>' : (g.status === 'review' ? '<span class="tag warn">' + esc(T('stReview')) + '</span>' : '');
       return '<button class="item" data-act="guide" data-id="' + esc(g.id) + '"><span class="t"><b>' + esc(he ? g.he : g.en) + '</b></span>' + tag + '</button>';
@@ -872,7 +896,7 @@ function aiEntry(type, he, en, kw, act, extra) {
 function aiBaseBuild() {
   if (AI.base) return AI.base; const E = [];
   const scr = [['siddur', 'סידור', 'Siddur', 'תפילות תפילה prayers prayer book'], ['tehillim', 'תהילים', 'Psalms', 'תהלים psalms tehillim'], ['mitzvot', 'לוח המצוות', 'Mitzvot board', 'תריג תרי"ג 613 מצוות לוח סימון mitzvot'], ['calendar', 'לוח וזמנים', 'Calendar & times', 'לוח שנה זמנים זמני היום שקיעה זריחה הדלקת נרות פרשת השבוע פרשה חגים תאריך עברי מתי שבת מתי יוצאת שבת צאת השבת הבדלה זמן תפילה סוף זמן קריאת שמע calendar zmanim times sunset sunrise parsha parashat holidays hebrew date candle lighting'],
-    ['guides', 'מדריכים למתחיל', 'Beginner guides', 'מדריך מתחיל מתחילים guide guides beginner'], ['settings', 'הגדרות', 'Settings', 'נוסח שפה גודל גופן גיבוי שחזור language nusach font backup restore reset'], ['sources', 'מקורות ורישיונות', 'Sources & licenses', 'מקורות רישיונות sources licenses credits'], ['about', 'אודות', 'About', 'גרסה אפליקציה version about']];
+    ['guides', 'מדריכים למתחיל', 'Beginner guides', 'מדריך מתחיל מתחילים guide guides beginner'], ['path', 'מסלול 7 ימים למתחיל', '7-day beginner path', 'מסלול שבוע ימים מתחיל מתחילים מאפס להתחיל מהתחלה צעדים path week start beginner from scratch'], ['settings', 'הגדרות', 'Settings', 'נוסח שפה גודל גופן גיבוי שחזור language nusach font backup restore reset'], ['sources', 'מקורות ורישיונות', 'Sources & licenses', 'מקורות רישיונות sources licenses credits'], ['about', 'אודות', 'About', 'גרסה אפליקציה version about']];
   scr.forEach(function (s) { E.push(aiEntry('screen', s[1], s[2], s[3], { k: 'go', to: s[0] })); });
   (D.guides || []).forEach(function (g) { if (!g.ready) return; E.push(aiEntry('guide', g.he, g.en, AI_KW[g.id] || '', { k: 'guide', id: g.id })); });
   const nm = (D.mitz && D.mitz.map) || {};
@@ -1127,6 +1151,7 @@ const ACT = {
     navigator.geolocation.getCurrentPosition(function (p) { let tz = 'UTC'; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) {} S.gps = { lat: p.coords.latitude, lon: p.coords.longitude, tz: tz }; S.city = 'gps'; save(); render(); }, function () { toast(T('calGpsErr')); }, { timeout: 15000, maximumAge: 600000 });
   },
   cal: function () { go('calendar'); },
+  pathDone: function (el) { S.path = S.path || {}; const k = 'd' + el.dataset.d; if (S.path[k]) delete S.path[k]; else S.path[k] = today(); save(); const y = $('#view').scrollTop; render(); $('#view').scrollTop = y; },
   ai: function () { go('assistant'); },
   aiGo: function (el) { aiRun(AI.acts[+el.dataset.i]); },
   aiChip: function (el) { aiAsk(el.dataset.q); },
@@ -1153,8 +1178,9 @@ const ACT = {
   guide: function (el) {
     const g = (D.guides || []).find(function (x) { return x.id === el.dataset.id; }); if (!g) return;
     const t = S.lang === 'he' ? g.he : g.en;
-    if (!g.ready) openReader({ kind: 'guide', title: t, ph: T('phGuide') }, 'guides');
-    else openReader({ kind: 'guide', title: t, guide: g.id, ph: T('phGuide') }, 'guides');
+    const bk = R.screen === 'path' ? 'path' : 'guides';
+    if (!g.ready) openReader({ kind: 'guide', title: t, ph: T('phGuide') }, bk);
+    else openReader({ kind: 'guide', title: t, guide: g.id, ph: T('phGuide') }, bk);
   },
   mf: function (el) { R.mf = el.dataset.f; const y = $('#view').scrollTop; render(); $('#view').scrollTop = y; },
   mz: function (el) { openMitzvah(el.dataset.id); },

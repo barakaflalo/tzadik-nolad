@@ -1,0 +1,103 @@
+{
+ "_comment": "מסלול 7 ימים למתחיל: רק קישורים למדריכים ולמצוות שכבר באפליקציה; בלי תוכן הלכתי חדש.",
+ "days": [
+  {
+   "d": 1,
+   "he": "הכרות: סדר הבוקר",
+   "en": "Getting acquainted: the morning routine",
+   "introHe": "מתחילים בקטן — לקרוא איך נראה בוקר רגיל, בלי ללחוץ על עצמך להספיק הכול.",
+   "introEn": "Start small — read how an ordinary morning looks, no pressure to do it all.",
+   "guides": [
+    "morning"
+   ],
+   "mitzvot": [
+    "a1",
+    "a2"
+   ]
+  },
+  {
+   "d": 2,
+   "he": "קריאת שמע",
+   "en": "The Shema",
+   "introHe": "הפסוק המרכזי של התפילה. היום רק קוראים ומכירים.",
+   "introEn": "The central verse of prayer. Today we just read and get to know it.",
+   "guides": [
+    "shema"
+   ],
+   "mitzvot": [
+    "a10"
+   ]
+  },
+  {
+   "d": 3,
+   "he": "טלית וציצית",
+   "en": "Tallit and tzitzit",
+   "introHe": "להכיר את הציצית, ממה היא עשויה ואיך לובשים.",
+   "introEn": "Get to know tzitzit and how they are worn.",
+   "guides": [
+    "tzitzit"
+   ],
+   "mitzvot": [
+    "a14"
+   ]
+  },
+  {
+   "d": 4,
+   "he": "תפילין",
+   "en": "Tefillin",
+   "introHe": "לראות צעד אחר צעד איך מניחים. אפשר לקרוא היום ולנסות כשמוכנים.",
+   "introEn": "See step by step how tefillin are put on. Read today, try when ready.",
+   "guides": [
+    "tefillin"
+   ],
+   "mitzvot": [
+    "a12",
+    "a13"
+   ]
+  },
+  {
+   "d": 5,
+   "he": "ברכות על האוכל",
+   "en": "Blessings on food",
+   "introHe": "איזו ברכה על מה, וברכת המזון אחרי הארוחה.",
+   "introEn": "Which blessing on what, and Grace after meals.",
+   "guides": [
+    "food",
+    "bentsch"
+   ],
+   "mitzvot": [
+    "a19"
+   ]
+  },
+  {
+   "d": 6,
+   "he": "תפילה ומזוזה",
+   "en": "Prayer and mezuzah",
+   "introHe": "איך מתפללים צעד אחרי צעד (תפילת מנחה), וברכת המצוות על מזוזה.",
+   "introEn": "How to pray step by step (Mincha), and the blessing on a mezuzah.",
+   "guides": [
+    "pray",
+    "mitzvot"
+   ],
+   "mitzvot": [
+    "a5",
+    "a15"
+   ]
+  },
+  {
+   "d": 7,
+   "he": "שבת",
+   "en": "Shabbat",
+   "introHe": "הדלקת נרות, קידוש והבדלה — היום שמסכם את השבוע.",
+   "introEn": "Candle lighting, Kiddush and Havdalah — the day that crowns the week.",
+   "guides": [
+    "candles",
+    "kiddush"
+   ],
+   "mitzvot": [
+    "a154",
+    "a155"
+   ]
+  }
+ ]
+}
