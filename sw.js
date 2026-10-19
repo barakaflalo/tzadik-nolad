@@ -26,8 +26,8 @@ CacheStorage.prototype.match=function(){return sm.apply(this,arguments).then(cle
    - רק שורש האפליקציה נשמר כ-"./" (לא כל דף כ-index.html).
    - קבצי נתונים עם ?v= ואותה כתובת בדיוק ברשימת CORE (בלי ignoreSearch).
    - מעלים VERSION ו-DATA_V יחד, ביחד עם index.html. */
-const VERSION = 'tznolad-v34';
-const DATA_V = '25';           // חייב להיות זהה ל-DATA_V ב-index.html
+const VERSION = 'tznolad-v35';
+const DATA_V = '26';           // חייב להיות זהה ל-DATA_V ב-index.html
 const CORE = [
   './',
   'manifest.json',
@@ -88,6 +88,13 @@ const CORE = [
   'data/siddur/edot/assorted.json?v=' + DATA_V,
   'data/siddur/edot/shabbat.json?v=' + DATA_V,
   'data/siddur/edot/festivals.json?v=' + DATA_V,
+  'data/siddur/edot/midnight.json?v=' + DATA_V,
+  'data/siddur/edot/mishna-shabbat.json?v=' + DATA_V,
+  'data/siddur/edot/shacharit-additions.json?v=' + DATA_V,
+  'data/siddur/sefard/additional.json?v=' + DATA_V,
+  'data/siddur/sefard/lag-baomer.json?v=' + DATA_V,
+  'data/siddur/sefard/torah-readings.json?v=' + DATA_V,
+  'data/siddur/sefard/yotzerot.json?v=' + DATA_V,
   'data/calendar.json?v=' + DATA_V,
   'data/path.json?v=' + DATA_V,
   'data/torah/index.json?v=' + DATA_V,
