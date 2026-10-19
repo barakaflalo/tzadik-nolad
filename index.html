@@ -120,8 +120,8 @@ body.ov-open #toast{bottom:20px}
    חלקים רלוונטיים במסמך הדרישות: א׳ (בסיס) · ז׳ (storage/persist) · י״א (אימות תוכן, אחריות) ·
    י״ב/י״ח (Cloudflare + SW) · ל״א (קליק רפאים) · ל״ב (מנהל חלונות, ניווט תחתון, גיבוי) · ל״ג (?v= לקבצי נתונים).
    כל התוכן ההלכתי נטען מקבצי data/ — לא נכתב כאן ולא מהזיכרון של בינה. */
-const VERSION = '0.1.0';
-const DATA_V  = '1';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
+const VERSION = '0.2.0';
+const DATA_V  = '2';   // חייב להיות זהה ל-DATA_V ב-sw.js — מעלים את שניהם יחד
 
 /* ───── אחסון (Storage shim) ───── */
 const store = (function () {
@@ -426,12 +426,28 @@ function fillReader(p) {
   if (!p.path) { ph(); return; }
   loadJson(p.path).then(function (j) {
     if (!$('#rdBody')) return;
+    if (p.kind === 'tehillim') { fillTehillim(box, j, p); return; }
     const segs = (j.segments || []).map(function (s) { return '<p class="seg">' + esc(s.he) + '</p>' + (S.showEn && s.en ? '<p class="en" dir="ltr">' + esc(s.en) + '</p>' : '') + (s.note ? '<p class="en">' + esc(s.note) + '</p>' : ''); }).join('');
     const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
     box.innerHTML = (j.status && j.status !== 'verified' ? '<p><span class="tag warn">' + esc(j.status === 'demo' ? T('stDemo') : T('stPending')) + '</span></p>' : '') + segs + (vers ? '<p class="en" style="margin-top:20px">' + vers + '</p>' : '');
   }).catch(ph);
 }
 
+function fillTehillim(box, j, p) {
+  let lo = 1, hi = 999;
+  if (p.part) { const r = p.part.split(':')[1].split('-'); lo = +r[0]; hi = +r[1]; }
+  let h = '';
+  j.chapters.filter(function (c) { return c.n >= p.from && c.n <= p.to; }).forEach(function (c) {
+    h += '<h3 style="font-family:var(--ui);color:var(--ac);margin:18px 0 8px">' + esc(T('tehillim') + ' ' + (S.lang === 'he' ? hnum(c.n) : c.n)) + '</h3>';
+    c.he.forEach(function (v, i) {
+      const vn = i + 1; if (vn < lo || vn > hi) return;
+      h += '<p class="seg"><span class="mu" style="font-family:var(--ui);font-size:.6em">' + esc(S.lang === 'he' ? hnum(vn) : vn) + '</span> ' + esc(v) + '</p>' +
+        (S.showEn && c.en[i] ? '<p class="en" dir="ltr" style="white-space:pre-line">' + esc(c.en[i]) + '</p>' : '');
+    });
+  });
+  const vers = (j.versions || []).map(function (v) { return esc(v.title) + ' · ' + esc(v.license); }).join(' | ');
+  box.innerHTML = h + '<p class="en" style="margin-top:20px">' + vers + '</p>';
+}
 SCREENS.tehillim = function () {
   const th = tehToday(new Date()), done = !!S.tehDays[today()];
   let h = '<div class="card"><h2>' + esc(T('todayLabel')) + '</h2><p style="font-size:24px;font-weight:800;color:var(--ac)">' + esc(th.label) + '</p>' +
@@ -547,7 +563,7 @@ const ACT = {
   demo: function () { openReader({ kind: 'siddur', nu: 'ashkenaz', id: 'demo', title: T('demoSection'), path: 'data/siddur/ashkenaz/demo.json' }, 'siddur'); },
   fs: function (el) { S.fs = Math.max(14, Math.min(36, S.fs + (+el.dataset.d))); save(); apply(); },
   toggleEn: function () { S.showEn = !S.showEn; save(); const p = R.params; render(); },
-  tehOpen: function (el) { const f = +el.dataset.from; tehReader(f, +el.dataset.to); },
+  tehOpen: function (el) { tehReader(+el.dataset.from, +el.dataset.to, el.dataset.part || ''); },
   tehCh: function (el) { tehReader(+el.dataset.n, +el.dataset.n); },
   tehRead: function () { const t = today(); if (S.tehDays[t]) delete S.tehDays[t]; else S.tehDays[t] = 1; save(); render(); },
   guide: function (el) { openReader({ kind: 'guide', title: T(el.dataset.id), ph: T('phGuide') }, 'guides'); },
@@ -571,7 +587,12 @@ function openSection(nu, id) {
   const title = nuName(nu) + ' · ' + (S.lang === 'he' ? s.he : s.en);
   openReader({ kind: 'siddur', nu: nu, id: id, title: title, path: s.ready ? 'data/siddur/' + nu + '/' + id + '.json' : null, ph: T('phSiddur', S.lang === 'he' ? s.he : s.en) }, 'siddur');
 }
-function tehReader(from, to) { openReader({ kind: 'tehillim', title: T('tehillim') + ' ' + (S.lang === 'he' ? hnum(from) + (to > from ? '–' + hnum(to) : '') : from + (to > from ? '–' + to : '')), ph: T('phTehillim') }, 'tehillim'); }
+function tehReader(from, to, part) {
+  const h = function (n) { return S.lang === 'he' ? hnum(n) : n; };
+  let t = T('tehillim') + ' ' + h(from) + (to > from ? '–' + h(to) : '');
+  if (part) t = T('tehillim') + ' ' + h(119) + ' (' + part.split(':')[1] + ')';
+  openReader({ kind: 'tehillim', title: t, from: from, to: to, part: part || '', path: 'data/tehillim/tehillim.json', ph: T('phTehillim') }, 'tehillim');
+}
 document.addEventListener('click', function (e) {
   if (e.target.closest('.modal-overlay')) return;                         /* החלונות מטופלים בעצמם */
   const el = e.target.closest('[data-act]'); if (!el) return;
